@@ -1,8 +1,8 @@
 #include<iostream>
 using namespace std;
 int main(){
-    int a,b,c,d;
-    cin>>a>>b>>c>>d;
-    (a*b == c*d) ? cout<<a*b<<endl : (a*b > c*d) ? cout<<a*b<<endl : cout<<c*d<<endl;
+    int a,b,c;
+    cin>>a>>b>>c;
+    b-a == c-b ? cout<<"YES"<<endl : cout<<"NO"<<endl;
     return 0;
 }
