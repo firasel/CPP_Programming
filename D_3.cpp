@@ -1,15 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
-void change(int *x){
-    *x=*x*2;
-}
-
 int main()
 {
-    int a=10;
-    int *p=&a;
-    change(p);
-    cout<<a<<endl;
+    int *p=new int[10]{0};
+    for(int i=0; i<10; i++)
+        cout<<p[i]<<endl;
 
     return 0;
 }
