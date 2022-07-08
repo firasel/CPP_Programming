@@ -2,17 +2,18 @@
 #include<string.h>
 using namespace std;
 int main(){
-    char str[27];
-    cin>>str;
-    int arr[26]={0};
-    for(int i=0; i<strlen(str); i++)
-        arr[str[i]-'a']++;
-    for(int i=0; i<26; i++){
-        if(arr[i]>1){
-            cout<<"no"<<endl;
-            return 0;
+    char o[51],e[51];
+    cin>>o>>e;
+    int j=0,k=0;
+    for(int i=0; i<strlen(o)+strlen(e); i++){
+        if(i%2==0){
+            cout<<o[j];
+            j++;
+        }else{
+            cout<<e[k];
+            k++;
         }
     }
-    cout<<"yes"<<endl;
+    cout<<endl;
     return 0;
 }
