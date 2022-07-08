@@ -2,14 +2,11 @@
 using namespace std;
 
 int main(){
-    int a=100;
-    int b=200;
-    int minValue = min(a,b);
-    int maxValue = max(a,b);
-    cout<<"Min: "<<minValue<<endl<<"Max: "<<maxValue<<endl;
-    cout<<a<<' '<<b<<endl;
-    swap(a,b);
-    cout<<a<<' '<<b<<endl;
+    int arr[5] = {5,6,4,8,2};
+    sort(arr,arr+5);
+    for(int i=0; i<5; i++)
+        cout<<arr[i]<<' ';
+    cout<<endl;
 
     return 0;
 }
