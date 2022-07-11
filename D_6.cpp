@@ -10,9 +10,9 @@ int main(){
         for(int j=0; j<col; j++)
             cin>>a[i][j];
 
-    int req_col;
-    cin>>req_col;
-    for(int i=0; i<row; i++)
-        cout<<a[i][req_col]<<' '<<endl;
+    int req_row;
+    cin>>req_row;
+    for(int i=0; i<col; i++)
+        cout<<a[req_row][i]<<' ';
     return 0;
 }
