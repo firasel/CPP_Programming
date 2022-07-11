@@ -2,13 +2,17 @@
 using namespace std;
 
 int main(){
-    int arr[3][2] = {{1, 2}, {3, 4}, {5, 6}};
-    for(int i=0; i<3; i++){
-        for(int j=0; j<2; j++)
-            cout<<arr[i][j]<<' ';
-        cout<<endl;
-    }
+    int row,col,sum=0;
+    cin>>row>>col;
+    int a[row][col];
 
+    for(int i=0; i<row; i++)
+        for(int j=0; j<col; j++)
+            cin>>a[i][j];
 
+    for(int i=0; i<row; i++)
+        for(int j=0; j<col; j++)
+            if(i==j) sum+=a[i][j];
+    cout<<"Diagonal Sum = "<<sum<<endl;
     return 0;
 }
