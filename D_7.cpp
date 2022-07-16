@@ -1,20 +1,32 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Student
+class Example
 {
+private:
+    int x,y,z;
 public:
-    int x;
-    void findNum(){
-        cout<<"Number is "<<x<<endl;
+    Example(int a, int b, int c){
+        x=a;
+        y=b;
+        z=c;
+    }
+    void printNum(){
+        cout<<x<<' '<<y<<' '<<z<<endl;
+    }
+    void setter(int a){
+        x=a;
+    }
+    int getter(){
+        return x;
     }
 };
 
 int main()
 {
-    Student exst;
-    exst.x = 22;
-
-    exst.findNum();
+    Example a(10, 20, 30);
+    a.printNum();
+    a.setter(25);
+    cout<<a.getter()<<endl;
     return 0;
 }
