@@ -4,16 +4,17 @@ using namespace std;
 class Student
 {
 public:
-    char name[100];
-    int roll;
+    int x;
+    void findNum(){
+        cout<<"Number is "<<x<<endl;
+    }
 };
 
 int main()
 {
-    Student jahed;
-    strcpy(jahed.name,"Mr. Jahed");
-    jahed.roll = 22;
+    Student exst;
+    exst.x = 22;
 
-    cout<<jahed.name<<" "<<jahed.roll<<endl;
+    exst.findNum();
     return 0;
 }
