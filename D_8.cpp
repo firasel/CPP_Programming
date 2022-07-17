@@ -3,8 +3,10 @@ using namespace std;
 
 int main()
 {
-    string st;
-    cin>>st;
-    cout<<st<<endl;
+    string st="Hello world";
+    for(auto it=st.rbegin(); it!=st.rend(); it++)
+    {
+        cout<<*it<<endl;
+    }
     return 0;
 }
