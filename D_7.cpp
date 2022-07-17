@@ -1,40 +1,29 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Parent
+class Example
 {
 public:
-    int x;
-private:
-    int y;
-protected:
-    int z;
-public:
-    Parent(int a, int b, int c){
-        x=a;
-        y=b;
-        z=c;
+    int add(int x,int y){
+        cout<<"First Fun"<<endl;
+        return x+y;
     }
-};
 
-class Child: public Parent
-{
-public:
-    int xx;
-    Child(int aa, int a, int b, int c) : Parent(a, b, c)
-    {
-        xx=aa;
+    double add(double x,double y){
+        cout<<"Second Fun"<<endl;
+        return x+y;
     }
-    void tellMe(){
-        cout<<"Protected value: "<<z<<endl;
+
+    void add(char ch){
+        cout<<"Hi "<<ch<<endl;
     }
 };
 
 int main()
 {
-    Parent pt(10,20,30);
-    Child ch(100,5,15,25);
-    ch.tellMe();
-    cout<<ch.x<<' '<<pt.x<<endl;
+    Example ex;
+    ex.add('X');
+    cout<<ex.add(1.2,3.9)<<endl;
+    cout<<ex.add(2,7)<<endl;
     return 0;
 }
