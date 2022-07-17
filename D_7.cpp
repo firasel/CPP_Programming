@@ -1,29 +1,29 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Example
+class Parent
+{
+private:
+    int taka;
+public:
+    Parent(int tk){
+        taka=tk;
+    }
+    friend class ParentFriend;
+};
+
+class ParentFriend
 {
 public:
-    int add(int x,int y){
-        cout<<"First Fun"<<endl;
-        return x+y;
-    }
-
-    double add(double x,double y){
-        cout<<"Second Fun"<<endl;
-        return x+y;
-    }
-
-    void add(char ch){
-        cout<<"Hi "<<ch<<endl;
+    void tellSecret(Parent *ptr){
+        cout<<ptr->taka<<endl;
     }
 };
 
 int main()
 {
-    Example ex;
-    ex.add('X');
-    cout<<ex.add(1.2,3.9)<<endl;
-    cout<<ex.add(2,7)<<endl;
+    Parent pt(1203);
+    ParentFriend fd;
+    fd.tellSecret(&pt);
     return 0;
 }
