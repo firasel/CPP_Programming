@@ -1,32 +1,40 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Example
+class Parent
 {
-private:
-    int x,y,z;
 public:
-    Example(int a, int b, int c){
+    int x;
+private:
+    int y;
+protected:
+    int z;
+public:
+    Parent(int a, int b, int c){
         x=a;
         y=b;
         z=c;
     }
-    void printNum(){
-        cout<<x<<' '<<y<<' '<<z<<endl;
+};
+
+class Child: public Parent
+{
+public:
+    int xx;
+    Child(int aa, int a, int b, int c) : Parent(a, b, c)
+    {
+        xx=aa;
     }
-    void setter(int a){
-        x=a;
-    }
-    int getter(){
-        return x;
+    void tellMe(){
+        cout<<"Protected value: "<<z<<endl;
     }
 };
 
 int main()
 {
-    Example a(10, 20, 30);
-    a.printNum();
-    a.setter(25);
-    cout<<a.getter()<<endl;
+    Parent pt(10,20,30);
+    Child ch(100,5,15,25);
+    ch.tellMe();
+    cout<<ch.x<<' '<<pt.x<<endl;
     return 0;
 }
