@@ -1,29 +1,17 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<string.h>
 using namespace std;
-
-class Parent
-{
-private:
-    int taka;
-public:
-    Parent(int tk){
-        taka=tk;
-    }
-    friend class ParentFriend;
-};
-
-class ParentFriend
-{
-public:
-    void tellSecret(Parent *ptr){
-        cout<<ptr->taka<<endl;
-    }
-};
-
 int main()
 {
-    Parent pt(1203);
-    ParentFriend fd;
-    fd.tellSecret(&pt);
+    int n;
+    cin>>n;
+    char str[n];
+    cin>>str;
+    int x=0,a=0;
+    for(int i=0; i<n; i++){
+        str[i] == 'I' ? x++ : x--;
+        x>a && (a=x);
+    }
+    cout<<a<<endl;
     return 0;
 }
