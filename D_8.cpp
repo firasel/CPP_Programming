@@ -1,16 +1,9 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int main()
-{
-    string st="ab   ab cd   cd xy xy";
-    stringstream stream(st);
+int main(){
+ string s1="CGPA";
 
-    string w;
-    while(stream>>w)
-    {
-        cout<<w<<endl;
-    }
-
+    cout<<s1.find('G');
     return 0;
 }
