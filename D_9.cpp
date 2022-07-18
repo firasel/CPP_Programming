@@ -1,25 +1,29 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Example
+class Parent
 {
 public:
-    int x;
-    Example(int a)
+    void fun()
     {
-        x=a;
+        cout<<"Parent"<<endl;
     }
-    int operator +(Example obj)
+};
+
+class Child: public Parent
+{
+public:
+    void fun()
     {
-        return x+obj.x;
+        cout<<"Child"<<endl;
     }
 };
 
 int main()
 {
-    Example a(10), b(20), c(50);
-    int ans=a+b;
-    Example ansObj(ans);
-    cout<<ansObj+c<<endl;
+    Parent pt;
+    Child ch;
+    ch.fun();
+    pt.fun();
     return 0;
 }
