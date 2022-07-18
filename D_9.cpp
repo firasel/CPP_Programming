@@ -9,19 +9,17 @@ public:
     {
         x=a;
     }
-    Example operator +(Example obj)
+    int operator +(Example obj)
     {
-        Example ans(0);
-        ans.x=x+obj.x;
-        return ans;
+        return x+obj.x;
     }
 };
 
 int main()
 {
     Example a(10), b(20), c(50);
-    Example ans=a+b;
-    Example ans2=ans+c;
-    cout<<ans2.x<<endl;
+    int ans=a+b;
+    Example ansObj(ans);
+    cout<<ansObj+c<<endl;
     return 0;
 }
