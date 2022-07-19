@@ -158,11 +158,27 @@ void add_money_from_bank(MyCash *myCash, BankAccount *myAccount)
 int main()
 {
     BankAccount *myAccount = create_account();
-    if(myAccount->show_balance("abcd") == -1) cout<<"Password didn't match"<<endl;
-    else cout<<"Your bank balance is "<<myAccount->show_balance("abcd")<<endl;
-    add_money(myAccount);
-    deposit_money(myAccount);
     MyCash* myCash = new MyCash();
-    add_money_from_bank(myCash, myAccount);
+    Flag:
+        cout<<"Select option: "<<endl;
+        cout<<"1. Add Money to Bank"<<endl;
+        cout<<"2. Deposit Money from Bank"<<endl;
+        cout<<"3. Add Money to MyCash from Bank"<<endl;
+        int option;
+        cin>>option;
+        if(option == 1)
+        {
+            add_money(myAccount);
+        }
+        else if(option == 2)
+        {
+            deposit_money(myAccount);
+        }
+        else if(option == 3)
+        {
+            add_money_from_bank(myCash, myAccount);
+        }
+        else cout<<"Invalid option"<<endl;
+        goto Flag;
     return 0;
 }
