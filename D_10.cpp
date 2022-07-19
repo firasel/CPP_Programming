@@ -34,6 +34,18 @@ public:
             return -1;
         }
     }
+    void add_money(string password, int amount)
+    {
+        if(this -> password == password)
+        {
+            this->balance += amount;
+            cout<<"Add money successful"<<endl;
+        }
+        else
+        {
+            cout<<"Password didn't match"<<endl;
+        }
+    }
 };
 
 BankAccount* create_account()
@@ -46,10 +58,21 @@ BankAccount* create_account()
     return myAccount;
 }
 
+void add_money(BankAccount *myAccount)
+{
+    string password;
+    int amount;
+    cout<<"Add Money"<<endl;
+    cin>>password>>amount;
+    myAccount->add_money(password,amount);
+    cout<<"Your bank balance is "<<myAccount->show_balance("abcd")<<endl;
+}
+
 int main()
 {
     BankAccount *myAccount = create_account();
     if(myAccount->show_balance("abcd") == -1) cout<<"Password didn't match"<<endl;
     else cout<<"Your bank balance is "<<myAccount->show_balance("abcd")<<endl;
+    add_money(myAccount);
     return 0;
 }
