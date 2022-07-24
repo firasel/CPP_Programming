@@ -34,10 +34,11 @@ int main()
     }
     else
     {
-        for(int i=size-1; i>=pos; i--)
-        {
-            array[i+1] = array[i];
-        }
+//        for(int i=size-1; i>=pos; i--)
+//        {
+//            array[i+1] = array[i];
+//        }
+        array[size] = array[pos];
         array[pos] = value;
     }
 
