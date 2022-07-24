@@ -22,28 +22,29 @@ int main()
     cout<<"Given Array: ";
     PrintArray(array,size);
 
-    int pos,value;
-    cout<<"Position of the Insertion: ";
+    int pos;
+    cout<<"Position of the Deletion: ";
     cin>>pos;
-    cout<<"Value of the position: ";
-    cin>>value;
 
-    if(pos<0 || pos>size)
+    if(pos<0 || pos>size-1)
     {
         cout<<"Invalid Index";
     }
     else
     {
-//        for(int i=size-1; i>=pos; i--)
-//        {
-//            array[i+1] = array[i];
-//        }
-        array[size] = array[pos];
-        array[pos] = value;
+        if(pos==size-1) size--;
+        else
+        {
+            for(int i=pos+1; i<size; i++)
+            {
+                array[i-1] = array[i];
+            }
+            size--;
+        }
     }
 
-    cout<<"Array After the Insertion : ";
-    PrintArray(array, size+1);
+    cout<<"Array After the Deletion : ";
+    PrintArray(array, size);
 
     return 0;
 }
