@@ -12,7 +12,7 @@ int main()
     for(int i=0; i<size; i++)
     {
         cin>>array[i];
-        sum+=array[i];
+        (i%2 == 0) && (sum+=array[i]);
     }
     cout<<sum<<endl;
 
