@@ -11,21 +11,24 @@ int main()
 
     for(int i=0; i<size; i++)
         cin>>array[i];
+    int checkValue;
+    cin>>checkValue;
 
-    int maxNum=array[0],minNum=array[0],maxIndex=0,minIndex=0;
+    int findPos[size],index=0,found=0;
     for(int i=0; i<size; i++){
-        if(array[i]>maxNum){
-            maxNum = array[i];
-            maxIndex = i;
-        }
-        if(array[i]<minNum){
-            minNum = array[i];
-            minIndex = i;
+        if(array[i]==checkValue){
+            found=1;
+            findPos[index] = i;
+            index++;
         }
     }
 
-    cout<<"Max: "<<maxNum<<", Index: "<<maxIndex<<endl;
-    cout<<"Min: "<<minNum<<", Index: "<<minIndex<<endl;
+    if(found==0) cout<<"NOT FOUND"<<endl;
+    else{
+        cout<<"FOUND at index position: ";
+        for(int i=0; i<index; i++)
+            cout<<findPos[i]<<" ";
+    }
 
     return 0;
 }
