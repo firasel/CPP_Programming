@@ -1,40 +1,35 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+int binarySearch(int array[], int x, int lb, int ub)
+{
+    if(lb<=ub){
+        int mid =(lb+ub)/2;
+        // Center
+        if(x==array[mid]) return mid;
+        // Right side
+        else if(x > array[mid]) binarySearch(array, x, mid+1, ub);
+        // Left side
+        else binarySearch(array, x, lb, mid-1);
+
+    }else return -1;
+}
+
 int main()
 {
     int size;
     cin>>size;
 
     int array[size];
+    for (int i=0; i<size; i++)
+        cin>>array[i];
+    int checkValue;
+    cout<<"Please enter the you want to search: ";
+    cin>>checkValue;
 
-    for(int i=0; i<size; i++) cin>>array[i];
-
-    char c;
-    cout<<"Do you want to search: (Y/N) ";
-    cin>>c;
-
-    while(toupper(c)=='Y')
-    {
-        int checkValue;
-        cout<<"Please enter the value you want to search: ";
-        cin>>checkValue;
-
-        int flag = 0;
-
-        for(int i=0; i<size; i++)
-        {
-            if(array[i]==checkValue)
-            {
-                cout<<"Index No: "<<i<<" Position: "<<i+1<<endl;
-                flag = 1;
-            }
-        }
-        if(flag == 0) cout<<"Not found"<<endl;
-
-        cout<<"Do you want to search: (Y/N) ";
-        cin>>c;
-    }
-
+    int indexNumber;
+    indexNumber = binarySearch(array, checkValue, 0, size-1);
+    if(indexNumber != -1) cout<<"Index No: "<<indexNumber<<" Position No: "<<indexNumber+1<<endl;
+    else cout<<"Not Found!"<<endl;
     return 0;
 }
