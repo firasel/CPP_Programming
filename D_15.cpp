@@ -12,15 +12,20 @@ int main()
     for(int i=0; i<size; i++)
         cin>>array[i];
 
-    for(int i=0; i<size/2; i++){
-        int temp = array[size-i-1];
-        array[size-i-1] = array[i];
-        array[i] = temp;
+    int maxNum=array[0],minNum=array[0],maxIndex=0,minIndex=0;
+    for(int i=0; i<size; i++){
+        if(array[i]>maxNum){
+            maxNum = array[i];
+            maxIndex = i;
+        }
+        if(array[i]<minNum){
+            minNum = array[i];
+            minIndex = i;
+        }
     }
 
-    for(int i=0; i<size; i++)
-        cout<<array[i]<<" ";
-    cout<<endl;
+    cout<<"Max: "<<maxNum<<", Index: "<<maxIndex<<endl;
+    cout<<"Min: "<<minNum<<", Index: "<<minIndex<<endl;
 
     return 0;
 }
