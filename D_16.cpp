@@ -18,18 +18,15 @@ int main()
 
     cout<<"Before Sort: ";
     printArray(array,size);
-    // Bubble Sort Implementation
+    // Insertion Sort Implementation
     for(int i=1; i<size; i++){
-        int flag = 0;
-        for(int j=0; j<size-i; j++){
-            if(array[j]>array[j+1]){
-                int temp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = temp;
-                flag = 1;
-            }
+        int key = array[i];
+        int j = i-1;
+        while(array[j]>key && j>=0){
+            array[j+1] = array[j];
+            j--;
         }
-        if(flag == 0) break;
+        array[j+1] = key;
     }
 
     cout<<"After Sort: ";
