@@ -3,9 +3,9 @@ using namespace std;
 
 int main()
 {
-    int n, sum=0;
+    int n;
     cin>>n;
-    int arr[n][n];
+    int arr[n][n],majorArr[n],minorArr[n];
 
     for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
@@ -14,17 +14,19 @@ int main()
 
     for(int i=0; i<n; i++)
     {
-        for(int j=0; j<n; j++)
-        {
-            if(i==n/2) sum+=arr[i][j];
-            else if(j==n/2) sum+=arr[i][j];
-            else if(i==0 && j<=n/2) sum+=arr[i][j];
-            else if(i==n-1 && j>=n/2) sum+=arr[i][j];
-            else if(i<n/2 && j==n-1) sum+=arr[i][j];
-            else if(i>n/2 && j==0) sum+=arr[i][j];
-        }
+        majorArr[i] = arr[i][i];
+        minorArr[i] = arr[i][n-i-1];
     }
-    cout<<sum<<endl;
+
+    cout<<"Major diagonal: ";
+    for(int i=0; i<n; i++)
+        cout<<majorArr[i]<<" ";
+    cout<<endl;
+
+    cout<<"Minor diagonal: ";
+    for(int i=0; i<n; i++)
+        cout<<minorArr[i]<<" ";
+    cout<<endl;
 
     return 0;
 }
