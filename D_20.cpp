@@ -6,7 +6,30 @@ class Node
 public:
     int value;
     Node *Next;
+
+    Node(int val)
+    {
+        value = val;
+        Next = NULL;
+    }
 };
+
+void insertAtTail(Node* &head, int val)
+{
+    Node *newNode = new Node(val);
+    if(head==NULL)
+    {
+        head = newNode;
+        return;
+    }
+
+    Node *temp = head;
+    while(temp->Next!=NULL)
+    {
+        temp = temp->Next;
+    }
+    temp->Next = newNode;
+}
 
 void display(Node* n)
 {
@@ -21,20 +44,17 @@ void display(Node* n)
 
 int main()
 {
-    Node* head = new Node();
-    Node* second = new Node();
-    Node* third = new Node();
-    Node* fourth = new Node();
-
-    head->value = 1;
-    second->value = 5;
-    third->value = 8;
-    fourth->value = 9;
-
-    head->Next = second;
-    second->Next = third;
-    third->Next = fourth;
-    fourth->Next = NULL;
+    int n;
+    Node* head = NULL;
+    char choice= 'Y';
+    while(choice=='Y')
+    {
+        cout<<"Enter the value: ";
+        cin>>n;
+        insertAtTail(head,n);
+        cout<<"Do you want to continue: (Y/N) ";
+        cin>>choice;
+    }
 
     display(head);
 
