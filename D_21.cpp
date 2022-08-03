@@ -3,29 +3,31 @@ using namespace std;
 
 int main()
 {
-    int arr[3][3];
-    int arr2[3][3];
+    int m,n;
+    cin>>m>>n;
+    int arr[m][n];
 
-    for(int i=0; i<3; i++)
-        for(int j=0; j<3; j++)
+    for(int i=0; i<m; i++)
+        for(int j=0; j<n; j++)
             cin>>arr[i][j];
 
-    for(int i=0; i<3; i++)
-        for(int j=0; j<3; j++)
-            cin>>arr2[i][j];
-
-    for(int i=0; i<3; i++)
+    int maxNum=arr[0][0];
+    int a=0;
+    int b=0;
+    for(int i=0; i<m; i++)
     {
-        for(int j=0; j<3; j++){
-            int sum=0;
-            for(int k=0; k<3; k++){
-                sum+=(arr[i][k]*arr2[k][j]);
+        for(int j=0; j<n; j++)
+        {
+            if(maxNum<arr[i][j])
+            {
+                maxNum=arr[i][j];
+                a=i;
+                b=j;
             }
-            cout<<sum<<" ";
         }
-        cout<<endl;
     }
 
+    cout<<"Max: "<<maxNum<<endl<<"Location: ["<<a<<"]["<<b<<"]"<<endl;
     return 0;
 }
 
