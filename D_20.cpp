@@ -52,7 +52,7 @@ void display(Node* n)
 int main()
 {
     int n;
-    Node* head = NULL;
+    Node* head = NULL; // 5
 
     cout<<"Choice 1: Insertion at Head"<<endl<<"Choice 2: Insertion at Tail"<<endl<<"Choice 3: Exit"<<endl;
     int choice=2;
