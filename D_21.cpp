@@ -3,31 +3,26 @@ using namespace std;
 
 int main()
 {
-    int m,n;
-    cin>>m>>n;
-    int arr[m][n];
+    int n;
+    cin>>n;
+    int arr[n][n];
 
-    for(int i=0; i<m; i++)
+    for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
             cin>>arr[i][j];
 
-    int maxNum=arr[0][0];
-    int a=0;
-    int b=0;
-    for(int i=0; i<m; i++)
+    int sum=0;
+    for(int i=0; i<n; i++)
     {
         for(int j=0; j<n; j++)
         {
-            if(maxNum<arr[i][j])
-            {
-                maxNum=arr[i][j];
-                a=i;
-                b=j;
-            }
+            if(i==0 || i==n-1) sum+=arr[i][j];
+            else if(i==n/2 && j==n/2) sum+=arr[i][j];
+            else if(i!=n/2 && (i==j || i==n-j-1)) sum+=arr[i][j];
         }
     }
 
-    cout<<"Max: "<<maxNum<<endl<<"Location: ["<<a<<"]["<<b<<"]"<<endl;
+    cout<<sum<<endl;
     return 0;
 }
 
