@@ -31,6 +31,13 @@ void insertAtTail(Node* &head, int val)
     temp->Next = newNode;
 }
 
+void insertAtHead(Node* &head, int val)
+{
+    Node* newNode = new Node(val);
+    newNode->Next = head;
+    head = newNode;
+}
+
 void display(Node* n)
 {
     while(n!=NULL)
@@ -46,13 +53,16 @@ int main()
 {
     int n;
     Node* head = NULL;
-    char choice= 'Y';
-    while(choice=='Y')
+
+    cout<<"Choice 1: Insertion at Head"<<endl<<"Choice 2: Insertion at Tail"<<endl<<"Choice 3: Exit"<<endl;
+    int choice=2;
+    while(choice==1 || choice==2)
     {
         cout<<"Enter the value: ";
         cin>>n;
-        insertAtTail(head,n);
-        cout<<"Do you want to continue: (Y/N) ";
+        if(choice==1) insertAtHead(head,n);
+        else if(choice==2) insertAtTail(head,n);
+        cout<<"Next Choice: ";
         cin>>choice;
     }
 
