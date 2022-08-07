@@ -24,11 +24,13 @@ int countLinkedList(Node* &head);
 int searchByValueUnique(Node* &head, int key);
 void searchByValueDuplicate(Node* &head, int key);
 Test searchByValueDuplicateReturn(Node* &head, int key);
-void searchByValueUnique(Node* &head, int searchValue, int value);
+void insertionByValueUnique(Node* &head, int searchValue, int value);
 void insertValueWithDuplicateValue(Node* &head, int searchValue, int value);
 void deletionAtHead(Node* &head);
 void deletionAtTail(Node* &head);
 void deletionAtSpecificPosition(Node* &head, int position);
+void deletionByValueUnique(Node* &head, int val);
+void deletionByValueDuplicate(Node* &head, int val);
 void display(Node* n);
 
 
@@ -152,7 +154,7 @@ Test searchByValueDuplicateReturn(Node* &head, int key)
     return T;
 }
 
-void searchByValueUnique(Node* &head, int searchValue, int value)
+void insertionByValueUnique(Node* &head, int searchValue, int value)
 {
     int position;
     position = searchByValueUnique(head, searchValue);
@@ -231,6 +233,26 @@ void deletionAtSpecificPosition(Node* &head, int position)
     }
 }
 
+void deletionByValueUnique(Node* &head, int val)
+{
+    int position = searchByValueUnique(head, val);
+    if(position==-1) cout<<"Value not Found in the Linked List"<<endl;
+    else deletionAtSpecificPosition(head, position);
+}
+
+void deletionByValueDuplicate(Node* &head, int val)
+{
+    Test T = searchByValueDuplicateReturn(head, val);
+    if(T.position[0]==1) cout<<"There is no value in the Linked List"<<endl;
+    else
+    {
+        for(int i=1; i<T.position[0]; i++)
+        {
+            deletionAtSpecificPosition(head, T.position[i]+1-i);
+        }
+    }
+}
+
 void display(Node* n)
 {
     while(n!=NULL)
@@ -244,7 +266,7 @@ void display(Node* n)
 
 int main()
 {
-    int value,position;
+    int value, position, delValue, searchValue;
     Node* head = NULL;
 
     cout<<"Choice 1: Insertion at Head"
@@ -258,6 +280,8 @@ int main()
         <<endl<<"Choice 9: Deletion at Head"
         <<endl<<"Choice 10: Deletion at Tail"
         <<endl<<"Choice 11: Deletion at Specific Position"
+        <<endl<<"Choice 12: Deletion by value(Unique List)"
+        <<endl<<"Choice 13: Deletion by value(Duplicate Enable)"
         <<endl<<"Choice 0: Exit"<<endl;
     cout<<"Choice: ";
     int choice;
@@ -314,12 +338,11 @@ int main()
             }
             break;
         case 7:
-            int searchValue;
             cout<<"Enter the Value to Search: ";
             cin>>searchValue;
             cout<<"Enter the Value to insert: ";
             cin>>value;
-            searchByValueUnique(head, searchValue, value);
+            insertionByValueUnique(head, searchValue, value);
             break;
         case 8:
             searchValue;
@@ -339,6 +362,15 @@ int main()
             cout<<"Enter the Desired Position: ";
             cin>>position;
             deletionAtSpecificPosition(head, position);
+            break;
+        case 12:
+            cout<<"Enter the value to Delete: ";
+            cin>>delValue;
+            deletionByValueUnique(head, delValue);
+        case 13:
+            cout<<"Enter the value to Delete: ";
+            cin>>delValue;
+            deletionByValueDuplicate(head, delValue);
             break;
         default:
             break;
