@@ -15,6 +15,7 @@ public:
 void insertAtTail(Node* &head, int val);
 void insertAtHead(Node* &head, int val);
 void insertAtMiddle(Node* &head,int position, int val);
+int countLinkedList(Node* &head);
 void display(Node* n);
 
 
@@ -53,6 +54,17 @@ void insertAtMiddle(Node* &head,int position, int val)
     Node* newNode = new Node(val);
     newNode->Next = temp->Next;
     temp->Next = newNode;
+}
+
+int countLinkedList(Node* &head){
+    int count = 1;
+    Node* temp = head;
+    if(temp==NULL) return 0;
+    while(temp->Next!=NULL){
+        count++;
+        temp=temp->Next;
+    }
+    return count;
 }
 
 void display(Node* n)
@@ -98,6 +110,9 @@ int main()
             cout<<"Enter the value: ";
             cin>>value;
             insertAtMiddle(head, position, value);
+            break;
+        case 4:
+            cout<<"Linked List Length: "<<countLinkedList(head)<<endl;
             break;
         default:
             break;
