@@ -14,6 +14,7 @@ public:
 
 void insertAtTail(Node* &head, int val);
 void insertAtHead(Node* &head, int val);
+void insertAtMiddle(Node* &head,int position, int val);
 void display(Node* n);
 
 
@@ -40,6 +41,20 @@ void insertAtHead(Node* &head, int val)
     head = newNode;
 }
 
+void insertAtMiddle(Node* &head,int position, int val)
+{
+    Node* temp = head;
+    int count=1;
+    while(temp->Next!=NULL && count<=position-1)
+    {
+        count++;
+        temp = temp->Next;
+    }
+    Node* newNode = new Node(val);
+    newNode->Next = temp->Next;
+    temp->Next = newNode;
+}
+
 void display(Node* n)
 {
     while(n!=NULL)
@@ -53,7 +68,7 @@ void display(Node* n)
 
 int main()
 {
-    int n;
+    int value,position;
     Node* head = NULL;
 
     cout<<"Choice 1: Insertion at Head"
@@ -69,13 +84,20 @@ int main()
         {
         case 1:
             cout<<"Enter the value: ";
-            cin>>n;
-            insertAtHead(head,n);
+            cin>>value;
+            insertAtHead(head,value);
             break;
         case 2:
             cout<<"Enter the value: ";
-            cin>>n;
-            insertAtTail(head,n);
+            cin>>value;
+            insertAtTail(head,value);
+            break;
+        case 3:
+            cout<<"Enter the Desired Position: ";
+            cin>>position;
+            cout<<"Enter the value: ";
+            cin>>value;
+            insertAtMiddle(head, position, value);
             break;
         default:
             break;
