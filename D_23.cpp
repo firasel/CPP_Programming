@@ -16,6 +16,7 @@ void insertAtTail(Node* &head, int val);
 void insertAtHead(Node* &head, int val);
 void insertAtMiddle(Node* &head,int position, int val);
 int countLinkedList(Node* &head);
+int searchByValueUnique(Node* &head, int key);
 void display(Node* n);
 
 
@@ -56,13 +57,29 @@ void insertAtMiddle(Node* &head,int position, int val)
     temp->Next = newNode;
 }
 
-int countLinkedList(Node* &head){
+int countLinkedList(Node* &head)
+{
     int count = 1;
     Node* temp = head;
     if(temp==NULL) return 0;
-    while(temp->Next!=NULL){
+    while(temp->Next!=NULL)
+    {
         count++;
         temp=temp->Next;
+    }
+    return count;
+}
+
+int searchByValueUnique(Node* &head, int key)
+{
+    Node* temp = head;
+    int count = 1;
+    if(temp==NULL) return -1;
+    while(temp->value != key)
+    {
+        if(temp->Next == NULL) return -1;
+        temp = temp->Next;
+        count++;
     }
     return count;
 }
@@ -85,6 +102,9 @@ int main()
 
     cout<<"Choice 1: Insertion at Head"
         <<endl<<"Choice 2: Insertion at Tail"
+        <<endl<<"Choice 3: Insertion at Middle"
+        <<endl<<"Choice 4: Total Length of LinkedList"
+        <<endl<<"Choice 5: Search a unique value from LinkedList"
         <<endl<<"Choice 0: Exit"<<endl;
     cout<<"Choice: ";
     int choice;
@@ -113,6 +133,13 @@ int main()
             break;
         case 4:
             cout<<"Linked List Length: "<<countLinkedList(head)<<endl;
+            break;
+        case 5:
+            cout<<"Enter the Value to Search: ";
+            cin>>value;
+            position = searchByValueUnique(head,value);
+            if(position!=-1) cout<<"The number is at Position "<<position<<endl;
+            else cout<<"The number is not yet in the List"<<endl;
             break;
         default:
             break;
