@@ -27,6 +27,8 @@ Test searchByValueDuplicateReturn(Node* &head, int key);
 void searchByValueUnique(Node* &head, int searchValue, int value);
 void insertValueWithDuplicateValue(Node* &head, int searchValue, int value);
 void deletionAtHead(Node* &head);
+void deletionAtTail(Node* &head);
+void deletionAtSpecificPosition(Node* &head, int position);
 void display(Node* n);
 
 
@@ -175,6 +177,60 @@ void deletionAtHead(Node* &head)
     else cout<<"There is no value in the Linked List"<<endl;
 }
 
+void deletionAtTail(Node* &head)
+{
+    Node* temp=head;
+    if(temp!=NULL && temp->Next!=NULL)
+    {
+        while(temp->Next->Next!=NULL)
+        {
+            temp=temp->Next;
+        }
+        Node *delNode = temp->Next;
+        temp->Next = NULL;
+        delete delNode;
+    }
+    else
+    {
+        if(temp==NULL) cout<<"There is no value in the Linked List"<<endl;
+        else deletionAtHead(head);
+    }
+}
+
+void deletionAtSpecificPosition(Node* &head, int position)
+{
+    Node *temp = head;
+    if(temp!=NULL && position<=countLinkedList(head))
+    {
+        if(position==1)
+        {
+            deletionAtHead(head);
+        }
+        else if(position==countLinkedList(head))
+        {
+            deletionAtTail(head);
+        }
+        else
+        {
+
+            int i = 1;
+            while(i<position-1)
+            {
+                temp=temp->Next;
+                i++;
+            }
+            Node *delNode = temp->Next;
+            temp->Next = delNode->Next;
+            delete delNode;
+        }
+    }
+    else
+    {
+        if(position>countLinkedList(head)) cout<<"Position Out of Bound"<<endl;
+        else cout<<"There is no value in the Linked List"<<endl;
+    }
+}
+
 void display(Node* n)
 {
     while(n!=NULL)
@@ -199,7 +255,9 @@ int main()
         <<endl<<"Choice 6: Search a duplicate value from LinkedList"
         <<endl<<"Choice 7: Insertion after a specific value(Unique List)"
         <<endl<<"Choice 8: Insertion after a specific value(Duplicate Enable)"
-        <<endl<<"Choice 9: Deletion at head"
+        <<endl<<"Choice 9: Deletion at Head"
+        <<endl<<"Choice 10: Deletion at Tail"
+        <<endl<<"Choice 11: Deletion at Specific Position"
         <<endl<<"Choice 0: Exit"<<endl;
     cout<<"Choice: ";
     int choice;
@@ -273,6 +331,14 @@ int main()
             break;
         case 9:
             deletionAtHead(head);
+            break;
+        case 10:
+            deletionAtTail(head);
+            break;
+        case 11:
+            cout<<"Enter the Desired Position: ";
+            cin>>position;
+            deletionAtSpecificPosition(head, position);
             break;
         default:
             break;
