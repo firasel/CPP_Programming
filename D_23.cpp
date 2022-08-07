@@ -17,6 +17,7 @@ void insertAtHead(Node* &head, int val);
 void insertAtMiddle(Node* &head,int position, int val);
 int countLinkedList(Node* &head);
 int searchByValueUnique(Node* &head, int key);
+void searchByValueDuplicate(Node* &head, int key);
 void display(Node* n);
 
 
@@ -84,6 +85,41 @@ int searchByValueUnique(Node* &head, int key)
     return count;
 }
 
+void searchByValueDuplicate(Node* &head, int key)
+{
+    Node* temp = head;
+    int size;
+    size = countLinkedList(head);
+    int position[size+1], k = 1;
+    int count = 1;
+    int flag = 0;
+
+    while(temp!=NULL)
+    {
+        if(temp->value == key)
+        {
+            position[k] = count;
+            k++;
+            flag = 1;
+        }
+        temp = temp->Next;
+        count++;
+    }
+
+    if(flag==0) cout<<"The Searched value is not yet in the List"<<endl;
+    else
+    {
+        position[0] = k;
+        cout<<"The value is found at Position: ";
+        for(int i=1; i<position[0]; i++)
+        {
+            cout<<position[i];
+            if(i<position[0]-1) cout<<", ";
+        }
+        cout<<endl;
+    }
+}
+
 void display(Node* n)
 {
     while(n!=NULL)
@@ -105,6 +141,7 @@ int main()
         <<endl<<"Choice 3: Insertion at Middle"
         <<endl<<"Choice 4: Total Length of LinkedList"
         <<endl<<"Choice 5: Search a unique value from LinkedList"
+        <<endl<<"Choice 6: Search a duplicate value from LinkedList"
         <<endl<<"Choice 0: Exit"<<endl;
     cout<<"Choice: ";
     int choice;
@@ -140,6 +177,11 @@ int main()
             position = searchByValueUnique(head,value);
             if(position!=-1) cout<<"The number is at Position "<<position<<endl;
             else cout<<"The number is not yet in the List"<<endl;
+            break;
+        case 6:
+            cout<<"Enter the Value to Search: ";
+            cin>>value;
+            searchByValueDuplicate(head, value);
             break;
         default:
             break;
