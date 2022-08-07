@@ -24,6 +24,8 @@ int countLinkedList(Node* &head);
 int searchByValueUnique(Node* &head, int key);
 void searchByValueDuplicate(Node* &head, int key);
 Test searchByValueDuplicateReturn(Node* &head, int key);
+void searchByValueUnique(Node* head, int searchValue, int value);
+void insertValueWithDuplicateValue(Node* head, int searchValue, int value);
 void display(Node* n);
 
 
@@ -147,6 +149,19 @@ Test searchByValueDuplicateReturn(Node* &head, int key)
     return T;
 }
 
+void searchByValueUnique(Node* head, int searchValue, int value)
+{
+    int position;
+    position = searchByValueUnique(head, searchValue);
+    insertAtMiddle(head, position, value);
+}
+
+void insertValueWithDuplicateValue(Node* head, int searchValue, int value){
+    Test T;
+    T = searchByValueDuplicateReturn(head,searchValue);
+    for(int i=1; i<T.position[0]; i++) insertAtMiddle(head, T.position[i]+i-1, value);
+}
+
 void display(Node* n)
 {
     while(n!=NULL)
@@ -169,6 +184,8 @@ int main()
         <<endl<<"Choice 4: Total Length of LinkedList"
         <<endl<<"Choice 5: Search a unique value from LinkedList"
         <<endl<<"Choice 6: Search a duplicate value from LinkedList"
+        <<endl<<"Choice 7: Insertion after a specific value(Unique List)"
+        <<endl<<"Choice 8: Insertion after a specific value(Duplicate Enable)"
         <<endl<<"Choice 0: Exit"<<endl;
     cout<<"Choice: ";
     int choice;
@@ -223,6 +240,22 @@ int main()
                 }
                 cout<<endl;
             }
+            break;
+        case 7:
+            int searchValue;
+            cout<<"Enter the Value to Search: ";
+            cin>>searchValue;
+            cout<<"Enter the Value to insert: ";
+            cin>>value;
+            searchByValueUnique(head, searchValue, value);
+            break;
+        case 8:
+            searchValue;
+            cout<<"Enter the Value to Search: ";
+            cin>>searchValue;
+            cout<<"Enter the Value to insert: ";
+            cin>>value;
+            insertValueWithDuplicateValue(head, searchValue, value);
             break;
         default:
             break;
