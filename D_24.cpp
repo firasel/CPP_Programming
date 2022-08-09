@@ -18,6 +18,7 @@ void insertAtTail(Node *&head, int val);
 void insertAtHead(Node *&head, int val);
 int countLinkedList(Node *&head);
 void insertAtSpecificPosition(Node *&head, int position, int val);
+int searchValueUnique(Node *&head, int val);
 
 void displayList(Node *&head)
 {
@@ -91,6 +92,22 @@ void insertAtSpecificPosition(Node *&head, int position, int val)
     temp->Next = newNode;
 }
 
+int searchValueUnique(Node *&head, int val)
+{
+    int count=0;
+    Node *temp = head;
+    while(temp!=NULL)
+    {
+        count++;
+        if(temp->value == val)
+        {
+            return count;
+        }
+        temp=temp->Next;
+    }
+    return -1;
+}
+
 int main()
 {
     int choice, val, position;
@@ -101,6 +118,7 @@ int main()
         <<"Choice 3: Insert a value At Head"<<endl
         <<"Choice 4: Insert a value At Specific Position"<<endl
         <<"Choice 5: Length of Linked List"<<endl
+        <<"Choice 6: Search a value(Unique List)"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -136,6 +154,17 @@ int main()
             break;
         case 5:
             cout<<"Length of LinkedList: "<<countLinkedList(head)<<endl;
+            break;
+        case 6:
+            if(head==NULL) cout<<"List is empty"<<endl;
+            else
+            {
+                cout<<"Enter the value: ";
+                cin>>val;
+                int result = searchValueUnique(head, val);
+                if(result>0) cout<<val<<" is at "<<result<<" Position"<<endl;
+                else cout<<"Not found"<<endl;
+            }
             break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
