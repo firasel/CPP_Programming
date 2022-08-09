@@ -31,6 +31,8 @@ void deletionAtTail(Node* &head);
 void deletionAtSpecificPosition(Node* &head, int position);
 void deletionByValueUnique(Node* &head, int val);
 void deletionByValueDuplicate(Node* &head, int val);
+Node *reverseNonRecursive(Node *&head);
+Node *reverseRecursive(Node *&head);
 void display(Node* n);
 
 
@@ -253,6 +255,43 @@ void deletionByValueDuplicate(Node* &head, int val)
     }
 }
 
+Node *reverseNonRecursive(Node *&head)
+{
+    Node *prev = NULL;
+    Node *current = head;
+    if(head==NULL)
+    {
+        cout<<"Liked List is empty"<<endl;
+        return head;
+    }
+    Node *next = head->Next;
+
+    while(true)
+    {
+        current->Next = prev;
+        prev = current;
+        current = next;
+        if(current==NULL) break;
+        next=next->Next;
+    }
+    return prev;
+}
+
+Node *reverseRecursive(Node *&head)
+{
+    if(head==NULL || head->Next==NULL)
+    {
+        if(head==NULL) cout<<"Linked list is empty"<<endl;
+        return head;
+    }
+
+    Node *newHead = reverseRecursive(head->Next);
+    head->Next->Next = head;
+    head->Next = NULL;
+
+    return newHead;
+}
+
 void display(Node* n)
 {
     while(n!=NULL)
@@ -282,6 +321,8 @@ int main()
         <<endl<<"Choice 11: Deletion at Specific Position"
         <<endl<<"Choice 12: Deletion by value(Unique List)"
         <<endl<<"Choice 13: Deletion by value(Duplicate Enable)"
+        <<endl<<"Choice 14: Reversal of List Non-Recursive"
+        <<endl<<"Choice 15: Reversal of List Recursive"
         <<endl<<"Choice 0: Exit"<<endl;
     cout<<"Choice: ";
     int choice;
@@ -371,6 +412,12 @@ int main()
             cout<<"Enter the value to Delete: ";
             cin>>delValue;
             deletionByValueDuplicate(head, delValue);
+            break;
+        case 14:
+            head = reverseNonRecursive(head);
+            break;
+        case 15:
+            head = reverseRecursive(head);
             break;
         default:
             break;
