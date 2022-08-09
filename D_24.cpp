@@ -14,6 +14,8 @@ public:
 };
 
 void displayList(Node *&head);
+void insertAtTail(Node *&head, int val);
+void insertAtHead(Node *&head, int val);
 
 void displayList(Node *&head)
 {
@@ -43,6 +45,19 @@ void insertAtTail(Node *&head, int val)
     temp->Next = newNode;
 }
 
+void insertAtHead(Node *&head, int val)
+{
+    Node *temp = head;
+    Node *newNode = new Node(val);
+    if(temp==NULL)
+    {
+        head = newNode;
+        return;
+    }
+    newNode->Next = head;
+    head = newNode;
+}
+
 int main()
 {
     int choice, val;
@@ -50,6 +65,7 @@ int main()
 
     cout<<"Choice 1: Print Linked List"<<endl
         <<"Choice 2: Insert a value At Tail"<<endl
+        <<"Choice 3: Insert a value At Head"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -66,6 +82,11 @@ int main()
             cout<<"Enter the value: ";
             cin>>val;
             insertAtTail(head, val);
+            break;
+        case 3:
+            cout<<"Enter the value: ";
+            cin>>val;
+            insertAtHead(head, val);
             break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
