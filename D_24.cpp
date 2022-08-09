@@ -26,19 +26,54 @@ void displayList(Node *&head)
     cout<<endl;
 }
 
+void insertAtTail(Node *&head, int val)
+{
+    Node *temp = head;
+    Node *newNode = new Node(val);
+    if(temp==NULL)
+    {
+        head = newNode;
+        return;
+    }
+
+    while(temp->Next!=NULL)
+    {
+        temp=temp->Next;
+    }
+    temp->Next = newNode;
+}
+
 int main()
 {
-    Node *head = new Node(1);
-    Node *first = new Node(2);
-    Node *second = new Node(3);
-    Node *third = new Node(4);
+    int choice, val;
+    Node *head = NULL;
 
-    head->Next = first;
-    first->Next = second;
-    second->Next = third;
+    cout<<"Choice 1: Print Linked List"<<endl
+        <<"Choice 2: Insert a value At Tail"<<endl
+        <<"Choice 0: Exit Program"<<endl;
 
-    cout<<"Linked List: ";
-    displayList(head);
+    cout<<"Choice: ";
+    cin>>choice;
+    while(choice!=0)
+    {
+        switch(choice)
+        {
+        case 1:
+            cout<<"Linked List: ";
+            displayList(head);
+            break;
+        case 2:
+            cout<<"Enter the value: ";
+            cin>>val;
+            insertAtTail(head, val);
+            break;
+        default:
+            cout<<"Wrong input! Please input a valid option number."<<endl;
+            break;
+        }
+        cout<<"Next Choice: ";
+        cin>>choice;
+    }
 
     return 0;
 }
