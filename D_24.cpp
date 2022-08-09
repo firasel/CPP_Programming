@@ -17,6 +17,7 @@ void displayList(Node *&head);
 void insertAtTail(Node *&head, int val);
 void insertAtHead(Node *&head, int val);
 int countLinkedList(Node *&head);
+void insertAtSpecificPosition(Node *&head, int position, int val);
 
 void displayList(Node *&head)
 {
@@ -71,14 +72,34 @@ int countLinkedList(Node *&head)
     return count;
 }
 
+void insertAtSpecificPosition(Node *&head, int position, int val)
+{
+    int count = 1;
+    Node *temp = head;
+    if(position==1)
+    {
+        insertAtHead(head, val);
+        return;
+    }
+    Node *newNode = new Node(val);
+    while(temp!=NULL && count<position-1)
+    {
+        temp=temp->Next;
+        count++;
+    }
+    newNode->Next = temp->Next;
+    temp->Next = newNode;
+}
+
 int main()
 {
-    int choice, val;
+    int choice, val, position;
     Node *head = NULL;
 
     cout<<"Choice 1: Print Linked List"<<endl
         <<"Choice 2: Insert a value At Tail"<<endl
         <<"Choice 3: Insert a value At Head"<<endl
+        <<"Choice 4: Insert a value At Specific Position"<<endl
         <<"Choice 5: Length of Linked List"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
@@ -101,6 +122,17 @@ int main()
             cout<<"Enter the value: ";
             cin>>val;
             insertAtHead(head, val);
+            break;
+        case 4:
+            cout<<"Enter the position: ";
+            cin>>position;
+            if(countLinkedList(head)>0 && countLinkedList(head)>=position && position>0)
+            {
+                cout<<"Enter the value: ";
+                cin>>val;
+                insertAtSpecificPosition(head, position, val);
+            }
+            else cout<<"Wrong position entered, Try again"<<endl;
             break;
         case 5:
             cout<<"Length of LinkedList: "<<countLinkedList(head)<<endl;
