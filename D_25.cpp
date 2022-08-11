@@ -35,8 +35,9 @@ int countLinkedList(doublyNode *&head);
 void displayReverseList(doublyNode *&head);
 void insertAtSpecific(doublyNode *&head, int position, int val);
 int searchValueUnique(doublyNode *&head, int val);
-positionList* searchValueDuplicat(doublyNode *&head, int val);
+positionList* searchValueDuplicate(doublyNode *&head, int val);
 void displayPositionList(positionList *&head);
+void insertAfterSpecificValueUnique(doublyNode *&head, int val, int newValue);
 
 void displayList(doublyNode *&head)
 {
@@ -134,7 +135,7 @@ int searchValueUnique(doublyNode *&head, int val)
     return -1;
 }
 
-positionList* searchValueDuplicat(doublyNode *&head, int val)
+positionList* searchValueDuplicate(doublyNode *&head, int val)
 {
     int pos=0;
     doublyNode* temp = head;
@@ -169,6 +170,22 @@ void displayPositionList(positionList *&head)
     }
 }
 
+void insertAfterSpecificValueUnique(doublyNode *&head, int val, int newValue)
+{
+    int pos=1;
+    doublyNode* temp = head;
+    while(temp!=NULL)
+    {
+        pos++;
+        if(temp->Value==val)
+        {
+            insertAtSpecific(head,pos,newValue);
+            return;
+        }
+        temp=temp->Next;
+    }
+}
+
 int main()
 {
     int choice, val, position;
@@ -181,6 +198,8 @@ int main()
         <<"Choice 5: Reverse Print"<<endl
         <<"Choice 6: Insert at specific position"<<endl
         <<"Choice 7: Search a value(Unique List)"<<endl
+        <<"Choice 8: Search a value(Duplicate value)"<<endl
+        <<"Choice 9: Insert after a specific value(Unique List)"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -228,7 +247,7 @@ int main()
         {
             cout<<"Enter the value: ";
             cin>>val;
-            positionList *positionHead = searchValueDuplicat(head, val);
+            positionList *positionHead = searchValueDuplicate(head, val);
             if(positionHead==NULL) cout<<val<<" is not found"<<endl;
             else
             {
@@ -236,6 +255,15 @@ int main()
                 displayPositionList(positionHead);
                 cout<<endl;
             }
+            break;
+        }
+        case 9:
+        {
+            cout<<"Enter a match value: ";
+            cin>>position;
+            cout<<"Enter the new value: ";
+            cin>>val;
+            insertAfterSpecificValueUnique(head, position, val);
             break;
         }
         default:
