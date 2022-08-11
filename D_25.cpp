@@ -1,6 +1,18 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+class positionList
+{
+public:
+    int value;
+    positionList *next;
+    positionList(int val)
+    {
+        value = val;
+        next = NULL;
+    }
+};
+
 class doublyNode
 {
 public:
@@ -23,6 +35,8 @@ int countLinkedList(doublyNode *&head);
 void displayReverseList(doublyNode *&head);
 void insertAtSpecific(doublyNode *&head, int position, int val);
 int searchValueUnique(doublyNode *&head, int val);
+positionList* searchValueDuplicat(doublyNode *&head, int val);
+void displayPositionList(positionList *&head);
 
 void displayList(doublyNode *&head)
 {
@@ -120,6 +134,41 @@ int searchValueUnique(doublyNode *&head, int val)
     return -1;
 }
 
+positionList* searchValueDuplicat(doublyNode *&head, int val)
+{
+    int pos=0;
+    doublyNode* temp = head;
+    positionList* positionHead = NULL;
+    while(temp!=NULL)
+    {
+        pos++;
+        if(temp->Value==val)
+        {
+            positionList *newNode = new positionList(pos);
+            if(positionHead==NULL) positionHead = newNode;
+            else
+            {
+                positionList *temp2 = positionHead;
+                while(temp2->next!=NULL) temp2=temp2->next;
+                temp2->next = newNode;
+            }
+        }
+        temp=temp->Next;
+    }
+    return positionHead;
+}
+
+void displayPositionList(positionList *&head)
+{
+    positionList *temp = head;
+    while(temp!=NULL)
+    {
+        cout<<temp->value;
+        if(temp->next != NULL) cout<<" ";
+        temp=temp->next;
+    }
+}
+
 int main()
 {
     int choice, val, position;
@@ -175,6 +224,20 @@ int main()
             if(position!=-1)cout<<val<<" is found at "<<position<<endl;
             else cout<<val<<" is not found"<<endl;
             break;
+        case 8:
+        {
+            cout<<"Enter the value: ";
+            cin>>val;
+            positionList *positionHead = searchValueDuplicat(head, val);
+            if(positionHead==NULL) cout<<val<<" is not found"<<endl;
+            else
+            {
+                cout<<val<<" is found at: ";
+                displayPositionList(positionHead);
+                cout<<endl;
+            }
+            break;
+        }
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
             break;
