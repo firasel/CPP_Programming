@@ -43,6 +43,7 @@ void deleteAtHead(doublyNode* &head);
 void deleteAtTail(doublyNode* &head);
 void deleteAtSpecific(doublyNode* &head, int position);
 void deleteByValueUnique(doublyNode* &head, int val);
+void deleteByValueDuplicate(doublyNode* &head, int val);
 
 void displayList(doublyNode* &head)
 {
@@ -264,6 +265,22 @@ void deleteByValueUnique(doublyNode* &head, int val)
     else cout<<val<<" is not available"<<endl;
 }
 
+void deleteByValueDuplicate(doublyNode* &head, int val)
+{
+    positionList *positionHead = searchValueDuplicate(head, val);
+    if(positionHead==NULL) cout<<val<<" is not available"<<endl;
+    else
+    {
+        int pos=0;
+        while(positionHead!=NULL)
+        {
+            deleteAtSpecific(head, positionHead->value-pos);
+            positionHead=positionHead->next;
+            pos++;
+        }
+    }
+}
+
 int main()
 {
     int choice, val, position;
@@ -283,6 +300,7 @@ int main()
         <<"Choice 12: Deletion at Tail"<<endl
         <<"Choice 13: Delete at Specific Position"<<endl
         <<"Choice 14: Delete by value(Unique List)"<<endl
+        <<"Choice 15: Delete by value(Duplicate List)"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -373,6 +391,11 @@ int main()
             cout<<"Enter the value: ";
             cin>>val;
             deleteByValueUnique(head, val);
+            break;
+        case 15:
+            cout<<"Enter the value: ";
+            cin>>val;
+            deleteByValueDuplicate(head, val);
             break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
