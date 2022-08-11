@@ -40,6 +40,7 @@ void displayPositionList(positionList* &head);
 void insertAfterSpecificValueUnique(doublyNode* &head, int val, int newValue);
 void insertAfterSpecificValueDuplicate(doublyNode* &head, int val, int newValue);
 void deleteAtHead(doublyNode* &head);
+void deleteAtTail(doublyNode* &head);
 
 void displayList(doublyNode* &head)
 {
@@ -206,9 +207,27 @@ void insertAfterSpecificValueUnique(doublyNode* &head, int val, int newValue)
 void deleteAtHead(doublyNode* &head)
 {
     doublyNode* temp = head;
-    head=head->Next;
-    head->Prev=NULL;
+    if(head->Next!=NULL)
+    {
+        head=head->Next;
+        head->Prev=NULL;
+    } else head = NULL;
     delete temp;
+}
+
+void deleteAtTail(doublyNode* &head)
+{
+    if(head!=NULL)
+    {
+        doublyNode* temp = head;
+        if(temp->Next!=NULL) while(temp->Next->Next!=NULL) temp=temp->Next;
+        if(temp->Next!=NULL)
+        {
+            delete temp->Next->Next;
+            temp->Next=NULL;
+        }
+        else head=NULL;
+    }
 }
 
 int main()
@@ -227,6 +246,7 @@ int main()
         <<"Choice 9: Insert after a specific value(Unique List)"<<endl
         <<"Choice 10: Insert after a specific value(Duplicate List)"<<endl
         <<"Choice 11: Deletion at Head"<<endl
+        <<"Choice 12: Deletion at Tail"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -304,6 +324,9 @@ int main()
         }
         case 11:
             deleteAtHead(head);
+            break;
+        case 12:
+            deleteAtTail(head);
             break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
