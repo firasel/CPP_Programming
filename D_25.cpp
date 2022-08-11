@@ -22,6 +22,7 @@ void insertAtHead(doublyNode *&head, int val);
 int countLinkedList(doublyNode *&head);
 void displayReverseList(doublyNode *&head);
 void insertAtSpecific(doublyNode *&head, int position, int val);
+int searchValueUnique(doublyNode *&head, int val);
 
 void displayList(doublyNode *&head)
 {
@@ -103,6 +104,22 @@ void insertAtSpecific(doublyNode *&head, int position, int val)
     temp->Next = newNode;
 }
 
+int searchValueUnique(doublyNode *&head, int val)
+{
+    int pos=0;
+    doublyNode *temp = head;
+    while(temp!=NULL)
+    {
+        pos++;
+        if(temp->Value==val)
+        {
+            return pos;
+        }
+        temp=temp->Next;
+    }
+    return -1;
+}
+
 int main()
 {
     int choice, val, position;
@@ -114,6 +131,7 @@ int main()
         <<"Choice 4: Length of Linked List"<<endl
         <<"Choice 5: Reverse Print"<<endl
         <<"Choice 6: Insert at specific position"<<endl
+        <<"Choice 7: Search a value(Unique List)"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -149,6 +167,13 @@ int main()
             cout<<"Enter the value: ";
             cin>>val;
             insertAtSpecific(head, position, val);
+            break;
+        case 7:
+            cout<<"Enter the value: ";
+            cin>>val;
+            position = searchValueUnique(head, val);
+            if(position!=-1)cout<<val<<" is found at "<<position<<endl;
+            else cout<<val<<" is not found"<<endl;
             break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
