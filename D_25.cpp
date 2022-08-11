@@ -38,6 +38,7 @@ int searchValueUnique(doublyNode *&head, int val);
 positionList* searchValueDuplicate(doublyNode *&head, int val);
 void displayPositionList(positionList *&head);
 void insertAfterSpecificValueUnique(doublyNode *&head, int val, int newValue);
+void insertAfterSpecificValueDuplicate(doublyNode *&head, int val, int newValue);
 
 void displayList(doublyNode *&head)
 {
@@ -170,6 +171,21 @@ void displayPositionList(positionList *&head)
     }
 }
 
+void insertAfterSpecificValueDuplicate(doublyNode *&head, int val, int newValue)
+{
+    int pos=1;
+    doublyNode* temp = head;
+    while(temp!=NULL)
+    {
+        pos++;
+        if(temp->Value==val)
+        {
+            insertAtSpecific(head,pos,newValue);
+        }
+        temp=temp->Next;
+    }
+}
+
 void insertAfterSpecificValueUnique(doublyNode *&head, int val, int newValue)
 {
     int pos=1;
@@ -200,6 +216,7 @@ int main()
         <<"Choice 7: Search a value(Unique List)"<<endl
         <<"Choice 8: Search a value(Duplicate value)"<<endl
         <<"Choice 9: Insert after a specific value(Unique List)"<<endl
+        <<"Choice 10: Insert after a specific value(Duplicate List)"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -264,6 +281,15 @@ int main()
             cout<<"Enter the new value: ";
             cin>>val;
             insertAfterSpecificValueUnique(head, position, val);
+            break;
+        }
+        case 10:
+        {
+            cout<<"Enter a match value: ";
+            cin>>position;
+            cout<<"Enter the new value: ";
+            cin>>val;
+            insertAfterSpecificValueDuplicate(head, position, val);
             break;
         }
         default:
