@@ -21,6 +21,7 @@ void insertAtTail(doublyNode *&head, int val);
 void insertAtHead(doublyNode *&head, int val);
 int countLinkedList(doublyNode *&head);
 void displayReverseList(doublyNode *&head);
+void insertAtSpecific(doublyNode *&head, int position, int val);
 
 void displayList(doublyNode *&head)
 {
@@ -86,6 +87,22 @@ void displayReverseList(doublyNode *&head)
     cout<<endl;
 }
 
+void insertAtSpecific(doublyNode *&head, int position, int val)
+{
+    int count = 1;
+    doublyNode *temp = head;
+    doublyNode *newNode = new doublyNode(val);
+    while(temp!=NULL && count!=position-1)
+    {
+        temp=temp->Next;
+        count++;
+    }
+    newNode->Next = temp->Next;
+    newNode->Prev = temp;
+    temp->Next->Prev = newNode;
+    temp->Next = newNode;
+}
+
 int main()
 {
     int choice, val, position;
@@ -96,6 +113,7 @@ int main()
         <<"Choice 3: Insert a value At Head"<<endl
         <<"Choice 4: Length of Linked List"<<endl
         <<"Choice 5: Reverse Print"<<endl
+        <<"Choice 6: Insert at specific position"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -124,6 +142,13 @@ int main()
         case 5:
             cout<<"Doubly Linked List: ";
             displayReverseList(head);
+            break;
+        case 6:
+            cout<<"Enter the Position: ";
+            cin>>position;
+            cout<<"Enter the value: ";
+            cin>>val;
+            insertAtSpecific(head, position, val);
             break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
