@@ -45,6 +45,21 @@ void modifyList(Node* &head)
     }
 }
 
+void printMiddle(Node* &head)
+{
+    Node* firstNode = head;
+    Node* secondNode = head;
+    if(head!=NULL)
+    {
+        while(firstNode!=NULL && secondNode->next!=NULL)
+        {
+            secondNode = secondNode->next->next;
+            firstNode = firstNode->next;
+        }
+        cout<<"Middle element is "<<firstNode->value<<endl;
+    }
+}
+
 int main()
 {
     Node* head = NULL;
@@ -61,11 +76,7 @@ int main()
     displayList(head);
     cout<<endl;
 
-    modifyList(head);
-
-    cout<<"Modified List: ";
-    displayList(head);
-    cout<<endl;
+    printMiddle(head);
 
     return 0;
 }
