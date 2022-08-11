@@ -28,19 +28,20 @@ public:
     }
 };
 
-void displayList(doublyNode *&head);
-void insertAtTail(doublyNode *&head, int val);
-void insertAtHead(doublyNode *&head, int val);
-int countLinkedList(doublyNode *&head);
-void displayReverseList(doublyNode *&head);
-void insertAtSpecific(doublyNode *&head, int position, int val);
-int searchValueUnique(doublyNode *&head, int val);
-positionList* searchValueDuplicate(doublyNode *&head, int val);
-void displayPositionList(positionList *&head);
-void insertAfterSpecificValueUnique(doublyNode *&head, int val, int newValue);
-void insertAfterSpecificValueDuplicate(doublyNode *&head, int val, int newValue);
+void displayList(doublyNode* &head);
+void insertAtTail(doublyNode* &head, int val);
+void insertAtHead(doublyNode* &head, int val);
+int countLinkedList(doublyNode* &head);
+void displayReverseList(doublyNode* &head);
+void insertAtSpecific(doublyNode* &head, int position, int val);
+int searchValueUnique(doublyNode* &head, int val);
+positionList* searchValueDuplicate(doublyNode* &head, int val);
+void displayPositionList(positionList* &head);
+void insertAfterSpecificValueUnique(doublyNode* &head, int val, int newValue);
+void insertAfterSpecificValueDuplicate(doublyNode* &head, int val, int newValue);
+void deleteAtHead(doublyNode* &head);
 
-void displayList(doublyNode *&head)
+void displayList(doublyNode* &head)
 {
     doublyNode *temp = head;
     while(temp!=NULL)
@@ -52,7 +53,7 @@ void displayList(doublyNode *&head)
     cout<<endl;
 }
 
-void insertAtTail(doublyNode *&head, int val)
+void insertAtTail(doublyNode* &head, int val)
 {
     doublyNode *temp = head;
     doublyNode *newNode = new doublyNode(val);
@@ -70,7 +71,7 @@ void insertAtTail(doublyNode *&head, int val)
     newNode->Prev = temp;
 }
 
-void insertAtHead(doublyNode *&head, int val)
+void insertAtHead(doublyNode* &head, int val)
 {
     doublyNode *newNode = new doublyNode(val);
     head->Prev = newNode;
@@ -78,7 +79,7 @@ void insertAtHead(doublyNode *&head, int val)
     head = newNode;
 }
 
-int countLinkedList(doublyNode *&head)
+int countLinkedList(doublyNode* &head)
 {
     int count=0;
     doublyNode *temp=head;
@@ -90,7 +91,7 @@ int countLinkedList(doublyNode *&head)
     return count;
 }
 
-void displayReverseList(doublyNode *&head)
+void displayReverseList(doublyNode* &head)
 {
     doublyNode *temp = head;
     while(temp->Next!=NULL) temp=temp->Next;
@@ -104,7 +105,7 @@ void displayReverseList(doublyNode *&head)
     cout<<endl;
 }
 
-void insertAtSpecific(doublyNode *&head, int position, int val)
+void insertAtSpecific(doublyNode* &head, int position, int val)
 {
     int count = 1;
     doublyNode *temp = head;
@@ -120,7 +121,7 @@ void insertAtSpecific(doublyNode *&head, int position, int val)
     temp->Next = newNode;
 }
 
-int searchValueUnique(doublyNode *&head, int val)
+int searchValueUnique(doublyNode* &head, int val)
 {
     int pos=0;
     doublyNode *temp = head;
@@ -136,7 +137,7 @@ int searchValueUnique(doublyNode *&head, int val)
     return -1;
 }
 
-positionList* searchValueDuplicate(doublyNode *&head, int val)
+positionList* searchValueDuplicate(doublyNode* &head, int val)
 {
     int pos=0;
     doublyNode* temp = head;
@@ -160,7 +161,7 @@ positionList* searchValueDuplicate(doublyNode *&head, int val)
     return positionHead;
 }
 
-void displayPositionList(positionList *&head)
+void displayPositionList(positionList* &head)
 {
     positionList *temp = head;
     while(temp!=NULL)
@@ -171,7 +172,7 @@ void displayPositionList(positionList *&head)
     }
 }
 
-void insertAfterSpecificValueDuplicate(doublyNode *&head, int val, int newValue)
+void insertAfterSpecificValueDuplicate(doublyNode* &head, int val, int newValue)
 {
     int pos=1;
     doublyNode* temp = head;
@@ -186,7 +187,7 @@ void insertAfterSpecificValueDuplicate(doublyNode *&head, int val, int newValue)
     }
 }
 
-void insertAfterSpecificValueUnique(doublyNode *&head, int val, int newValue)
+void insertAfterSpecificValueUnique(doublyNode* &head, int val, int newValue)
 {
     int pos=1;
     doublyNode* temp = head;
@@ -200,6 +201,14 @@ void insertAfterSpecificValueUnique(doublyNode *&head, int val, int newValue)
         }
         temp=temp->Next;
     }
+}
+
+void deleteAtHead(doublyNode* &head)
+{
+    doublyNode* temp = head;
+    head=head->Next;
+    head->Prev=NULL;
+    delete temp;
 }
 
 int main()
@@ -217,6 +226,7 @@ int main()
         <<"Choice 8: Search a value(Duplicate value)"<<endl
         <<"Choice 9: Insert after a specific value(Unique List)"<<endl
         <<"Choice 10: Insert after a specific value(Duplicate List)"<<endl
+        <<"Choice 11: Deletion at Head"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -292,6 +302,9 @@ int main()
             insertAfterSpecificValueDuplicate(head, position, val);
             break;
         }
+        case 11:
+            deleteAtHead(head);
+            break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
             break;
