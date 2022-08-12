@@ -4,17 +4,12 @@ using namespace std;
 
 int main()
 {
-    string str="235813";
-    for(int i=0; i<str.length()-2; i++)
-    {
-        int a=str[i]-'0', b=str[i+1]-'0', c=str[i+2]-'0';
-        if(a+b!=c){
-            cout<<a<<" "<<b<<" "<<c<<endl;
-            cout<<"False"<<endl;
-            return 0;
-        }
-    }
-    cout<<"True"<<endl;
+    int n,k;
+    cin>>n>>k;
+    int arr[n];
+    for(int i=0; i<n; i++) cin>>arr[i];
+    sort(arr,arr+n);
+    cout<<arr[k-1]<<" "<<arr[n-k]<<endl;
     return 0;
 }
 
