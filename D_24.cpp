@@ -21,6 +21,7 @@ void insertAtSpecificPosition(Node *&head, int position, int val);
 int searchValueUnique(Node *&head, int val);
 void makeCycle(Node *&head, int pos);
 bool detectCycle(Node* &head);
+void removeCycle(Node *&head);
 
 void displayList(Node *&head)
 {
@@ -129,7 +130,7 @@ bool detectCycle(Node* &head)
 {
     Node* slow = head;
     Node* fast = head;
-    while(fast != NULL && fast->Next != NULL)
+    while(fast != NULL && fast->Next != NULL && fast->Next->Next != NULL)
     {
         slow = slow->Next;
         fast = fast->Next->Next;
@@ -137,6 +138,28 @@ bool detectCycle(Node* &head)
         if(slow->Next==fast->Next) return true;
     }
     return false;
+}
+
+void removeCycle(Node *&head)
+{
+    Node* slow = head;
+    Node* fast = head;
+
+    do
+    {
+        slow = slow->Next;
+        fast = fast->Next->Next;
+    }
+    while(slow!=fast);
+
+    fast=head;
+
+    while(fast->Next!=slow->Next)
+    {
+        slow=slow->Next;
+        fast=fast->Next;
+    }
+    slow->Next=NULL;
 }
 
 int main()
@@ -152,6 +175,7 @@ int main()
         <<"Choice 6: Search a value(Unique List)"<<endl
         <<"Choice 7: Make Cycle"<<endl
         <<"Choice 8: Detect Cycle"<<endl
+        <<"Choice 9: Remove a Cycle"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -206,6 +230,10 @@ int main()
             break;
         case 8:
             if(detectCycle(head)) cout<<"There is a Cycle in the List"<<endl;
+            else cout<<"There is no Cycle in the List"<<endl;
+            break;
+        case 9:
+            if(detectCycle(head)) removeCycle(head);
             else cout<<"There is no Cycle in the List"<<endl;
             break;
         default:
