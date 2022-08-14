@@ -51,7 +51,7 @@ void printMiddle(Node* &head)
     Node* secondNode = head;
     if(head!=NULL)
     {
-        while(firstNode!=NULL && secondNode->next!=NULL)
+        while(secondNode!=NULL && secondNode->next!=NULL)
         {
             secondNode = secondNode->next->next;
             firstNode = firstNode->next;

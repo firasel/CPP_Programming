@@ -19,6 +19,7 @@ void insertAtHead(Node *&head, int val);
 int countLinkedList(Node *&head);
 void insertAtSpecificPosition(Node *&head, int position, int val);
 int searchValueUnique(Node *&head, int val);
+void makeCycle(Node *&head, int pos);
 
 void displayList(Node *&head)
 {
@@ -108,6 +109,22 @@ int searchValueUnique(Node *&head, int val)
     return -1;
 }
 
+void makeCycle(Node *&head, int pos)
+{
+    Node* temp = head;
+    Node* startNode;
+    int count = 1;
+
+    while(temp->Next!=NULL)
+    {
+        if(count==pos) startNode=temp;
+        temp=temp->Next;
+        count++;
+    }
+    temp->Next=startNode;
+}
+
+
 int main()
 {
     int choice, val, position;
@@ -119,6 +136,7 @@ int main()
         <<"Choice 4: Insert a value At Specific Position"<<endl
         <<"Choice 5: Length of Linked List"<<endl
         <<"Choice 6: Search a value(Unique List)"<<endl
+        <<"Choice 7: Make Cycle"<<endl
         <<"Choice 0: Exit Program"<<endl;
 
     cout<<"Choice: ";
@@ -165,6 +183,11 @@ int main()
                 if(result>0) cout<<val<<" is at "<<result<<" Position"<<endl;
                 else cout<<"Not found"<<endl;
             }
+            break;
+        case 7:
+            cout<<"Enter the position: ";
+            cin>>position;
+            makeCycle(head, position);
             break;
         default:
             cout<<"Wrong input! Please input a valid option number."<<endl;
