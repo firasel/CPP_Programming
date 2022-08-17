@@ -86,7 +86,6 @@ public:
         if(top==NULL)
         {
             cout<<"Stack Underflow | There is no Element in the Top"<<endl;
-            return NULL;
         }
         else return top->value;
     }
