@@ -4,9 +4,9 @@ using namespace std;
 class Node
 {
 public:
-    char value;
+    int value;
     Node *Next;
-    Node(char val)
+    Node(int val)
     {
         value = val;
         Next = NULL;
@@ -14,9 +14,8 @@ public:
 };
 
 void displayList(Node *&head);
-void insertAtTail(Node *&head, char val);
-bool checkPalidrome(Node *&head);
-void reverseLinkedList(Node *&head);
+void insertAtTail(Node *&head, int val);
+void removeDuplicateValue(Node *&head);
 
 void displayList(Node *&head)
 {
@@ -29,7 +28,7 @@ void displayList(Node *&head)
     cout<<endl;
 }
 
-void insertAtTail(Node *&head, char val)
+void insertAtTail(Node *&head, int val)
 {
     Node *temp = head;
     Node *newNode = new Node(val);
@@ -46,50 +45,27 @@ void insertAtTail(Node *&head, char val)
     temp->Next = newNode;
 }
 
-void reverseLinkedList(Node *&head)
-{
-    Node *current = head;
-    Node *prev = NULL;
-    Node *next = NULL;
-
-    while (current != NULL)
-    {
-        next = current->Next;
-        current->Next = prev;
-        prev = current;
-        current = next;
-    }
-    head = prev;
-}
-
-bool checkPalidrome(Node *&head)
+void removeDuplicateValue(Node *&head)
 {
     Node *temp = head;
     Node *head2 = NULL;
     while(temp!=NULL)
     {
-        insertAtTail(head2,temp->value);
+        if(temp->Next==NULL || temp->value!=temp->Next->value)
+        {
+            insertAtTail(head2,temp->value);
+        }
         temp=temp->Next;
     }
-
-    reverseLinkedList(head2);
-    temp = head;
-
-    while(temp!=NULL)
-    {
-        if(temp->value!=head2->value) return false;
-        temp = temp->Next;
-        head2 = head2->Next;
-    }
-    return true;
+    head=head2;
 }
 
 int main()
 {
-    int n;
-    char val;
+    int n, val;
     Node *head = NULL;
-    cout<<"Enter total characters length: ";
+
+    cout<<"Enter the elements number: ";
     cin>>n;
     while(n)
     {
@@ -97,9 +73,9 @@ int main()
         insertAtTail(head, val);
         n--;
     }
-
-    if(checkPalidrome(head)) cout<<"True"<<endl;
-    else cout<<"False"<<endl;
+    removeDuplicateValue(head);
+    cout<<"Unique Linked List: ";
+    displayList(head);
 
     return 0;
 }
