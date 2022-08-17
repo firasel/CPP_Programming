@@ -5,23 +5,19 @@ using namespace std;
 
 int main()
 {
-    Stack st;
-    st.push(1);
-    st.push(2);
-    st.push(3);
-    st.push(4);
-    st.push(5);
+    Stack <pair<int, char>> st;
+    st.push(make_pair(1,'a'));
+    st.push(make_pair(2,'b'));
+    st.push(make_pair(3,'c'));
+    st.push(make_pair(4,'d'));
 
     cout<<st.size()<<endl;
-    if(!st.empty()) cout<<st.Top()<<endl;
-
     while(!st.empty())
     {
-        cout<<st.pop()<<" ";
+        pair<int, char> chk;
+        chk = st.pop();
+        cout<<chk.first<<" | "<<chk.second<<endl;
     }
-
-    cout<<endl;
-    if(!st.empty()) cout<<st.Top()<<endl;
 
     return 0;
 }
