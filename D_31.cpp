@@ -15,7 +15,9 @@ public:
 
 void displayList(Node *&head);
 void insertAtTail(Node *&head, int val);
-void removeDuplicateValue(Node *&head);
+void insertAtHead(Node *&head, int val);
+void insertAtSpecificPosition(Node *&head, int position, int val);
+void rotateSpecificPosition(Node *&head, int k);
 
 void displayList(Node *&head)
 {
@@ -45,24 +47,60 @@ void insertAtTail(Node *&head, int val)
     temp->Next = newNode;
 }
 
-void removeDuplicateValue(Node *&head)
+void insertAtHead(Node *&head, int val)
 {
     Node *temp = head;
-    Node *head2 = NULL;
+    Node *newNode = new Node(val);
+    if(temp==NULL)
+    {
+        head = newNode;
+        return;
+    }
+    newNode->Next = head;
+    head = newNode;
+}
+
+void insertAtSpecificPosition(Node *&head, int position, int val)
+{
+    int count = 1;
+    Node *temp = head;
+    if(position==1)
+    {
+        insertAtHead(head, val);
+        return;
+    }
+    Node *newNode = new Node(val);
+    while(temp!=NULL && count<position-1)
+    {
+        temp=temp->Next;
+        count++;
+    }
+    newNode->Next = temp->Next;
+    temp->Next = newNode;
+}
+
+void rotateSpecificPosition(Node *&head, int k)
+{
+    int count = 0,position = 1;
+    Node *temp = head;
+    Node *kthNode = NULL;
     while(temp!=NULL)
     {
-        if(temp->Next==NULL || temp->value!=temp->Next->value)
+        count++;
+        if(count==k) kthNode = temp;
+        if(count>k)
         {
-            insertAtTail(head2,temp->value);
+            insertAtSpecificPosition(head,position,temp->value);
+            position++;
         }
         temp=temp->Next;
     }
-    head=head2;
+    kthNode->Next=NULL;
 }
 
 int main()
 {
-    int n, val;
+    int n, val, k;
     Node *head = NULL;
 
     cout<<"Enter the elements number: ";
@@ -73,8 +111,13 @@ int main()
         insertAtTail(head, val);
         n--;
     }
-    removeDuplicateValue(head);
-    cout<<"Unique Linked List: ";
+
+    cout<<"Enter the position: ";
+    cin>>k;
+
+    rotateSpecificPosition(head, k);
+
+    cout<<"After rotate Linked List: ";
     displayList(head);
 
     return 0;
