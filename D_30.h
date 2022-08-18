@@ -30,17 +30,17 @@ public:
     void push(S val)
     {
         Node <S> *newNode = new Node <S> (val);
+        count++;
+
         if(head==NULL)
         {
-            head = top =newNode;
-            count++;
+            head = top = newNode;
             return;
         }
 
         top->next = newNode;
         newNode->prev = top;
         top = newNode;
-        count++;
     }
 
     S pop()
