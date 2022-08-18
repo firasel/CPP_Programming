@@ -1,30 +1,45 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+
 int main()
 {
-    int t;
-    cin>>t;
-    while(t){
-        int n,q;
-        cin>>n;
-        int earns[n],shoppings[n];
+    int m,n;
+    cin>>m>>n;
+    int arr[m][n];
+    for(int i=0; i<m; i++)
+        for(int j=0; j<n; j++)
+            cin>>arr[i][j];
 
-        for(int i=0; i<n; i++) cin>>earns[i];
-        for(int i=0; i<n; i++) cin>>shoppings[i];
-
-        cin>>q;
-        while(q)
+    int uniqueArr[m*n],k=0;
+    for(int i=0; i<m; i++)
+    {
+        for(int j=0; j<n; j++)
         {
-            int d;
-            cin>>d;
-            int remaining=0;
-            for(int i=0; i<=d; i++) remaining += earns[i]-shoppings[i];
-            (remaining>=0) ? cout<<1<<" " : cout<<0<<" ";
-            q--;
-        }
+            int flag = 0;
+            for(int l=0; l<k; l++)
+            {
+                if(uniqueArr[l]==arr[i][j])
+                {
+                    arr[i][j] = -1;
+                    flag = 1;
+                    break;
+                }
+            }
 
-        t--;
+            if(flag==0)
+            {
+                uniqueArr[k] = arr[i][j];
+                k++;
+            }
+        }
+    }
+
+    for(int i=0; i<m; i++)
+    {
+        for(int j=0; j<n; j++)
+            cout<<arr[i][j];
+        cout<<endl;
     }
 
     return 0;
