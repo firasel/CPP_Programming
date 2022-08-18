@@ -3,84 +3,49 @@
 
 using namespace std;
 
-int globalId = 100;
-
-class person
+void removeMidElement(Stack<int> &st, int mid, int count)
 {
-    string name;
-    int id;
-    float salary;
-public:
-    person()
-    {
-        name = "";
-        id= -1;
-        salary = -1.0;
+    if(count>mid) return;
+    int topElement = st.pop();
+    removeMidElement(st, mid, count+1);
+    if(count!=mid) st.push(topElement);
+}
+
+void insertAtBottom(Stack<int> &st, int chkElement)
+{
+    if(st.empty()){
+        st.push(chkElement);
+        return;
     }
 
-    void setName(string name)
-    {
-        this->name = name;
-    }
+    int topElement = st.pop();
+    insertAtBottom(st,chkElement);
+    st.push(topElement);
+}
 
-    void setSalary(float salary)
-    {
-        this->salary = salary;
-    }
-
-    person(string name, float salary)
-    {
-        setName(name);
-        setSalary(salary);
-        id=globalId;
-        globalId++;
-    }
-
-    int getId()
-    {
-        return id;
-    }
-
-    string getName()
-    {
-        return name;
-    }
-
-    float getSalary()
-    {
-        return salary;
-    }
-
-    void print()
-    {
-        cout<<name<<" | "<<id<<" | "<<salary<<endl;
-    }
-};
+void reverseStack(Stack<int> &st)
+{
+    if(st.empty()) return;
+    int topElement = st.pop();
+    reverseStack(st);
+    insertAtBottom(st,topElement);
+}
 
 int main()
 {
-    Stack <person> st;
-
-    person a ("Md Rasel", 58.7);
-    person b ("Md Shakil", 98.1);
-    person c ("Md Ishtiak", 91.11);
-
-    st.push(a);
-    st.push(b);
-    st.push(c);
-
-    person printObj;
-    printObj = st.Top();
-    printObj.print();
-
-    cout<<st.size()<<endl;
-
-    while(!st.empty())
+    int n, val;
+    cin>>n;
+    Stack<int> st;
+    for(int i=0; i<n; i++)
     {
-        person printObj;
-        printObj = st.pop();
-        printObj.print();
+        cin>>val;
+        st.push(val);
     }
+
+    reverseStack(st);
+    removeMidElement(st, (n/2)+1, 1);
+
+    while(!st.empty()) cout<<st.pop()<<" ";
 
     return 0;
 }
