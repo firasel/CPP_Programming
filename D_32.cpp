@@ -3,41 +3,29 @@ using namespace std;
 
 int main()
 {
-    int n,m;
+    int t;
+    cin>>t;
+    while(t){
+        int n,q;
+        cin>>n;
+        int earns[n],shoppings[n];
 
-    cin>>n;
-    int arr[n];
-    for(int i=0; i<n; i++) cin>>arr[i];
+        for(int i=0; i<n; i++) cin>>earns[i];
+        for(int i=0; i<n; i++) cin>>shoppings[i];
 
-    cin>>m;
-    int arr2[m];
-    for(int i=0; i<m; i++) cin>>arr2[i];
-
-    int size = m+n;
-    int finalArr[size];
-    fill(finalArr,finalArr+size,0);
-    int k=0;
-
-    for(int i=0; i<n; i++)
-    {
-        int flag=0;
-        for(int j=0; j<m; j++)
+        cin>>q;
+        while(q)
         {
-            if(arr[i]==arr2[j])
-            {
-                flag=1;
-                break;
-            }
+            int d;
+            cin>>d;
+            int remaining=0;
+            for(int i=0; i<=d; i++) remaining += earns[i]-shoppings[i];
+            (remaining>=0) ? cout<<1<<" " : cout<<0<<" ";
+            q--;
         }
 
-        if(flag==0)
-        {
-            finalArr[k] = arr[i];
-            k++;
-        }
+        t--;
     }
-
-    for(int i=0; i<k; i++) cout<<finalArr[i]<<" ";
 
     return 0;
 }
