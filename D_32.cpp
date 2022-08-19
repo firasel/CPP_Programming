@@ -1,47 +1,76 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+class Node
+{
+public:
+    int value;
+    Node *next;
+    Node(int val)
+    {
+        value=val;
+        next=NULL;
+    }
+
+};
+
+void insertAtTail(Node *&head, int val);
+void displayList(Node *head);void replaceEvenNumber(Node *&head);
+
+void insertAtTail(Node *&head, int val)
+{
+    Node *newNode = new Node(val);
+    if(head==NULL)
+    {
+        head = newNode;
+        return;
+    }
+
+    Node *temp = head;
+    while(temp->next!=NULL)
+    {
+        temp=temp->next;
+    }
+
+    temp->next=newNode;
+}
+
+void displayList(Node *head)
+{
+    while(head!=NULL)
+    {
+        cout<<head->value;
+        if(head->next!=NULL) cout<<" -> ";
+        head=head->next;
+    }
+}
+
+void replaceEvenNumber(Node *&head)
+{
+    Node *temp=head;
+    while(temp!=NULL)
+    {
+        if(temp->value%2==0) temp->value=-1;
+        temp=temp->next;
+    }
+}
 
 int main()
 {
-    int m,n;
-    cin>>m>>n;
-    int arr[m][n];
-    for(int i=0; i<m; i++)
-        for(int j=0; j<n; j++)
-            cin>>arr[i][j];
-
-    int uniqueArr[m*n],k=0;
-    for(int i=0; i<m; i++)
+    int n;
+    cin>>n;
+    Node *head = NULL;
+    for(int i=0; i<n; i++)
     {
-        for(int j=0; j<n; j++)
-        {
-            int flag = 0;
-            for(int l=0; l<k; l++)
-            {
-                if(uniqueArr[l]==arr[i][j])
-                {
-                    arr[i][j] = -1;
-                    flag = 1;
-                    break;
-                }
-            }
-
-            if(flag==0)
-            {
-                uniqueArr[k] = arr[i][j];
-                k++;
-            }
-        }
+        int val;
+        cin>>val;
+        insertAtTail(head, val);
     }
 
-    for(int i=0; i<m; i++)
-    {
-        for(int j=0; j<n; j++)
-            cout<<arr[i][j];
-        cout<<endl;
-    }
+    replaceEvenNumber(head);
 
+    displayList(head);
+    cout<<endl;
     return 0;
 }
 
