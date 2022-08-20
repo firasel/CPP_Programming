@@ -15,7 +15,8 @@ public:
 };
 
 void insertAtTail(Node *&head, int val);
-void displayList(Node *head);void replaceEvenNumber(Node *&head);
+void displayList(Node *head);
+void deleteNodeSequentially(Node *&head, int m, int n);
 
 void insertAtTail(Node *&head, int val)
 {
@@ -45,29 +46,38 @@ void displayList(Node *head)
     }
 }
 
-void replaceEvenNumber(Node *&head)
+void deleteNodeSequentially(Node *&head, int m, int n)
 {
-    Node *temp=head;
+    Node *temp = head;
+    int i=1;
     while(temp!=NULL)
     {
-        if(temp->value%2==0) temp->value=-1;
-        temp=temp->next;
+        for(i; (i<m && temp!=NULL); i++) temp=temp->next;
+
+        for(int j=0; (j<n && temp!=NULL); j++)
+        {
+            Node *delNode = temp->next;
+            if(delNode!=NULL) temp->next = delNode->next;
+            delete delNode;
+        }
+
+        i=0;
     }
 }
 
 int main()
 {
-    int n;
-    cin>>n;
+    int size,m,n;
+    cin>>size>>m>>n;
     Node *head = NULL;
-    for(int i=0; i<n; i++)
+    for(int i=0; i<size; i++)
     {
         int val;
         cin>>val;
         insertAtTail(head, val);
     }
 
-    replaceEvenNumber(head);
+    deleteNodeSequentially(head,m,n);
 
     displayList(head);
     cout<<endl;
