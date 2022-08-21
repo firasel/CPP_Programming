@@ -3,62 +3,56 @@
 
 using namespace std;
 
-void insertAtBottom(Stack<int> &st, int first,int second)
+int prefixEvaluation(string prefixStr)
 {
-    if(st.empty())
+    Stack<int> st;
+    for(int i=prefixStr.length()-1; i>=0; i--)
     {
-        if(first > second)
+        switch(prefixStr[i])
         {
-            st.push(second);
-            st.push(first);
-        }
-        else
+        case '+':
         {
-            st.push(first);
-            st.push(second);
+            int a=int(st.pop());
+            int b=int(st.pop());
+            st.push(a+b);
+            break;
         }
-        return;
+        case '-':
+        {
+            int a=int(st.pop());
+            int b=int(st.pop());
+            st.push(a-b);
+            break;
+        }
+        case '*':
+        {
+            int a=int(st.pop());
+            int b=int(st.pop());
+            st.push(a*b);
+            break;
+        }
+        case '/':
+        {
+            int a=int(st.pop());
+            int b=int(st.pop());
+            st.push(a/b);
+            break;
+        }
+        default :
+        {
+            st.push(prefixStr[i]-'0');
+            break;
+        }
+        }
     }
-
-    int first2 = st.pop();
-    int second2 = st.pop();
-
-    insertAtBottom(st,first,second);
-    if(first2 > second2)
-    {
-        st.push(second2);
-        st.push(first2);
-    }
-    else
-    {
-        st.push(first2);
-        st.push(second2);
-    }
-}
-
-void sortStack(Stack<int> &st)
-{
-    if(st.empty()) return;
-    int first = st.pop();
-    int second = st.pop();
-    sortStack(st);
-    insertAtBottom(st,first,second);
+    return st.pop();
 }
 
 int main()
 {
-    int n, val;
-    cin>>n;
-    Stack<int> st;
-    for(int i=0; i<n; i++)
-    {
-        cin>>val;
-        st.push(val);
-    }
 
-    sortStack(st);
-
-    while(!st.empty()) cout<<st.pop()<<" ";
+    string prefixStr = "-+7*45+20";
+    cout<<prefixEvaluation(prefixStr)<<endl;
 
     return 0;
 }
