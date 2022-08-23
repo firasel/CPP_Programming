@@ -1,47 +1,49 @@
 #include<bits/stdc++.h>
-//#include"D_30.h"
-//#include"MY_QUEUE.h"
+#include"D_30.h"
 
 using namespace std;
 
-void insertElement(queue<int> &qu, int n)
+void insertElement(Stack <int> &st, int n)
 {
     for(int i=0; i<n; i++)
     {
         int val;
         cin>>val;
-        qu.push(val);
+        st.push(val);
     }
 }
 
-void reverseQueue(queue <int> &qu)
+void stackSort(Stack <int> &st)
 {
-    stack <int> st;
-    while(!qu.empty())
-    {
-        st.push(qu.front());
-        qu.pop();
-    }
+    Stack <int> temp;
     while(!st.empty())
     {
-        qu.push(st.top());
+        int tmp = st.Top();
         st.pop();
-    };
+
+        while(!temp.empty() && temp.Top() > tmp)
+        {
+            st.push(temp.Top());
+            temp.pop();
+        }
+        temp.push(tmp);
+    }
+
+
+    st = temp;
 }
 
 int main()
 {
-    queue <int> qu;
+    Stack <int> st;
     int n;
     cin>>n;
-    insertElement(qu, n);
-    reverseQueue(qu);
+    insertElement(st, n);
+    stackSort(st);
 
-    while(!qu.empty()){
-        cout<<qu.front()<<" ";
-        qu.pop();
-    }
+    while(!st.empty()) cout<<st.pop()<<" ";
     cout<<endl;
+
     return 0;
 }
 
