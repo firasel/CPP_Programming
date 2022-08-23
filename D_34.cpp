@@ -1,9 +1,10 @@
 #include<bits/stdc++.h>
-#include"MY_QUEUE.h"
+//#include"D_30.h"
+//#include"MY_QUEUE.h"
 
 using namespace std;
 
-void insertElement(Queue<int> &qu, int n)
+void insertElement(queue<int> &qu, int n)
 {
     for(int i=0; i<n; i++)
     {
@@ -13,31 +14,34 @@ void insertElement(Queue<int> &qu, int n)
     }
 }
 
-int findFrequency(Queue<int> &qu, int n, int key){
-    int count = 0;
-    for(int i=0; i<n; i++){
-        if(qu.Front()==key) count++;
-        qu.push(qu.Front());
+void reverseQueue(queue <int> &qu)
+{
+    stack <int> st;
+    while(!qu.empty())
+    {
+        st.push(qu.front());
         qu.pop();
     }
-    return count;
+    while(!st.empty())
+    {
+        qu.push(st.top());
+        st.pop();
+    };
 }
 
 int main()
 {
-    Queue <int> qu;
-    Queue <int> freq;
-    int n,m;
+    queue <int> qu;
+    int n;
     cin>>n;
     insertElement(qu, n);
-    cin>>m;
-    insertElement(freq, m);
+    reverseQueue(qu);
 
-    while(!freq.empty()){
-        int count = findFrequency(qu, n, freq.pop());
-        count > 0 ? cout<<count<<endl : cout<<-1<<endl;
+    while(!qu.empty()){
+        cout<<qu.front()<<" ";
+        qu.pop();
     }
-
+    cout<<endl;
     return 0;
 }
 
