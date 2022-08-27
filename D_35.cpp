@@ -18,7 +18,6 @@ public:
 
 void displayList(doublyNode* &head);
 void insertAtTail(doublyNode* &head, int val);
-void insertAtHead(doublyNode* &head, int val);
 
 
 void displayList(doublyNode* &head)
@@ -37,6 +36,7 @@ void insertAtTail(doublyNode* &head, int val)
 {
     doublyNode *temp = head;
     doublyNode *newNode = new doublyNode(val);
+    int count = 0;
     if(temp==NULL)
     {
         head = newNode;
@@ -45,18 +45,30 @@ void insertAtTail(doublyNode* &head, int val)
 
     while(temp->Next!=NULL)
     {
+        count++;
         temp=temp->Next;
     }
+
+    int sum = temp->Value;
+
+    if(val<0)
+    {
+        while(temp!=NULL)
+        {
+            cout<<temp->Value<<" "<<count<<endl;
+            if((sum+val)==0)
+            {
+                cout<<"ZERO"<<endl;
+                // delete
+                return;
+            }
+            temp=temp->Prev;
+            sum+=temp->Value;
+        }
+    }
+
     temp->Next = newNode;
     newNode->Prev = temp;
-}
-
-void insertAtHead(doublyNode* &head, int val)
-{
-    doublyNode *newNode = new doublyNode(val);
-    head->Prev = newNode;
-    newNode->Next = head;
-    head = newNode;
 }
 
 int main()
@@ -64,15 +76,32 @@ int main()
     int choice, val, position;
     doublyNode *head = NULL;
 
-    insertAtTail(head, 12);
-    insertAtTail(head, 16);
-    insertAtTail(head, 28);
-    insertAtTail(head, 25);
-    insertAtTail(head, 53);
+    cout<<"Choice 1: Print Linked List"<<endl
+        <<"Choice 2: Insert a value At Tail"<<endl
+        <<"Choice 0: Exit Program"<<endl;
 
-    displayList(head);
-    cout<<endl;
-    cout<<head->Next->Next->Value<<endl;
+    cout<<"Choice: ";
+    cin>>choice;
+    while(choice!=0)
+    {
+        switch(choice)
+        {
+        case 1:
+            cout<<"Doubly Linked List: ";
+            displayList(head);
+            break;
+        case 2:
+            cout<<"Enter the value: ";
+            cin>>val;
+            insertAtTail(head, val);
+            break;
+        default:
+            cout<<"Wrong input! Please input a valid option number."<<endl;
+            break;
+        }
+        cout<<"Next Choice: ";
+        cin>>choice;
+    }
 
     return 0;
 }
