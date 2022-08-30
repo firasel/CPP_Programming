@@ -94,10 +94,33 @@ void postOrder(treeNode *root, string &chk)
     chk+=to_string(root->data);
 }
 
+void inOrderPosition(treeNode *root, int k)
+{
+    static int count = 0;
+    if(root==NULL)
+    {
+        return;
+    }
+
+    cout<<"Cnt: "<<count<<endl;
+    if(count<=k)
+    {
+        inOrderPosition(root->leftChild, k);
+        count++;
+        if(count==k)
+        {
+            cout<<"Position "<<k<<" Value is: "<<root->data<<endl;
+            return;
+        }
+        inOrderPosition(root->rightChild, k);
+
+    }
+}
+
 int main()
 {
-    int n;
-    cin>>n;
+    int n,k;
+    cin>>n>>k;
 
     treeNode* allNodes[n];
 
@@ -141,6 +164,9 @@ int main()
     postOrder(allNodes[0],postOrderTraversal);
     cout<<"Postorder Traversal: "<<postOrderTraversal<<endl;
 
+
+    inOrderPosition(allNodes[0], k);
+
     return 0;
 }
 
@@ -165,4 +191,11 @@ int main()
 8 -1 -1
 9 -1 -1
 2 -1 -1
+
+5 4
+0 1 2
+1 3 4
+2 -1 -1
+3 -1 -1
+4 -1 -1
 */
