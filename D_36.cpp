@@ -17,6 +17,9 @@ public:
 
 void spacePrint(int level);
 void printTree(treeNode *root, int level);
+void inOrder(treeNode *root, string &chk);
+void preOrder(treeNode *root, string &chk);
+void postOrder(treeNode *root, string &chk);
 
 void spacePrint(int level)
 {
@@ -30,10 +33,20 @@ void printTree(treeNode *root, int level)
         return;
     }
 
+    if(root->leftChild==NULL && root->rightChild==NULL)
+    {
+        cout<<root->data<<endl;
+        return;
+    }
+    else
+    {
+        cout<<endl;
+        spacePrint(level);
+        cout<<"Root: "<<root->data<<endl;
+    }
+
     if(root->leftChild!=NULL)
     {
-
-        cout<<endl;
         spacePrint(level);
         cout<<"Left: ";
         printTree(root->leftChild, level+1);
@@ -45,17 +58,40 @@ void printTree(treeNode *root, int level)
         cout<<"Right: ";
         printTree(root->rightChild, level+1);
     }
+}
 
-    if(root->leftChild==NULL && root->rightChild==NULL)
+void inOrder(treeNode *root, string &chk)
+{
+    if(root==NULL)
     {
-        cout<<root->data<<endl;
         return;
     }
-    else
+
+    inOrder(root->leftChild,chk);
+    chk += to_string(root->data);
+    inOrder(root->rightChild,chk);
+}
+
+void preOrder(treeNode *root, string &chk)
+{
+    if(root==NULL)
     {
-        spacePrint(level);
-        cout<<"Root: "<<root->data<<endl;
+        return;
     }
+    chk+=to_string(root->data);
+    preOrder(root->leftChild, chk);
+    preOrder(root->rightChild, chk);
+}
+
+void postOrder(treeNode *root, string &chk)
+{
+    if(root==NULL)
+    {
+        return;
+    }
+    postOrder(root->leftChild, chk);
+    postOrder(root->rightChild, chk);
+    chk+=to_string(root->data);
 }
 
 int main()
@@ -91,7 +127,19 @@ int main()
     }
 
     printTree(allNodes[0], 0);
+    cout<<endl;
 
+    string inOrderTraversal = "";
+    inOrder(allNodes[0],inOrderTraversal);
+    cout<<"Inorder Traversal: "<<inOrderTraversal<<endl;
+
+    string preOrderTraversal = "";
+    preOrder(allNodes[0],preOrderTraversal);
+    cout<<"Preorder Traversal: "<<preOrderTraversal<<endl;
+
+    string postOrderTraversal = "";
+    postOrder(allNodes[0],postOrderTraversal);
+    cout<<"Postorder Traversal: "<<postOrderTraversal<<endl;
 
     return 0;
 }
