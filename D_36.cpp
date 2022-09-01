@@ -20,6 +20,8 @@ void printTree(treeNode *root, int level);
 void inOrder(treeNode *root, string &chk);
 void preOrder(treeNode *root, string &chk);
 void postOrder(treeNode *root, string &chk);
+int searchInOrder(int inOrderArr[], int current, int start, int end);
+treeNode* buildTreePreIn(int preOrderArr[], int inOrderArr[], int start, int end);
 
 void spacePrint(int level)
 {
@@ -188,6 +190,59 @@ treeNode* buildTreePreIn(int preOrderArr[], int inOrderArr[], int start, int end
     return newNode;
 }
 
+void printLeaves(treeNode *root)
+{
+    if(root==NULL) return;
+    if(root->leftChild==NULL && root->rightChild==NULL)
+    {
+        cout<<root->data<<" ";
+        return;
+    }
+    printLeaves(root->leftChild);
+    printLeaves(root->rightChild);
+}
+
+void printLeftNonLeaves(treeNode *root)
+{
+    if(root==NULL) return;
+    if(root->leftChild!=NULL)
+    {
+        cout<<root->data<<" ";
+        printLeftNonLeaves(root->leftChild);
+    }
+    else if(root->rightChild!=NULL)
+    {
+        cout<<root->data<<" ";
+        printLeftNonLeaves(root->rightChild);
+    }
+}
+
+void printRightNonLeaves(treeNode *root)
+{
+    if(root==NULL) return;
+    if(root->rightChild!=NULL)
+    {
+        cout<<root->data<<" ";
+        printRightNonLeaves(root->rightChild);
+    }
+    else if(root->leftChild!=NULL)
+    {
+        cout<<root->data<<" ";
+        printRightNonLeaves(root->leftChild);
+    }
+}
+
+void boundaryTraversal(treeNode *root)
+{
+    if(root==NULL) return;
+    cout<<root->data<<" ";
+
+    printLeftNonLeaves(root->leftChild);
+    printLeaves(root->leftChild);
+    printLeaves(root->rightChild);
+    printRightNonLeaves(root->rightChild);
+}
+
 int main()
 {
     int n;
@@ -207,6 +262,9 @@ int main()
     string preOrderStr = "";
     preOrder(root, preOrderStr);
     cout<<preOrderStr<<endl;
+
+    cout<<endl<<endl;
+    boundaryTraversal(root);
 
     return 0;
 }
