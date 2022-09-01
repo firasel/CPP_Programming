@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 class treeNode
@@ -21,141 +21,141 @@ void inOrder(treeNode *root, string &chk);
 void preOrder(treeNode *root, string &chk);
 void postOrder(treeNode *root, string &chk);
 int searchInOrder(int inOrderArr[], int current, int start, int end);
-treeNode* buildTreePreIn(int preOrderArr[], int inOrderArr[], int start, int end);
+treeNode *buildTreePreIn(int preOrderArr[], int inOrderArr[], int start, int end);
 
 void spacePrint(int level)
 {
-    for(int i=0; i<level; i++) cout<<"    ";
+    for (int i = 0; i < level; i++)
+        cout << "    ";
 }
 
 void printTree(treeNode *root, int level)
 {
-    if(root==NULL)
+    if (root == NULL)
     {
         return;
     }
 
-    if(root->leftChild==NULL && root->rightChild==NULL)
+    if (root->leftChild == NULL && root->rightChild == NULL)
     {
-        cout<<root->data<<endl;
+        cout << root->data << endl;
         return;
     }
     else
     {
-        cout<<endl;
+        cout << endl;
         spacePrint(level);
-        cout<<"Root: "<<root->data<<endl;
+        cout << "Root: " << root->data << endl;
     }
 
-    if(root->leftChild!=NULL)
+    if (root->leftChild != NULL)
     {
         spacePrint(level);
-        cout<<"Left: ";
-        printTree(root->leftChild, level+1);
+        cout << "Left: ";
+        printTree(root->leftChild, level + 1);
     }
 
-    if(root->rightChild!=NULL)
+    if (root->rightChild != NULL)
     {
         spacePrint(level);
-        cout<<"Right: ";
-        printTree(root->rightChild, level+1);
+        cout << "Right: ";
+        printTree(root->rightChild, level + 1);
     }
 }
 
 void inOrder(treeNode *root, string &chk)
 {
-    if(root==NULL)
+    if (root == NULL)
     {
         return;
     }
 
-    inOrder(root->leftChild,chk);
+    inOrder(root->leftChild, chk);
     chk += to_string(root->data);
-    inOrder(root->rightChild,chk);
+    inOrder(root->rightChild, chk);
 }
 
 void preOrder(treeNode *root, string &chk)
 {
-    if(root==NULL)
+    if (root == NULL)
     {
         return;
     }
-    chk+=to_string(root->data);
+    chk += to_string(root->data);
     preOrder(root->leftChild, chk);
     preOrder(root->rightChild, chk);
 }
 
 void postOrder(treeNode *root, string &chk)
 {
-    if(root==NULL)
+    if (root == NULL)
     {
         return;
     }
     postOrder(root->leftChild, chk);
     postOrder(root->rightChild, chk);
-    chk+=to_string(root->data);
+    chk += to_string(root->data);
 }
 
 void inOrderPosition(treeNode *root, int k)
 {
     static int count = 0;
-    if(root==NULL)
+    if (root == NULL)
     {
         return;
     }
 
-    cout<<"Cnt: "<<count<<endl;
-    if(count<=k)
+    cout << "Cnt: " << count << endl;
+    if (count <= k)
     {
         inOrderPosition(root->leftChild, k);
         count++;
-        if(count==k)
+        if (count == k)
         {
-            cout<<"Position "<<k<<" Value is: "<<root->data<<endl;
+            cout << "Position " << k << " Value is: " << root->data << endl;
             return;
         }
         inOrderPosition(root->rightChild, k);
-
     }
 }
 
 int levelOrderTraversal(treeNode *root, string &chk, int k)
 {
-    if(root==NULL)
+    if (root == NULL)
     {
         return -1;
     }
     int level = 0;
-    queue<treeNode*> q;
+    queue<treeNode *> q;
     q.push(root);
     q.push(NULL);
     int max = INT_MIN;
 
-    while(!q.empty())
+    while (!q.empty())
     {
         treeNode *chkNode = q.front();
         q.pop();
-        if(chkNode!=NULL)
+        if (chkNode != NULL)
         {
-            if(level==k && max<chkNode->data)
+            if (level == k && max < chkNode->data)
             {
                 max = chkNode->data;
             }
-            cout<<chkNode->data<<" ";
+            cout << chkNode->data << " ";
             chk += to_string(chkNode->data);
-            if(chkNode->leftChild!=NULL)
+            if (chkNode->leftChild != NULL)
             {
                 q.push(chkNode->leftChild);
             }
 
-            if(chkNode->rightChild!=NULL)
+            if (chkNode->rightChild != NULL)
             {
                 q.push(chkNode->rightChild);
             }
         }
         else
         {
-            if(!q.empty())
+            if (!q.empty())
             {
                 q.push(NULL);
                 level++;
@@ -167,35 +167,37 @@ int levelOrderTraversal(treeNode *root, string &chk, int k)
 
 int searchInOrder(int inOrderArr[], int current, int start, int end)
 {
-    for(int i=start; i<=end; i++)
+    for (int i = start; i <= end; i++)
     {
-        if(inOrderArr[i]==current) return i;
+        if (inOrderArr[i] == current)
+            return i;
     }
     return -1;
 }
 
-treeNode* buildTreePreIn(int preOrderArr[], int inOrderArr[], int start, int end)
+treeNode *buildTreePreIn(int preOrderArr[], int inOrderArr[], int start, int end)
 {
     static int id = 0;
-    int current  = preOrderArr[id];
+    int current = preOrderArr[id];
     id++;
-    treeNode* newNode = new treeNode(current);
-    if(start==end)
+    treeNode *newNode = new treeNode(current);
+    if (start == end)
     {
         return newNode;
     }
     int pos = searchInOrder(inOrderArr, current, start, end);
-    newNode->leftChild = buildTreePreIn(preOrderArr, inOrderArr, start, pos-1);
-    newNode->rightChild = buildTreePreIn(preOrderArr, inOrderArr, pos+1, end);
+    newNode->leftChild = buildTreePreIn(preOrderArr, inOrderArr, start, pos - 1);
+    newNode->rightChild = buildTreePreIn(preOrderArr, inOrderArr, pos + 1, end);
     return newNode;
 }
 
 void printLeaves(treeNode *root)
 {
-    if(root==NULL) return;
-    if(root->leftChild==NULL && root->rightChild==NULL)
+    if (root == NULL)
+        return;
+    if (root->leftChild == NULL && root->rightChild == NULL)
     {
-        cout<<root->data<<" ";
+        cout << root->data << " ";
         return;
     }
     printLeaves(root->leftChild);
@@ -204,38 +206,41 @@ void printLeaves(treeNode *root)
 
 void printLeftNonLeaves(treeNode *root)
 {
-    if(root==NULL) return;
-    if(root->leftChild!=NULL)
+    if (root == NULL)
+        return;
+    if (root->leftChild != NULL)
     {
-        cout<<root->data<<" ";
+        cout << root->data << " ";
         printLeftNonLeaves(root->leftChild);
     }
-    else if(root->rightChild!=NULL)
+    else if (root->rightChild != NULL)
     {
-        cout<<root->data<<" ";
+        cout << root->data << " ";
         printLeftNonLeaves(root->rightChild);
     }
 }
 
 void printRightNonLeaves(treeNode *root)
 {
-    if(root==NULL) return;
-    if(root->rightChild!=NULL)
+    if (root == NULL)
+        return;
+    if (root->rightChild != NULL)
     {
-        cout<<root->data<<" ";
+        cout << root->data << " ";
         printRightNonLeaves(root->rightChild);
     }
-    else if(root->leftChild!=NULL)
+    else if (root->leftChild != NULL)
     {
-        cout<<root->data<<" ";
+        cout << root->data << " ";
         printRightNonLeaves(root->leftChild);
     }
 }
 
 void boundaryTraversal(treeNode *root)
 {
-    if(root==NULL) return;
-    cout<<root->data<<" ";
+    if (root == NULL)
+        return;
+    cout << root->data << " ";
 
     printLeftNonLeaves(root->leftChild);
     printLeaves(root->leftChild);
@@ -243,32 +248,45 @@ void boundaryTraversal(treeNode *root)
     printRightNonLeaves(root->rightChild);
 }
 
+void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    if (root->data == key && root->leftChild == NULL && leftValue != -1)
+    {
+        treeNode *newNode = new treeNode(leftValue);
+        root->leftChild = newNode;
+    }
+    if (root->data == key && root->rightChild == NULL && rightValue != -1)
+    {
+        treeNode *newNode = new treeNode(rightValue);
+        root->rightChild = newNode;
+    }
+    insertNodeAtTree(root->leftChild, key, leftValue, rightValue);
+    insertNodeAtTree(root->rightChild, key, leftValue, rightValue);
+}
+
 int main()
 {
     int n;
-    cin>>n;
-    int preOrderArr[n], inOrderArr[n];
-    for(int i=0; i<n; i++)
+    cin >> n;
+    int firstRoot, firstLeft, firstRight;
+    cin >> firstRoot >> firstLeft >> firstRight;
+    treeNode *root = new treeNode(firstRoot);
+    insertNodeAtTree(root, firstRoot, firstLeft, firstRight);
+
+    for (int i = 1; i < n; i++)
     {
-        cin>>preOrderArr[i];
+        int key, left, right;
+        cin >> key >> left >> right;
+        insertNodeAtTree(root, key, left, right);
     }
 
-    for(int i=0; i<n; i++)
-    {
-        cin>>inOrderArr[i];
-    }
-
-    treeNode *root = buildTreePreIn(preOrderArr, inOrderArr, 0, n-1);
-    string preOrderStr = "";
-    preOrder(root, preOrderStr);
-    cout<<preOrderStr<<endl;
-
-    cout<<endl<<endl;
-    boundaryTraversal(root);
-
+    printTree(root, n);
     return 0;
 }
-
 
 /*
 
@@ -302,4 +320,13 @@ int main()
 2 -1 -1
 3 -1 -1
 4 -1 -1
+
+5
+1 2 3
+2 4 5
+3 -1 -1
+4 -1 -1
+5 -1 -1
+
+
 */
