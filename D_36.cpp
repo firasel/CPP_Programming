@@ -163,66 +163,61 @@ int levelOrderTraversal(treeNode *root, string &chk, int k)
     return max;
 }
 
+int searchInOrder(int inOrderArr[], int current, int start, int end)
+{
+    for(int i=start; i<=end; i++)
+    {
+        if(inOrderArr[i]==current) return i;
+    }
+    return -1;
+}
+
+treeNode* buildTreePreIn(int preOrderArr[], int inOrderArr[], int start, int end)
+{
+    static int id = 0;
+    int current  = preOrderArr[id];
+    id++;
+    treeNode* newNode = new treeNode(current);
+    if(start==end)
+    {
+        return newNode;
+    }
+    int pos = searchInOrder(inOrderArr, current, start, end);
+    newNode->leftChild = buildTreePreIn(preOrderArr, inOrderArr, start, pos-1);
+    newNode->rightChild = buildTreePreIn(preOrderArr, inOrderArr, pos+1, end);
+    return newNode;
+}
+
 int main()
 {
-    int n,k;
+    int n;
     cin>>n;
-
-    treeNode* allNodes[n];
-
+    int preOrderArr[n], inOrderArr[n];
     for(int i=0; i<n; i++)
     {
-        allNodes[i] = new treeNode(-1);
+        cin>>preOrderArr[i];
     }
 
     for(int i=0; i<n; i++)
     {
-        int value, left, right;
-        cin>>value>>left>>right;
-        allNodes[i]->data=value;
-        if(left>n-1 || right>n-1)
-        {
-            cout<<"Invalid Index"<<endl;
-            break;
-        }
-        if(left!=-1)
-        {
-            allNodes[i]->leftChild=allNodes[left];
-        }
-        if(right!=-1)
-        {
-            allNodes[i]->rightChild=allNodes[right];
-        }
+        cin>>inOrderArr[i];
     }
 
-    printTree(allNodes[0], 0);
-    cout<<endl;
-
-//    string inOrderTraversal = "";
-//    inOrder(allNodes[0],inOrderTraversal);
-//    cout<<"Inorder Traversal: "<<inOrderTraversal<<endl;
-//
-//    string preOrderTraversal = "";
-//    preOrder(allNodes[0],preOrderTraversal);
-//    cout<<"Preorder Traversal: "<<preOrderTraversal<<endl;
-//
-//    string postOrderTraversal = "";
-//    postOrder(allNodes[0],postOrderTraversal);
-//    cout<<"Postorder Traversal: "<<postOrderTraversal<<endl;
-
-    string levelorderTraversal = "";
-    int maxValueAtK = levelOrderTraversal(allNodes[0],levelorderTraversal, 2);
-    cout<<endl;
-    cout<<"LevelOrder Traversal: "<<levelorderTraversal<<endl;
-    cout<<"Max Value at k: "<<maxValueAtK<<endl;
-
-//    inOrderPosition(allNodes[0], k);
+    treeNode *root = buildTreePreIn(preOrderArr, inOrderArr, 0, n-1);
+    string preOrderStr = "";
+    preOrder(root, preOrderStr);
+    cout<<preOrderStr<<endl;
 
     return 0;
 }
 
 
 /*
+
+9
+0 1 3 4 2 5 7 8 6
+3 1 4 0 7 5 8 2 6
+
 9
 0 1 2
 1 3 4
