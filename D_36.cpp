@@ -117,10 +117,56 @@ void inOrderPosition(treeNode *root, int k)
     }
 }
 
+int levelOrderTraversal(treeNode *root, string &chk, int k)
+{
+    if(root==NULL)
+    {
+        return -1;
+    }
+    int level = 0;
+    queue<treeNode*> q;
+    q.push(root);
+    q.push(NULL);
+    int max = INT_MIN;
+
+    while(!q.empty())
+    {
+        treeNode *chkNode = q.front();
+        q.pop();
+        if(chkNode!=NULL)
+        {
+            if(level==k && max<chkNode->data)
+            {
+                max = chkNode->data;
+            }
+            cout<<chkNode->data<<" ";
+            chk += to_string(chkNode->data);
+            if(chkNode->leftChild!=NULL)
+            {
+                q.push(chkNode->leftChild);
+            }
+
+            if(chkNode->rightChild!=NULL)
+            {
+                q.push(chkNode->rightChild);
+            }
+        }
+        else
+        {
+            if(!q.empty())
+            {
+                q.push(NULL);
+                level++;
+            }
+        }
+    }
+    return max;
+}
+
 int main()
 {
     int n,k;
-    cin>>n>>k;
+    cin>>n;
 
     treeNode* allNodes[n];
 
@@ -152,20 +198,25 @@ int main()
     printTree(allNodes[0], 0);
     cout<<endl;
 
-    string inOrderTraversal = "";
-    inOrder(allNodes[0],inOrderTraversal);
-    cout<<"Inorder Traversal: "<<inOrderTraversal<<endl;
+//    string inOrderTraversal = "";
+//    inOrder(allNodes[0],inOrderTraversal);
+//    cout<<"Inorder Traversal: "<<inOrderTraversal<<endl;
+//
+//    string preOrderTraversal = "";
+//    preOrder(allNodes[0],preOrderTraversal);
+//    cout<<"Preorder Traversal: "<<preOrderTraversal<<endl;
+//
+//    string postOrderTraversal = "";
+//    postOrder(allNodes[0],postOrderTraversal);
+//    cout<<"Postorder Traversal: "<<postOrderTraversal<<endl;
 
-    string preOrderTraversal = "";
-    preOrder(allNodes[0],preOrderTraversal);
-    cout<<"Preorder Traversal: "<<preOrderTraversal<<endl;
+    string levelorderTraversal = "";
+    int maxValueAtK = levelOrderTraversal(allNodes[0],levelorderTraversal, 2);
+    cout<<endl;
+    cout<<"LevelOrder Traversal: "<<levelorderTraversal<<endl;
+    cout<<"Max Value at k: "<<maxValueAtK<<endl;
 
-    string postOrderTraversal = "";
-    postOrder(allNodes[0],postOrderTraversal);
-    cout<<"Postorder Traversal: "<<postOrderTraversal<<endl;
-
-
-    inOrderPosition(allNodes[0], k);
+//    inOrderPosition(allNodes[0], k);
 
     return 0;
 }
