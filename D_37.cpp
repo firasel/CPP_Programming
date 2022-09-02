@@ -234,6 +234,44 @@ bool isSymmetric(treeNode *root)
     return true;
 }
 
+void zigzag_order(treeNode *root)
+{
+    if (root == NULL)
+        return;
+    queue<treeNode *> qu;
+    qu.push(root);
+    qu.push(NULL);
+    static bool printCondition = false;
+
+    while (!qu.empty())
+    {
+        treeNode *chkNode = qu.front();
+        qu.pop();
+        if (chkNode != NULL)
+        {
+            cout << chkNode->data << " ";
+            if (printCondition)
+            {
+                printCondition = false;
+                if (chkNode->leftChild != NULL)
+                    qu.push(chkNode->leftChild);
+                if (chkNode->rightChild != NULL)
+                    qu.push(chkNode->rightChild);
+            }
+            else
+            {
+                printCondition = true;
+                if (chkNode->rightChild != NULL)
+                    qu.push(chkNode->rightChild);
+                if (chkNode->leftChild != NULL)
+                    qu.push(chkNode->leftChild);
+            }
+        }
+        else if (!qu.empty())
+            qu.push(NULL);
+    }
+}
+
 int main()
 {
     int n;
@@ -268,10 +306,7 @@ int main()
     // cout << endl;
     // level_order(root->rightChild);
     // cout << endl;
-    if (isSymmetric(root))
-        cout << "Same" << endl;
-    else
-        cout << "Not Same" << endl;
+    zigzag_order(root);
 
     return 0;
 }
