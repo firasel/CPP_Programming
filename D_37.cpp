@@ -64,29 +64,35 @@ void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
     {
         return;
     }
+    static bool chkl = true;
+    static bool chkr = true;
     if (root->data == key && root->leftChild == NULL && leftValue != -1)
     {
         treeNode *newNode = new treeNode(leftValue);
         root->leftChild = newNode;
         leftValue = -1;
+        chkl = false;
     }
     if (root->data == key && root->rightChild == NULL && rightValue != -1)
     {
         treeNode *newNode = new treeNode(rightValue);
         root->rightChild = newNode;
         rightValue = -1;
+        chkr = false;
     }
     insertNodeAtTree(root->leftChild, key, leftValue, rightValue);
-    insertNodeAtTree(root->rightChild, key, leftValue, rightValue);
+    if (chkl || chkr)
+    {
+        cout << chkl << " " << chkr << " " << key << " " << leftValue << " " << rightValue << endl;
+        insertNodeAtTree(root->rightChild, key, leftValue, rightValue);
+    }
 }
 
-void level_order_reverse(treeNode *root)
+void level_order(treeNode *root, queue<int> &qu)
 {
     if (root == NULL)
         return;
     queue<treeNode *> q;
-    stack<int> finalResult;
-    stack<int> levelResult;
     q.push(root);
     q.push(NULL);
 
@@ -96,7 +102,7 @@ void level_order_reverse(treeNode *root)
         q.pop();
         if (currNode != NULL)
         {
-            levelResult.push(currNode->data);
+            qu.push(root->data);
             if (currNode->leftChild != NULL)
             {
                 q.push(currNode->leftChild);
@@ -111,41 +117,161 @@ void level_order_reverse(treeNode *root)
         {
             if (!q.empty())
                 q.push(NULL);
-            // Push every level value
-            while (!levelResult.empty())
-            {
-                finalResult.push(levelResult.top());
-                levelResult.pop();
-            }
         }
     }
+}
 
-    // Print final result
-    while (!finalResult.empty())
+// void inOrder(treeNode *root, queue<int> &qu)
+// {
+//     if (root == NULL)
+//         return;
+//     if (root != NULL && (root->leftChild == NULL && root->rightChild != NULL))
+//     {
+//         qu.push(-101);
+//     }
+//     qu.push(root->data);
+//     inOrder(root->leftChild, qu);
+//     if (root != NULL && (root->leftChild != NULL && root->rightChild == NULL))
+//     {
+//         qu.push(-101);
+//     }
+//     inOrder(root->rightChild, qu);
+// }
+
+// bool isSymmetric(treeNode *root)
+// {
+//     queue<int> qu1;
+//     queue<int> qu2;
+//     inOrder(root->leftChild, qu1);
+//     inOrder(root->rightChild, qu2);
+
+//     stack<int> st2;
+//     while (!qu2.empty())
+//     {
+//         st2.push(qu2.front());
+//         qu2.pop();
+//     }
+//     while (!st2.empty())
+//     {
+//         qu2.push(st2.top());
+//         st2.pop();
+//     }
+
+//     // while (!qu1.empty())
+//     // {
+//     //     cout << qu1.front() << " ";
+//     //     qu1.pop();
+//     // }
+//     // cout << endl;
+
+//     // while (!qu2.empty())
+//     // {
+//     //     cout << qu2.front() << " ";
+//     //     qu2.pop();
+//     // }
+//     // cout << endl;
+
+//     while (!qu1.empty() && !qu2.empty())
+//     {
+//         if (qu1.front() != qu2.front())
+//             return false;
+//         qu1.pop();
+//         qu2.pop();
+//     }
+
+//     if (qu1.empty() != qu2.empty())
+//         return false;
+
+//     return true;
+// }
+
+void inOrder(treeNode *root, queue<int> &qu)
+{
+    if (root == NULL)
+        return;
+    if (root != NULL && (root->leftChild == NULL && root->rightChild != NULL))
     {
-        cout << finalResult.top() << " ";
-        finalResult.pop();
+        qu.push(-101);
     }
+    inOrder(root->leftChild, qu);
+    qu.push(root->data);
+    if (root != NULL && (root->leftChild != NULL && root->rightChild == NULL))
+    {
+        qu.push(-101);
+    }
+    inOrder(root->rightChild, qu);
+}
+bool isSymmetric(treeNode *root)
+{
+    queue<int> qu1;
+    queue<int> qu2;
+    inOrder(root->leftChild, qu1);
+    inOrder(root->rightChild, qu2);
+
+    stack<int> st2;
+    while (!qu2.empty())
+    {
+        st2.push(qu2.front());
+        qu2.pop();
+    }
+    while (!st2.empty())
+    {
+        qu2.push(st2.top());
+        st2.pop();
+    }
+
+    while (!qu1.empty() && !qu2.empty())
+    {
+        if (qu1.front() != qu2.front())
+            return false;
+        qu1.pop();
+        qu2.pop();
+    }
+
+    if (qu1.empty() != qu2.empty())
+        return false;
+
+    return true;
 }
 
 int main()
 {
     int n;
     cin >> n;
-    int firstRoot, firstLeft, firstRight;
-    cin >> firstRoot >> firstLeft >> firstRight;
-    treeNode *root = new treeNode(firstRoot);
-    insertNodeAtTree(root, firstRoot, firstLeft, firstRight);
-
-    for (int i = 1; i < n; i++)
+    int a;
+    cin >> a;
+    treeNode *root = new treeNode(a);
+    queue<treeNode *> q;
+    q.push(root);
+    while (!q.empty())
     {
-        int key, left, right;
-        cin >> key >> left >> right;
-        insertNodeAtTree(root, key, left, right);
+        treeNode *presentRoot = q.front();
+        q.pop();
+        int x, y;
+        cin >> x >> y;
+        treeNode *n1 = NULL;
+        treeNode *n2 = NULL;
+        if (x != -1)
+            n1 = new treeNode(x);
+        if (y != -1)
+            n2 = new treeNode(y);
+        presentRoot->leftChild = n1;
+        presentRoot->rightChild = n2;
+        if (n1 != NULL)
+            q.push(n1);
+        if (n2 != NULL)
+            q.push(n2);
     }
 
-    level_order_reverse(root);
-    cout << endl;
+    // printTree(root, n);
+    // level_order(root->leftChild);
+    // cout << endl;
+    // level_order(root->rightChild);
+    // cout << endl;
+    if (isSymmetric(root))
+        cout << "Same" << endl;
+    else
+        cout << "Not Same" << endl;
 
     return 0;
 }
