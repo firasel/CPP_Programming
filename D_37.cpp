@@ -110,9 +110,42 @@ bool isSame(treeNode *root1, treeNode *root2)
     return str1.compare(str2) == 0;
 }
 
+void level_order(treeNode *root)
+{
+    if (root == NULL)
+        return;
+    queue<treeNode *> q;
+    q.push(root);
+    q.push(NULL);
+
+    while (!q.empty())
+    {
+        treeNode *currNode = q.front();
+        q.pop();
+        if (currNode != NULL)
+        {
+            cout << currNode->data << " ";
+            if (currNode->leftChild != NULL)
+            {
+                q.push(currNode->leftChild);
+            }
+
+            if (currNode->rightChild != NULL)
+            {
+                q.push(currNode->rightChild);
+            }
+        }
+        else
+        {
+            if (!q.empty())
+                q.push(NULL);
+        }
+    }
+}
+
 int main()
 {
-    int n, n2;
+    int n;
     cin >> n;
     int firstRoot, firstLeft, firstRight;
     cin >> firstRoot >> firstLeft >> firstRight;
@@ -126,25 +159,8 @@ int main()
         insertNodeAtTree(root, key, left, right);
     }
 
-    cin >> n2;
-    int firstRoot2, firstLeft2, firstRight2;
-    cin >> firstRoot2 >> firstLeft2 >> firstRight2;
-    treeNode *root2 = new treeNode(firstRoot2);
-    insertNodeAtTree(root2, firstRoot2, firstLeft2, firstRight2);
-
-    for (int i = 1; i < n; i++)
-    {
-        int key, left, right;
-        cin >> key >> left >> right;
-        insertNodeAtTree(root2, key, left, right);
-    }
-
-    // printTree(root, n);
-
-    if (isSame(root, root2))
-        cout << "Yes" << endl;
-    else
-        cout << "No" << endl;
+    level_order(root);
+    printTree(root, n);
 
     return 0;
 }
