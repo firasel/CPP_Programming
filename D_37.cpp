@@ -234,42 +234,17 @@ bool isSymmetric(treeNode *root)
     return true;
 }
 
-void zigzag_order(treeNode *root)
+treeNode *invert_tree(treeNode *root)
 {
     if (root == NULL)
-        return;
-    queue<treeNode *> qu;
-    qu.push(root);
-    qu.push(NULL);
-    static bool printCondition = false;
-
-    while (!qu.empty())
-    {
-        treeNode *chkNode = qu.front();
-        qu.pop();
-        if (chkNode != NULL)
-        {
-            cout << chkNode->data << " ";
-            if (printCondition)
-            {
-                printCondition = false;
-                if (chkNode->leftChild != NULL)
-                    qu.push(chkNode->leftChild);
-                if (chkNode->rightChild != NULL)
-                    qu.push(chkNode->rightChild);
-            }
-            else
-            {
-                printCondition = true;
-                if (chkNode->rightChild != NULL)
-                    qu.push(chkNode->rightChild);
-                if (chkNode->leftChild != NULL)
-                    qu.push(chkNode->leftChild);
-            }
-        }
-        else if (!qu.empty())
-            qu.push(NULL);
-    }
+        return root;
+    treeNode *left = root->leftChild;
+    treeNode *right = root->rightChild;
+    root->leftChild = right;
+    root->rightChild = left;
+    invert_tree(left);
+    invert_tree(right);
+    return root;
 }
 
 int main()
@@ -301,12 +276,14 @@ int main()
             q.push(n2);
     }
 
-    // printTree(root, n);
-    // level_order(root->leftChild);
     // cout << endl;
     // level_order(root->rightChild);
     // cout << endl;
-    zigzag_order(root);
+    // zigzag_order(root);
+    printTree(root, n);
+    cout << endl;
+    root = invert_tree(root);
+    printTree(root, n);
 
     return 0;
 }
