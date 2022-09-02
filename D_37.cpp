@@ -80,41 +80,13 @@ void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
     insertNodeAtTree(root->rightChild, key, leftValue, rightValue);
 }
 
-void inOrder(treeNode *root, string &str)
-{
-    if (root == NULL)
-        return;
-    inOrder(root->leftChild, str);
-    str += to_string(root->data);
-    inOrder(root->rightChild, str);
-}
-
-int findHeight(treeNode *root)
-{
-    if (root == NULL)
-        return 0;
-    int maxLevel = max(findHeight(root->leftChild), findHeight(root->rightChild));
-    return 1 + maxLevel;
-}
-
-bool isSame(treeNode *root1, treeNode *root2)
-{
-    // Check tree structure
-    if (findHeight(root1) != findHeight(root2))
-        return false;
-    // Check tree node value
-    string str1 = "";
-    string str2 = "";
-    inOrder(root1, str1);
-    inOrder(root2, str2);
-    return str1.compare(str2) == 0;
-}
-
-void level_order(treeNode *root)
+void level_order_reverse(treeNode *root)
 {
     if (root == NULL)
         return;
     queue<treeNode *> q;
+    stack<int> finalResult;
+    stack<int> levelResult;
     q.push(root);
     q.push(NULL);
 
@@ -124,7 +96,7 @@ void level_order(treeNode *root)
         q.pop();
         if (currNode != NULL)
         {
-            cout << currNode->data << " ";
+            levelResult.push(currNode->data);
             if (currNode->leftChild != NULL)
             {
                 q.push(currNode->leftChild);
@@ -139,7 +111,20 @@ void level_order(treeNode *root)
         {
             if (!q.empty())
                 q.push(NULL);
+            // Push every level value
+            while (!levelResult.empty())
+            {
+                finalResult.push(levelResult.top());
+                levelResult.pop();
+            }
         }
+    }
+
+    // Print final result
+    while (!finalResult.empty())
+    {
+        cout << finalResult.top() << " ";
+        finalResult.pop();
     }
 }
 
@@ -159,8 +144,8 @@ int main()
         insertNodeAtTree(root, key, left, right);
     }
 
-    level_order(root);
-    printTree(root, n);
+    level_order_reverse(root);
+    cout << endl;
 
     return 0;
 }
