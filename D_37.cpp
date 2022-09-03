@@ -121,53 +121,28 @@ void level_order(treeNode *root, queue<int> &qu)
     }
 }
 
-void average_level(treeNode *root)
+int second_minimum(treeNode *root)
 {
+    static int minNum = root->data;
+    static int secondMinNum = -1;
     if (root == NULL)
-        return;
-    double element = 1;
-    double nexElement = 0;
-    double sum = 0;
-    queue<treeNode *> qu;
-    qu.push(root);
-    qu.push(NULL);
-    while (!qu.empty())
+        return secondMinNum;
+    if (minNum > root->data)
+        minNum = root->data;
+    if (minNum < root->data)
     {
-        treeNode *currNode = qu.front();
-        qu.pop();
-        if (currNode != NULL)
-        {
-            sum += (double)currNode->data;
-            if (currNode->leftChild)
-            {
-                qu.push(currNode->leftChild);
-                nexElement++;
-            }
-            if (currNode->rightChild)
-            {
-                qu.push(currNode->rightChild);
-                nexElement++;
-            }
-        }
-        else if (!qu.empty())
-        {
-            cout << sum / element << endl;
-            qu.push(NULL);
-            element = nexElement;
-            nexElement = 0;
-            sum = 0;
-        }
-        else if (qu.empty())
-        {
-            cout << sum / element << endl;
-        }
+        if (secondMinNum == -1)
+            secondMinNum = root->data;
+        else if (secondMinNum > root->data && minNum != root->data)
+            secondMinNum = root->data;
     }
+    second_minimum(root->leftChild);
+    second_minimum(root->rightChild);
+    return secondMinNum;
 }
 
 int main()
 {
-    int n;
-    cin >> n;
     int a;
     cin >> a;
     treeNode *root = new treeNode(a);
@@ -193,8 +168,8 @@ int main()
             q.push(n2);
     }
 
-    average_level(root);
-    printTree(root, n);
+    cout << "Min is: " << second_minimum(root) << endl;
+    printTree(root, 0);
 
     return 0;
 }
