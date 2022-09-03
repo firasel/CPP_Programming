@@ -121,130 +121,23 @@ void level_order(treeNode *root, queue<int> &qu)
     }
 }
 
-// void inOrder(treeNode *root, queue<int> &qu)
-// {
-//     if (root == NULL)
-//         return;
-//     if (root != NULL && (root->leftChild == NULL && root->rightChild != NULL))
-//     {
-//         qu.push(-101);
-//     }
-//     qu.push(root->data);
-//     inOrder(root->leftChild, qu);
-//     if (root != NULL && (root->leftChild != NULL && root->rightChild == NULL))
-//     {
-//         qu.push(-101);
-//     }
-//     inOrder(root->rightChild, qu);
-// }
-
-// bool isSymmetric(treeNode *root)
-// {
-//     queue<int> qu1;
-//     queue<int> qu2;
-//     inOrder(root->leftChild, qu1);
-//     inOrder(root->rightChild, qu2);
-
-//     stack<int> st2;
-//     while (!qu2.empty())
-//     {
-//         st2.push(qu2.front());
-//         qu2.pop();
-//     }
-//     while (!st2.empty())
-//     {
-//         qu2.push(st2.top());
-//         st2.pop();
-//     }
-
-//     // while (!qu1.empty())
-//     // {
-//     //     cout << qu1.front() << " ";
-//     //     qu1.pop();
-//     // }
-//     // cout << endl;
-
-//     // while (!qu2.empty())
-//     // {
-//     //     cout << qu2.front() << " ";
-//     //     qu2.pop();
-//     // }
-//     // cout << endl;
-
-//     while (!qu1.empty() && !qu2.empty())
-//     {
-//         if (qu1.front() != qu2.front())
-//             return false;
-//         qu1.pop();
-//         qu2.pop();
-//     }
-
-//     if (qu1.empty() != qu2.empty())
-//         return false;
-
-//     return true;
-// }
-
-void inOrder(treeNode *root, queue<int> &qu)
+int treeSum(treeNode *root, int sum)
 {
     if (root == NULL)
-        return;
-    if (root != NULL && (root->leftChild == NULL && root->rightChild != NULL))
-    {
-        qu.push(-101);
-    }
-    inOrder(root->leftChild, qu);
-    qu.push(root->data);
-    if (root != NULL && (root->leftChild != NULL && root->rightChild == NULL))
-    {
-        qu.push(-101);
-    }
-    inOrder(root->rightChild, qu);
-}
-bool isSymmetric(treeNode *root)
-{
-    queue<int> qu1;
-    queue<int> qu2;
-    inOrder(root->leftChild, qu1);
-    inOrder(root->rightChild, qu2);
-
-    stack<int> st2;
-    while (!qu2.empty())
-    {
-        st2.push(qu2.front());
-        qu2.pop();
-    }
-    while (!st2.empty())
-    {
-        qu2.push(st2.top());
-        st2.pop();
-    }
-
-    while (!qu1.empty() && !qu2.empty())
-    {
-        if (qu1.front() != qu2.front())
-            return false;
-        qu1.pop();
-        qu2.pop();
-    }
-
-    if (qu1.empty() != qu2.empty())
-        return false;
-
-    return true;
+        return sum;
+    return sum + root->data + treeSum(root->leftChild, sum) + treeSum(root->rightChild, sum);
 }
 
-treeNode *invert_tree(treeNode *root)
+int findTilt(treeNode *root)
 {
     if (root == NULL)
-        return root;
-    treeNode *left = root->leftChild;
-    treeNode *right = root->rightChild;
-    root->leftChild = right;
-    root->rightChild = left;
-    invert_tree(left);
-    invert_tree(right);
-    return root;
+        return 0;
+    int left = treeSum(root->leftChild, 0);
+    int right = treeSum(root->rightChild, 0);
+    root->data = abs(left - right);
+    findTilt(root->leftChild);
+    findTilt(root->rightChild);
+    return treeSum(root, 0);
 }
 
 int main()
@@ -276,13 +169,7 @@ int main()
             q.push(n2);
     }
 
-    // cout << endl;
-    // level_order(root->rightChild);
-    // cout << endl;
-    // zigzag_order(root);
-    printTree(root, n);
-    cout << endl;
-    root = invert_tree(root);
+    findTilt(root);
     printTree(root, n);
 
     return 0;
