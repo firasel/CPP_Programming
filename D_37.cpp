@@ -121,23 +121,47 @@ void level_order(treeNode *root, queue<int> &qu)
     }
 }
 
-int treeSum(treeNode *root, int sum)
+void average_level(treeNode *root)
 {
     if (root == NULL)
-        return sum;
-    return sum + root->data + treeSum(root->leftChild, sum) + treeSum(root->rightChild, sum);
-}
-
-int findTilt(treeNode *root)
-{
-    if (root == NULL)
-        return 0;
-    int left = treeSum(root->leftChild, 0);
-    int right = treeSum(root->rightChild, 0);
-    root->data = abs(left - right);
-    findTilt(root->leftChild);
-    findTilt(root->rightChild);
-    return treeSum(root, 0);
+        return;
+    double element = 1;
+    double nexElement = 0;
+    double sum = 0;
+    queue<treeNode *> qu;
+    qu.push(root);
+    qu.push(NULL);
+    while (!qu.empty())
+    {
+        treeNode *currNode = qu.front();
+        qu.pop();
+        if (currNode != NULL)
+        {
+            sum += (double)currNode->data;
+            if (currNode->leftChild)
+            {
+                qu.push(currNode->leftChild);
+                nexElement++;
+            }
+            if (currNode->rightChild)
+            {
+                qu.push(currNode->rightChild);
+                nexElement++;
+            }
+        }
+        else if (!qu.empty())
+        {
+            cout << sum / element << endl;
+            qu.push(NULL);
+            element = nexElement;
+            nexElement = 0;
+            sum = 0;
+        }
+        else if (qu.empty())
+        {
+            cout << sum / element << endl;
+        }
+    }
 }
 
 int main()
@@ -169,7 +193,7 @@ int main()
             q.push(n2);
     }
 
-    findTilt(root);
+    average_level(root);
     printTree(root, n);
 
     return 0;
