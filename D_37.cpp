@@ -88,58 +88,23 @@ void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
     }
 }
 
-void level_order(treeNode *root, queue<int> &qu)
+class Solution
 {
-    if (root == NULL)
-        return;
-    queue<treeNode *> q;
-    q.push(root);
-    q.push(NULL);
-
-    while (!q.empty())
+public:
+    bool isMirror(treeNode *root1, treeNode *root2)
     {
-        treeNode *currNode = q.front();
-        q.pop();
-        if (currNode != NULL)
-        {
-            qu.push(root->data);
-            if (currNode->leftChild != NULL)
-            {
-                q.push(currNode->leftChild);
-            }
-
-            if (currNode->rightChild != NULL)
-            {
-                q.push(currNode->rightChild);
-            }
-        }
-        else
-        {
-            if (!q.empty())
-                q.push(NULL);
-        }
+        if (root1 == NULL && root2 == NULL)
+            return true;
+        if (root1 == NULL || root2 == NULL)
+            return false;
+        return root1->data == root2->data && isMirror(root1->leftChild, root2->leftChild) && isMirror(root1->rightChild, root2->rightChild);
     }
-}
 
-int second_minimum(treeNode *root)
-{
-    static int minNum = root->data;
-    static int secondMinNum = -1;
-    if (root == NULL)
-        return secondMinNum;
-    if (minNum > root->data)
-        minNum = root->data;
-    if (minNum < root->data)
+    bool isSymmetric(treeNode *root)
     {
-        if (secondMinNum == -1)
-            secondMinNum = root->data;
-        else if (secondMinNum > root->data && minNum != root->data)
-            secondMinNum = root->data;
+        return isMirror(root, root);
     }
-    second_minimum(root->leftChild);
-    second_minimum(root->rightChild);
-    return secondMinNum;
-}
+};
 
 int main()
 {
@@ -168,7 +133,8 @@ int main()
             q.push(n2);
     }
 
-    cout << "Min is: " << second_minimum(root) << endl;
+    Solution st;
+    cout << st.isSymmetric(root) << endl;
     printTree(root, 0);
 
     return 0;
