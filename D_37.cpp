@@ -91,18 +91,42 @@ void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    bool isMirror(treeNode *root1, treeNode *root2)
+    vector<vector<int>> res;
+    vector<int> temp;
+    int minCol = INT_MAX;
+    void verticalTree(treeNode *root, int col)
     {
-        if (root1 == NULL && root2 == NULL)
-            return true;
-        if (root1 == NULL || root2 == NULL)
-            return false;
-        return root1->data == root2->data && isMirror(root1->leftChild, root2->leftChild) && isMirror(root1->rightChild, root2->rightChild);
+        if (minCol > col)
+            minCol = col;
+        if (root->leftChild != NULL)
+            verticalTree(root->leftChild, col - 1);
+
+        if (res.size() > col + abs(minCol))
+        {
+
+            res[col + abs(minCol)].push_back(root->data);
+        }
+        else
+        {
+            temp.push_back(root->data);
+            res.push_back(temp);
+            temp.clear();
+        }
+
+        if (root->rightChild != NULL)
+            verticalTree(root->rightChild, col + 1);
     }
 
-    bool isSymmetric(treeNode *root)
+    vector<vector<int>> verticalTraversal(treeNode *root)
     {
-        return isMirror(root, root);
+        if (root == NULL)
+            return res;
+        res.clear();
+        verticalTree(root, 0);
+        for (int i = 0; i < res.size(); i++)
+            if (res[i].size() > 1)
+                sort(res[i].begin(), res[i].end());
+        return res;
     }
 };
 
@@ -134,7 +158,13 @@ int main()
     }
 
     Solution st;
-    cout << st.isSymmetric(root) << endl;
+    vector<vector<int>> vt = st.verticalTraversal(root);
+    for (int i = 0; i < vt.size(); i++)
+    {
+        for (int j = 0; j < vt[i].size(); j++)
+            cout << vt[i][j] << " ";
+        cout << endl;
+    }
     printTree(root, 0);
 
     return 0;
