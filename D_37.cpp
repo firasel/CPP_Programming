@@ -91,42 +91,16 @@ void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    vector<vector<int>> res;
-    vector<int> temp;
-    int minCol = INT_MAX;
-    void verticalTree(treeNode *root, int col)
-    {
-        if (minCol > col)
-            minCol = col;
-        if (root->leftChild != NULL)
-            verticalTree(root->leftChild, col - 1);
-
-        if (res.size() > col + abs(minCol))
-        {
-
-            res[col + abs(minCol)].push_back(root->data);
-        }
-        else
-        {
-            temp.push_back(root->data);
-            res.push_back(temp);
-            temp.clear();
-        }
-
-        if (root->rightChild != NULL)
-            verticalTree(root->rightChild, col + 1);
-    }
-
-    vector<vector<int>> verticalTraversal(treeNode *root)
+    treeNode *pruneTree(treeNode *root)
     {
         if (root == NULL)
-            return res;
-        res.clear();
-        verticalTree(root, 0);
-        for (int i = 0; i < res.size(); i++)
-            if (res[i].size() > 1)
-                sort(res[i].begin(), res[i].end());
-        return res;
+            return root;
+        root->leftChild = pruneTree(root->leftChild);
+        root->rightChild = pruneTree(root->rightChild);
+
+        if (!root->leftChild && !root->rightChild && root->data != 1)
+            return NULL;
+        return root;
     }
 };
 
@@ -158,14 +132,9 @@ int main()
     }
 
     Solution st;
-    vector<vector<int>> vt = st.verticalTraversal(root);
-    for (int i = 0; i < vt.size(); i++)
-    {
-        for (int j = 0; j < vt[i].size(); j++)
-            cout << vt[i][j] << " ";
-        cout << endl;
-    }
+    treeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
+    printTree(root2, 0);
 
     return 0;
 }
