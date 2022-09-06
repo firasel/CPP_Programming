@@ -1,94 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Node
+int countStudents(vector<int> &students, vector<int> &sandwiches)
 {
-public:
-    int value;
-    Node *next;
-
-    Node(int val)
+    queue<int> st;
+    queue<int> sw;
+    for (int i : students)
+        st.push(i);
+    for (int i : sandwiches)
+        sw.push(i);
+    int count = 0;
+    while (!st.empty() && count != st.size())
     {
-        value = val;
-        next = NULL;
+        if (st.front() == sw.front())
+        {
+            st.pop();
+            sw.pop();
+            count = 0;
+        }
+        else
+        {
+            int frontSt = st.front();
+            st.pop();
+            st.push(frontSt);
+            count++;
+        }
     }
-};
-
-void insertAtTail(Node *&head, int val)
-{
-    Node *newNode = new Node(val);
-    if (head == NULL)
-    {
-        head = newNode;
-        return;
-    }
-
-    Node *temp = head;
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-    temp->next = newNode;
-}
-
-void display(Node *n)
-{
-    while (n != NULL)
-    {
-        cout << n->value;
-        if (n->next != NULL)
-            cout << " -> ";
-        n = n->next;
-    }
-    cout << endl;
-}
-
-void makeCycle(Node *&head, int pos)
-{
-    Node *temp = head;
-    Node *startNode;
-    int count = 1;
-
-    while (temp->next != NULL)
-    {
-        if (count == pos)
-            startNode = temp;
-        temp = temp->next;
-        count++;
-    }
-    temp->next = startNode;
-}
-
-bool detectCycle(Node *&head)
-{
-    Node *slow = head;
-    Node *fast = head;
-    while (fast != NULL && fast->next != NULL)
-    {
-        if (slow->next == fast->next->next)
-            return true;
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-    return false;
+    return st.size();
 }
 
 int main()
 {
-    int n;
-    Node *head = NULL;
-    cout << "Enter the length: ";
-    cin >> n;
-    while (n)
-    {
-        int val;
-        cin >> val;
-        insertAtTail(head, val);
-        n--;
-    }
-    display(head);
-    makeCycle(head, 2);
-    cout << detectCycle(head) << endl;
-
+    vector<int> st = {1, 1, 1, 0, 0, 1, 1};
+    vector<int> sw = {1, 0, 0, 1};
+    cout << countStudents(st, sw) << endl;
     return 0;
 }
