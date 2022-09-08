@@ -91,16 +91,31 @@ void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    treeNode *pruneTree(treeNode *root)
+    int strToBinary(string str)
     {
-        if (root == NULL)
-            return root;
-        root->leftChild = pruneTree(root->leftChild);
-        root->rightChild = pruneTree(root->rightChild);
+        int power = 1;
+        int res = 0;
+        for (int i = str.length() - 1; i >= 0; i--)
+        {
+            if (str[i] == '1')
+                res += pow(2, power);
+            power++;
+        }
+        return res;
+    }
 
-        if (!root->leftChild && !root->rightChild && root->data != 1)
-            return NULL;
-        return root;
+    int sumRootToLeaf(treeNode *root)
+    {
+        string str;
+        if (root == NULL)
+        {
+            cout << "B: " << str << endl;
+            return 0;
+        }
+        str += to_string(root->data);
+        sumRootToLeaf(root->leftChild);
+        sumRootToLeaf(root->rightChild);
+        return 1;
     }
 };
 
@@ -132,9 +147,11 @@ int main()
     }
 
     Solution st;
-    treeNode *root2 = st.pruneTree(root);
+    st.sumRootToLeaf(root);
+
+    // treeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
-    printTree(root2, 0);
+    // printTree(root2, 0);
 
     return 0;
 }
