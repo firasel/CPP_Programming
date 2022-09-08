@@ -1,22 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class treeNode
+class TreeNode
 {
 public:
-    int data;
-    treeNode *leftChild;
-    treeNode *rightChild;
-    treeNode(int val)
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int value)
     {
-        data = val;
-        leftChild = NULL;
-        rightChild = NULL;
+        val = value;
+        left = NULL;
+        right = NULL;
     }
 };
 
 void spacePrint(int level);
-void printTree(treeNode *root, int level);
+void printTree(TreeNode *root, int level);
 
 void spacePrint(int level)
 {
@@ -24,41 +24,41 @@ void spacePrint(int level)
         cout << "    ";
 }
 
-void printTree(treeNode *root, int level)
+void printTree(TreeNode *root, int level)
 {
     if (root == NULL)
     {
         return;
     }
 
-    if (root->leftChild == NULL && root->rightChild == NULL)
+    if (root->left == NULL && root->right == NULL)
     {
-        cout << root->data << endl;
+        cout << root->val << endl;
         return;
     }
     else
     {
         cout << endl;
         spacePrint(level);
-        cout << "Root: " << root->data << endl;
+        cout << "Root: " << root->val << endl;
     }
 
-    if (root->leftChild != NULL)
+    if (root->left != NULL)
     {
         spacePrint(level);
         cout << "Left: ";
-        printTree(root->leftChild, level + 1);
+        printTree(root->left, level + 1);
     }
 
-    if (root->rightChild != NULL)
+    if (root->right != NULL)
     {
         spacePrint(level);
         cout << "Right: ";
-        printTree(root->rightChild, level + 1);
+        printTree(root->right, level + 1);
     }
 }
 
-void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
+void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 {
     if (root == NULL)
     {
@@ -66,56 +66,52 @@ void insertNodeAtTree(treeNode *root, int key, int leftValue, int rightValue)
     }
     static bool chkl = true;
     static bool chkr = true;
-    if (root->data == key && root->leftChild == NULL && leftValue != -1)
+    if (root->val == key && root->left == NULL && leftValue != -1)
     {
-        treeNode *newNode = new treeNode(leftValue);
-        root->leftChild = newNode;
+        TreeNode *newNode = new TreeNode(leftValue);
+        root->left = newNode;
         leftValue = -1;
         chkl = false;
     }
-    if (root->data == key && root->rightChild == NULL && rightValue != -1)
+    if (root->val == key && root->right == NULL && rightValue != -1)
     {
-        treeNode *newNode = new treeNode(rightValue);
-        root->rightChild = newNode;
+        TreeNode *newNode = new TreeNode(rightValue);
+        root->right = newNode;
         rightValue = -1;
         chkr = false;
     }
-    insertNodeAtTree(root->leftChild, key, leftValue, rightValue);
+    insertNodeAtTree(root->left, key, leftValue, rightValue);
     if (chkl || chkr)
     {
         cout << chkl << " " << chkr << " " << key << " " << leftValue << " " << rightValue << endl;
-        insertNodeAtTree(root->rightChild, key, leftValue, rightValue);
+        insertNodeAtTree(root->right, key, leftValue, rightValue);
     }
 }
 
 class Solution
 {
 public:
-    int strToBinary(string str)
+    string ans = "";
+    string tree2str(TreeNode *root)
     {
-        int power = 1;
-        int res = 0;
-        for (int i = str.length() - 1; i >= 0; i--)
-        {
-            if (str[i] == '1')
-                res += pow(2, power);
-            power++;
-        }
-        return res;
-    }
-
-    int sumRootToLeaf(treeNode *root)
-    {
-        string str;
         if (root == NULL)
+            return ans;
+        ans += to_string(root->val);
+        if (root->left)
         {
-            cout << "B: " << str << endl;
-            return 0;
+            ans += '(';
+            tree2str(root->left);
+            ans += ')';
         }
-        str += to_string(root->data);
-        sumRootToLeaf(root->leftChild);
-        sumRootToLeaf(root->rightChild);
-        return 1;
+        else if (root->right)
+            ans += "()";
+        if (root->right)
+        {
+            ans += '(';
+            tree2str(root->right);
+            ans += ')';
+        }
+        return ans;
     }
 };
 
@@ -123,23 +119,23 @@ int main()
 {
     int a;
     cin >> a;
-    treeNode *root = new treeNode(a);
-    queue<treeNode *> q;
+    TreeNode *root = new TreeNode(a);
+    queue<TreeNode *> q;
     q.push(root);
     while (!q.empty())
     {
-        treeNode *presentRoot = q.front();
+        TreeNode *presentRoot = q.front();
         q.pop();
         int x, y;
         cin >> x >> y;
-        treeNode *n1 = NULL;
-        treeNode *n2 = NULL;
+        TreeNode *n1 = NULL;
+        TreeNode *n2 = NULL;
         if (x != -1)
-            n1 = new treeNode(x);
+            n1 = new TreeNode(x);
         if (y != -1)
-            n2 = new treeNode(y);
-        presentRoot->leftChild = n1;
-        presentRoot->rightChild = n2;
+            n2 = new TreeNode(y);
+        presentRoot->left = n1;
+        presentRoot->right = n2;
         if (n1 != NULL)
             q.push(n1);
         if (n2 != NULL)
@@ -147,9 +143,9 @@ int main()
     }
 
     Solution st;
-    st.sumRootToLeaf(root);
+    cout << "Res: " << st.tree2str(root) << endl;
 
-    // treeNode *root2 = st.pruneTree(root);
+    // TreeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
     // printTree(root2, 0);
 
