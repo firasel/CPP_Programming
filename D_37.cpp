@@ -91,12 +91,31 @@ void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    bool checkTree(TreeNode *root)
+    void treePathMake(TreeNode *root, string path, vector<string> *strVect)
     {
-        if (root->val == (root->left->val + root->right->val))
-            return true;
-        else
-            return false;
+        path += to_string(root->val);
+        if (!root->left && !root->right)
+        {
+            strVect->push_back(path);
+            return;
+        }
+        if (root->left)
+        {
+            path += "->";
+            treePathMake(root->left, path, strVect);
+        }
+        if (root->right)
+        {
+            if (!root->left)
+                path += "->";
+            treePathMake(root->right, path, strVect);
+        }
+    }
+    vector<string> binaryTreePaths(TreeNode *root)
+    {
+        vector<string> ansVect;
+        treePathMake(root, "", &ansVect);
+        return ansVect;
     }
 };
 
@@ -128,7 +147,12 @@ int main()
     }
 
     Solution st;
-    cout << "Res: " << st.checkTree(root) << endl;
+    vector<string> result = st.binaryTreePaths(root);
+
+    for (string str : result)
+    {
+        cout << str << endl;
+    }
 
     // TreeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
