@@ -91,21 +91,12 @@ void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    bool ans = true;
-    int depth(TreeNode *root)
+    bool checkTree(TreeNode *root)
     {
-        if (root == NULL)
-            return 0;
-        int a = depth(root->left);
-        int b = depth(root->right);
-        if (abs(a - b) > 1)
-            ans = false;
-        return max(a, b) + 1;
-    }
-    bool isBalanced(TreeNode *root)
-    {
-        depth(root);
-        return ans;
+        if (root->val == (root->left->val + root->right->val))
+            return true;
+        else
+            return false;
     }
 };
 
@@ -137,7 +128,7 @@ int main()
     }
 
     Solution st;
-    cout << "Res: " << st.isBalanced(root) << endl;
+    cout << "Res: " << st.checkTree(root) << endl;
 
     // TreeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
