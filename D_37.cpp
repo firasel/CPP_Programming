@@ -91,61 +91,34 @@ void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    bool isCousins(TreeNode *root, int x, int y)
+    void makeLeafPath(TreeNode *root, vector<int> pathNodes, vector<vector<int>> *allPaths)
     {
-        if (root == NULL)
-            return false;
-        queue<TreeNode *> q;
-        q.push(root);
-        q.push(NULL);
-        vector<pair<int, int>> levelVect;
-        while (!q.empty())
+        pathNodes.push_back(root->val);
+        if (!root->left && !root->right)
         {
-            TreeNode *present = q.front();
-            q.pop();
-            if (present != NULL)
-            {
-                if (present->left)
-                {
-                    levelVect.push_back(make_pair(present->val, present->left->val));
-                    q.push(present->left);
-                }
-                if (present->right)
-                {
-                    levelVect.push_back(make_pair(present->val, present->right->val));
-                    q.push(present->right);
-                }
-            }
-            else
-            {
-                if (!q.empty())
-                {
-                    int parent1 = -1, parent2 = -1;
-                    for (pair<int, int> pairNode : levelVect)
-                    {
-                        if (pairNode.second == x)
-                            parent1 = pairNode.first;
-                        if (pairNode.second == y)
-                            parent2 = pairNode.first;
-                        if (parent1 != -1 && parent2 != -1)
-                            break;
-                    }
-                    if (parent1 != -1 || parent2 != -1)
-                    {
-                        if (parent1 == -1 || parent2 == -1 || parent1 == parent2)
-                        {
-                            cout << parent1 << " " << parent2 << endl;
-                            return false;
-                        }
-                        else
-                            return true;
-                    }
-                    levelVect.clear();
-                    q.push(NULL);
-                }
-            }
+            allPaths->push_back(pathNodes);
+            return;
         }
-        return false;
+        if (root->left)
+            makeLeafPath(root->left, pathNodes, allPaths);
+        if (root->right)
+            makeLeafPath(root->right, pathNodes, allPaths);
+    }
+    vector<vector<int>> pathSum(TreeNode *root, int targetSum)
+    {
+        vector<vector<int>> allPaths;
+        vector<int> temp;
+        makeLeafPath(root, temp, &allPaths);
+        vector<vector<int>> result;
+        for (vector<int> pathNodes : allPaths)
+        {
+            int sum = 0;
+            for (int nodeVal : pathNodes)
+                sum += nodeVal;
+            if (sum == targetSum)
+                result.push_back(pathNodes);
+        }
+        return result;
     }
 };
 
@@ -177,7 +150,13 @@ int main()
     }
 
     Solution st;
-    cout << "Res: " << st.isCousins(root, 4, 3) << endl;
+    vector<vector<int>> resVect = st.pathSum(root, 22);
+    for (vector<int> pathVect : resVect)
+    {
+        for (int pathNode : pathVect)
+            cout << pathNode << " ";
+        cout << endl;
+    }
 
     // TreeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
