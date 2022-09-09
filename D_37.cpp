@@ -91,31 +91,61 @@ void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    void treePathMake(TreeNode *root, string path, vector<string> *strVect)
+    bool isCousins(TreeNode *root, int x, int y)
     {
-        path += to_string(root->val);
-        if (!root->left && !root->right)
+        if (root == NULL)
+            return false;
+        queue<TreeNode *> q;
+        q.push(root);
+        q.push(NULL);
+        vector<pair<int, int>> levelVect;
+        while (!q.empty())
         {
-            strVect->push_back(path);
-            return;
+            TreeNode *present = q.front();
+            q.pop();
+            if (present != NULL)
+            {
+                if (present->left)
+                {
+                    levelVect.push_back(make_pair(present->val, present->left->val));
+                    q.push(present->left);
+                }
+                if (present->right)
+                {
+                    levelVect.push_back(make_pair(present->val, present->right->val));
+                    q.push(present->right);
+                }
+            }
+            else
+            {
+                if (!q.empty())
+                {
+                    int parent1 = -1, parent2 = -1;
+                    for (pair<int, int> pairNode : levelVect)
+                    {
+                        if (pairNode.second == x)
+                            parent1 = pairNode.first;
+                        if (pairNode.second == y)
+                            parent2 = pairNode.first;
+                        if (parent1 != -1 && parent2 != -1)
+                            break;
+                    }
+                    if (parent1 != -1 || parent2 != -1)
+                    {
+                        if (parent1 == -1 || parent2 == -1 || parent1 == parent2)
+                        {
+                            cout << parent1 << " " << parent2 << endl;
+                            return false;
+                        }
+                        else
+                            return true;
+                    }
+                    levelVect.clear();
+                    q.push(NULL);
+                }
+            }
         }
-        if (root->left)
-        {
-            path += "->";
-            treePathMake(root->left, path, strVect);
-        }
-        if (root->right)
-        {
-            if (!root->left)
-                path += "->";
-            treePathMake(root->right, path, strVect);
-        }
-    }
-    vector<string> binaryTreePaths(TreeNode *root)
-    {
-        vector<string> ansVect;
-        treePathMake(root, "", &ansVect);
-        return ansVect;
+        return false;
     }
 };
 
@@ -147,12 +177,7 @@ int main()
     }
 
     Solution st;
-    vector<string> result = st.binaryTreePaths(root);
-
-    for (string str : result)
-    {
-        cout << str << endl;
-    }
+    cout << "Res: " << st.isCousins(root, 4, 3) << endl;
 
     // TreeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
