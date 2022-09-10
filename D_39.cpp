@@ -97,6 +97,51 @@ TreeNode *searchNode(TreeNode *root, int key)
         searchNode(root->right, key);
 }
 
+TreeNode *inOrderSucc(TreeNode *root)
+{
+    TreeNode *curr = root;
+    while (curr->left != NULL)
+    {
+        curr = curr->left;
+    }
+    return curr;
+}
+
+TreeNode *deletionBST(TreeNode *root, int key)
+{
+    if (key < root->val)
+    {
+        root->left = deletionBST(root->left, key);
+    }
+    else if (key > root->val)
+    {
+        root->right = deletionBST(root->right, key);
+    }
+    else
+    {
+        if (root->left == NULL)
+        {
+            TreeNode *temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            TreeNode *temp = root->left;
+            free(root);
+            return temp;
+        }
+        else
+        {
+            TreeNode *temp = inOrderSucc(root->right);
+            root->val = temp->val;
+            root->right = deletionBST(root->right, temp->val);
+        }
+
+        return root;
+    }
+}
+
 int main()
 {
     int n;
@@ -111,13 +156,19 @@ int main()
 
     string inOrderStr;
     inOrder(root, inOrderStr);
+    cout << inOrderStr << endl
+         << endl;
+
+    // TreeNode *searchRes = searchNode(root, 35);
+    // if (searchRes != NULL)
+    //     cout << searchRes->val << " is founded!" << endl;
+    // else
+    //     cout << "Value is not found!" << endl;
+
+    root = deletionBST(root, 5);
+
+    inOrderStr = "";
+    inOrder(root, inOrderStr);
     cout << inOrderStr << endl;
-
-    TreeNode *searchRes = searchNode(root, 35);
-    if (searchRes != NULL)
-        cout << searchRes->val << " is founded!" << endl;
-    else
-        cout << "Value is not found!" << endl;
-
     return 0;
 }
