@@ -85,6 +85,18 @@ TreeNode *insertionBST(TreeNode *root, int value)
     return root;
 }
 
+TreeNode *searchNode(TreeNode *root, int key)
+{
+    if (root == NULL)
+        return NULL;
+    if (root->val == key)
+        return root;
+    if (root->val > key)
+        searchNode(root->left, key);
+    else if (root->val < key)
+        searchNode(root->right, key);
+}
+
 int main()
 {
     int n;
@@ -100,6 +112,12 @@ int main()
     string inOrderStr;
     inOrder(root, inOrderStr);
     cout << inOrderStr << endl;
+
+    TreeNode *searchRes = searchNode(root, 35);
+    if (searchRes != NULL)
+        cout << searchRes->val << " is founded!" << endl;
+    else
+        cout << "Value is not found!" << endl;
 
     return 0;
 }
