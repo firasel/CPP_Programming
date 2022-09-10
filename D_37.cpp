@@ -91,20 +91,36 @@ void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    TreeNode *traverseAllNode(TreeNode *root, int x, int y)
+    bool rootChk = false;
+    int rootVal;
+    TreeNode *LCAOfTwoNode(TreeNode *root, int x, int y)
     {
         if (root == NULL || root->val == x || root->val == y)
             return root;
-        TreeNode *root1 = traverseAllNode(root->left, x, y);
-        TreeNode *root2 = traverseAllNode(root->right, x, y);
+        TreeNode *root1 = LCAOfTwoNode(root->left, x, y);
+        TreeNode *root2 = LCAOfTwoNode(root->right, x, y);
         if (root1 && root2)
             return root;
         else
             return root1 ? root1 : root2;
     }
-    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+    string inOrder(TreeNode *root, string str, int startValue, int destValue)
     {
-        return traverseAllNode(root, p->val, q->val);
+        if (root == NULL || root->val == startValue || root->val == destValue)
+            return str;
+        string left = inOrder(root->left, str, startValue, destValue);
+        str += to_string(root->val);
+        string right = inOrder(root->right, str, startValue, destValue);
+        return left + right;
+    }
+    string getDirections(TreeNode *root, int startValue, int destValue)
+    {
+        if (root == NULL)
+            return "";
+        TreeNode *lcaNode = LCAOfTwoNode(root, startValue, destValue);
+        // rootVal = lcaNode->val;
+        string result = inOrder(lcaNode, "", startValue, destValue);
+        return result;
     }
 };
 
@@ -136,12 +152,12 @@ int main()
     }
 
     Solution st;
-    TreeNode *x = new TreeNode(5);
-    TreeNode *y = new TreeNode(1);
-    TreeNode *result = st.lowestCommonAncestor(root, x, y);
+
+    string result = st.getDirections(root, 3, 6);
+    cout << result << endl;
 
     // TreeNode *root2 = st.pruneTree(root);
-    printTree(result, 0);
+    printTree(root, 0);
     // printTree(root2, 0);
 
     return 0;
