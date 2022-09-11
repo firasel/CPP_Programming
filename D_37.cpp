@@ -91,36 +91,26 @@ void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    bool rootChk = false;
-    int rootVal;
-    TreeNode *LCAOfTwoNode(TreeNode *root, int x, int y)
+    vector<int> nums;
+    void inOrder(TreeNode *root)
     {
-        if (root == NULL || root->val == x || root->val == y)
-            return root;
-        TreeNode *root1 = LCAOfTwoNode(root->left, x, y);
-        TreeNode *root2 = LCAOfTwoNode(root->right, x, y);
-        if (root1 && root2)
-            return root;
-        else
-            return root1 ? root1 : root2;
+        if (root->left)
+            inOrder(root->left);
+        nums.push_back(root->val);
+        if (root->right)
+            inOrder(root->right);
     }
-    string inOrder(TreeNode *root, string str, int startValue, int destValue)
-    {
-        if (root == NULL || root->val == startValue || root->val == destValue)
-            return str;
-        string left = inOrder(root->left, str, startValue, destValue);
-        str += to_string(root->val);
-        string right = inOrder(root->right, str, startValue, destValue);
-        return left + right;
-    }
-    string getDirections(TreeNode *root, int startValue, int destValue)
+    bool isValidBST(TreeNode *root)
     {
         if (root == NULL)
-            return "";
-        TreeNode *lcaNode = LCAOfTwoNode(root, startValue, destValue);
-        // rootVal = lcaNode->val;
-        string result = inOrder(lcaNode, "", startValue, destValue);
-        return result;
+            true;
+        inOrder(root);
+        for (int i = 0; i < nums.size() - 1; i++)
+        {
+            if (nums.at(i) > nums.at(i + 1) && nums.at(i) == nums.at(i + 1))
+                return false;
+        }
+        return true;
     }
 };
 
@@ -153,8 +143,7 @@ int main()
 
     Solution st;
 
-    string result = st.getDirections(root, 3, 6);
-    cout << result << endl;
+    cout << st.isValidBST(root) << endl;
 
     // TreeNode *root2 = st.pruneTree(root);
     printTree(root, 0);
