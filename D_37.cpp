@@ -91,62 +91,68 @@ void insertNodeAtTree(TreeNode *root, int key, int leftValue, int rightValue)
 class Solution
 {
 public:
-    vector<int> nums;
+    vector<int> numsArr;
     void inOrder(TreeNode *root)
     {
         if (root->left)
             inOrder(root->left);
-        nums.push_back(root->val);
+        numsArr.push_back(root->val);
         if (root->right)
             inOrder(root->right);
     }
-    bool isValidBST(TreeNode *root)
+    TreeNode *createBST(vector<int> nums, int start, int end)
     {
-        if (root == NULL)
-            true;
-        inOrder(root);
-        for (int i = 0; i < nums.size() - 1; i++)
-        {
-            if (nums.at(i) > nums.at(i + 1) && nums.at(i) == nums.at(i + 1))
-                return false;
-        }
-        return true;
+        if (start >= end)
+            return NULL;
+        int mid = (start + end) / 2;
+        TreeNode *root = new TreeNode(nums[mid]);
+        root->left = createBST(nums, start, mid);
+        root->right = createBST(nums, mid + 1, end);
+        return root;
+    }
+    TreeNode *sortedArrayToBST(vector<int> &nums)
+    {
+        TreeNode *root;
+        if (nums.size() == 0)
+            return root;
+        root = createBST(nums, 0, nums.size());
+        return root;
     }
 };
 
 int main()
 {
-    int a;
-    cin >> a;
-    TreeNode *root = new TreeNode(a);
-    queue<TreeNode *> q;
-    q.push(root);
-    while (!q.empty())
-    {
-        TreeNode *presentRoot = q.front();
-        q.pop();
-        int x, y;
-        cin >> x >> y;
-        TreeNode *n1 = NULL;
-        TreeNode *n2 = NULL;
-        if (x != -1)
-            n1 = new TreeNode(x);
-        if (y != -1)
-            n2 = new TreeNode(y);
-        presentRoot->left = n1;
-        presentRoot->right = n2;
-        if (n1 != NULL)
-            q.push(n1);
-        if (n2 != NULL)
-            q.push(n2);
-    }
+    // int a;
+    // cin >> a;
+    // TreeNode *root = new TreeNode(a);
+    // queue<TreeNode *> q;
+    // q.push(root);
+    // while (!q.empty())
+    // {
+    //     TreeNode *presentRoot = q.front();
+    //     q.pop();
+    //     int x, y;
+    //     cin >> x >> y;
+    //     TreeNode *n1 = NULL;
+    //     TreeNode *n2 = NULL;
+    //     if (x != -1)
+    //         n1 = new TreeNode(x);
+    //     if (y != -1)
+    //         n2 = new TreeNode(y);
+    //     presentRoot->left = n1;
+    //     presentRoot->right = n2;
+    //     if (n1 != NULL)
+    //         q.push(n1);
+    //     if (n2 != NULL)
+    //         q.push(n2);
+    // }
 
     Solution st;
-
-    cout << st.isValidBST(root) << endl;
+    vector<int> nums = {0, 1, 2, 3, 4, 5};
+    TreeNode *root2 = st.sortedArrayToBST(nums);
 
     // TreeNode *root2 = st.pruneTree(root);
-    printTree(root, 0);
+    printTree(root2, 0);
     // printTree(root2, 0);
 
     return 0;
