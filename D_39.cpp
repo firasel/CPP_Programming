@@ -85,19 +85,7 @@ TreeNode *insertionBST(TreeNode *root, int value)
     return root;
 }
 
-TreeNode *searchNode(TreeNode *root, int key)
-{
-    if (root == NULL)
-        return NULL;
-    if (root->val == key)
-        return root;
-    if (root->val > key)
-        searchNode(root->left, key);
-    else if (root->val < key)
-        searchNode(root->right, key);
-}
-
-TreeNode *inOrderSucc(TreeNode *root)
+TreeNode *inOrderSuccessor(TreeNode *root)
 {
     TreeNode *curr = root;
     while (curr->left != NULL)
@@ -107,19 +95,26 @@ TreeNode *inOrderSucc(TreeNode *root)
     return curr;
 }
 
-TreeNode *deletionBST(TreeNode *root, int key)
+TreeNode *deleteNode(TreeNode *root, int key)
 {
-    if (key < root->val)
+    if (root == NULL)
+        return root;
+    if (root->val > key)
     {
-        root->left = deletionBST(root->left, key);
+        root->left = deleteNode(root->left, key);
     }
-    else if (key > root->val)
+    else if (root->val < key)
     {
-        root->right = deletionBST(root->right, key);
+        root->right = deleteNode(root->right, key);
     }
-    else
+    else if (root->val == key)
     {
-        if (root->left == NULL)
+        if (!root->left && !root->right)
+        {
+            free(root);
+            return NULL;
+        }
+        else if (root->left == NULL)
         {
             TreeNode *temp = root->right;
             free(root);
@@ -133,13 +128,12 @@ TreeNode *deletionBST(TreeNode *root, int key)
         }
         else
         {
-            TreeNode *temp = inOrderSucc(root->right);
+            TreeNode *temp = inOrderSuccessor(root->right);
             root->val = temp->val;
-            root->right = deletionBST(root->right, temp->val);
+            root->right = deleteNode(root->right, temp->val);
         }
-
-        return root;
     }
+    return root;
 }
 
 int main()
@@ -159,13 +153,7 @@ int main()
     cout << inOrderStr << endl
          << endl;
 
-    // TreeNode *searchRes = searchNode(root, 35);
-    // if (searchRes != NULL)
-    //     cout << searchRes->val << " is founded!" << endl;
-    // else
-    //     cout << "Value is not found!" << endl;
-
-    root = deletionBST(root, 5);
+    root = deleteNode(root, 3);
 
     inOrderStr = "";
     inOrder(root, inOrderStr);
