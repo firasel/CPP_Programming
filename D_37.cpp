@@ -118,6 +118,46 @@ public:
         root = createBST(nums, 0, nums.size());
         return root;
     }
+
+    vector<vector<int>> zigzagLevelOrder(TreeNode *root)
+    {
+        vector<vector<int>> result;
+        if (root == NULL)
+            return result;
+        stack<TreeNode *> current;
+        stack<TreeNode *> next;
+        bool leftToRight = true;
+        current.push(root);
+        vector<int> levelVect;
+        while (!current.empty())
+        {
+            TreeNode *temp = current.top();
+            current.pop();
+            levelVect.push_back(temp->val);
+            if (leftToRight)
+            {
+                if (temp->left)
+                    next.push(temp->left);
+                if (temp->right)
+                    next.push(temp->right);
+            }
+            else
+            {
+                if (temp->right)
+                    next.push(temp->right);
+                if (temp->left)
+                    next.push(temp->left);
+            }
+            if (current.empty())
+            {
+                leftToRight = !leftToRight;
+                result.push_back(levelVect);
+                levelVect.clear();
+                swap(current, next);
+            }
+        }
+        return result;
+    }
 };
 
 int main()
