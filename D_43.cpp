@@ -1,87 +1,80 @@
-#include <bits/stdc++.h>
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <map>
+#include <math.h>
 using namespace std;
 
-class ListNode
+int steadyGene(string gene)
 {
-public:
-    int val;
-    ListNode *next;
-    ListNode(int v)
+    map<char, int> uniCharMap;
+    for (char c : gene)
+        uniCharMap[c]++;
+    int len = gene.size() / 4;
+    if (uniCharMap['A'] <= len && uniCharMap['C'] <= len && uniCharMap['G'] <= len && uniCharMap['T'] <= len)
     {
-        val = v;
-        next = NULL;
+        return 0;
     }
-};
-
-class Solution
-{
-public:
-    ListNode *head = NULL;
-    void insertNode(ListNode *&head, int num)
+    int minNum = gene.size();
+    int i = 0, j = 0;
+    while (j < gene.size())
     {
-        if (head == NULL)
-        {
-            head = new ListNode(num);
-            return;
-        }
-        ListNode *temp = head;
-        while (temp->next != NULL)
-            temp = temp->next;
-        temp->next = new ListNode(num);
-    }
 
-    void linkedListSum(int extra, ListNode *l1, ListNode *l2)
-    {
-        if (extra < 0 && !l1 && !l2)
-            return;
-        extra = (extra == -1 ? 0 : extra) + (l1 ? l1->val : 0) + (l2 ? l2->val : 0);
-        cout << extra << endl;
-
-        if (extra < 10)
+        if (uniCharMap['A'] <= len && uniCharMap['C'] <= len && uniCharMap['G'] <= len && uniCharMap['T'] <= len)
         {
-            insertNode(head, extra);
-            extra = -1;
-            linkedListSum(extra, l1->next, l2->next);
+            uniCharMap[gene[i]]++;
+            i++;
+            minNum = min(minNum, (j - i + 1));
         }
         else
         {
-            int lastNum = extra % 10;
-            insertNode(head, lastNum);
-            extra /= 10;
-            linkedListSum(extra, l1->next, l2->next);
+            uniCharMap[gene[j]]--;
+            j++;
         }
     }
-
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
-    {
-        head = NULL;
-        linkedListSum(0, l1, l2);
-        return head;
-    }
-};
+    return minNum;
+}
 
 int main()
 {
+    int option;
+    int selectNum;
+    string currStr;
+    stack<string> historySt;
 
-    ListNode *l1 = new ListNode(2);
-    ListNode *l1N = new ListNode(4);
-    ListNode *l1NN = new ListNode(3);
-    l1->next = l1N;
-    l1N->next = l1NN;
-
-    ListNode *l2 = new ListNode(5);
-    ListNode *l2N = new ListNode(6);
-    ListNode *l2NN = new ListNode(4);
-    l2->next = l2N;
-    l2N->next = l2NN;
-
-    Solution sc;
-    ListNode *head = sc.addTwoNumbers(l1, l2);
-    while (head != NULL)
+    cin >> option;
+    while (option > 0)
     {
-        cout << head->val << " ";
-        head = head->next;
+        cin >> selectNum;
+        if (selectNum == 1)
+        {
+            string addStr;
+            cin >> addStr;
+            historySt.push(currStr);
+            currStr += addStr;
+        }
+        else if (selectNum == 2)
+        {
+            int l;
+            cin >> l;
+            historySt.push(currStr);
+            currStr.erase(currStr.size() - l);
+        }
+        else if (selectNum == 3)
+        {
+            int k;
+            cin >> k;
+            cout << currStr[k - 1] << endl;
+        }
+        else
+        {
+            currStr = historySt.top();
+            historySt.pop();
+        }
+        option--;
     }
-
     return 0;
 }
