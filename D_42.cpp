@@ -32,6 +32,44 @@ public:
                 cout << " -> ";
         }
     }
+
+    void BFS(int source)
+    {
+        vector<bool> visisted(v, false);
+        queue<int> Q;
+        visisted[source] = true;
+        Q.push(source);
+
+        while (!Q.empty())
+        {
+            int u = Q.front();
+            cout << u << " ";
+            Q.pop();
+            for (auto element : adj[u])
+            {
+                if (visisted[element.first] != true)
+                {
+                    visisted[element.first] = true;
+                    Q.push(element.first);
+                }
+            }
+        }
+    }
+
+    void DFS(int source)
+    {
+        static vector<bool> visisted(v, false);
+        queue<int> Q;
+        visisted[source] = true;
+        cout << source << " ";
+        for (auto element : adj[source])
+        {
+            if (visisted[element.first] != true)
+            {
+                DFS(element.first);
+            }
+        }
+    }
 };
 
 int main()
@@ -51,6 +89,13 @@ int main()
         g.printNeighbour(i);
         cout << endl;
     }
+
+    cout << endl
+         << endl;
+    g.BFS(4);
+    cout << endl
+         << endl;
+    g.DFS(0);
 
     return 0;
 }

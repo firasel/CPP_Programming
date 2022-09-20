@@ -1,80 +1,133 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
-#include <stack>
-#include <map>
-#include <math.h>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-int steadyGene(string gene)
-{
-    map<char, int> uniCharMap;
-    for (char c : gene)
-        uniCharMap[c]++;
-    int len = gene.size() / 4;
-    if (uniCharMap['A'] <= len && uniCharMap['C'] <= len && uniCharMap['G'] <= len && uniCharMap['T'] <= len)
-    {
-        return 0;
-    }
-    int minNum = gene.size();
-    int i = 0, j = 0;
-    while (j < gene.size())
-    {
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
 
-        if (uniCharMap['A'] <= len && uniCharMap['C'] <= len && uniCharMap['G'] <= len && uniCharMap['T'] <= len)
+/*
+ * Complete the 'contacts' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts 2D_STRING_ARRAY queries as parameter.
+ */
+
+vector<int> contacts(vector<vector<string>> queries)
+{
+    vector<int> result;
+    vector<string> currVect;
+    for (vector<string> strVect : queries)
+    {
+        if (strVect[0] == "find")
         {
-            uniCharMap[gene[i]]++;
-            i++;
-            minNum = min(minNum, (j - i + 1));
+            string findStr = strVect[1];
+            int count = 0;
+            for (auto str : currVect)
+            {
+                if (str.find(findStr) != -1)
+                {
+                    ++count;
+                }
+            }
+            result.push_back(count);
         }
         else
         {
-            uniCharMap[gene[j]]--;
-            j++;
+            if (strVect[1].size() > 0 && strVect[1].size() < 22)
+            {
+                currVect.push_back(strVect[1]);
+            }
         }
     }
-    return minNum;
+
+    return result;
 }
 
 int main()
 {
-    int option;
-    int selectNum;
-    string currStr;
-    stack<string> historySt;
+    ofstream fout(getenv("OUTPUT_PATH"));
 
-    cin >> option;
-    while (option > 0)
+    string queries_rows_temp;
+    getline(cin, queries_rows_temp);
+
+    int queries_rows = stoi(ltrim(rtrim(queries_rows_temp)));
+
+    vector<vector<string>> queries(queries_rows);
+
+    for (int i = 0; i < queries_rows; i++)
     {
-        cin >> selectNum;
-        if (selectNum == 1)
+        queries[i].resize(2);
+
+        string queries_row_temp_temp;
+        getline(cin, queries_row_temp_temp);
+
+        vector<string> queries_row_temp = split(rtrim(queries_row_temp_temp));
+
+        for (int j = 0; j < 2; j++)
         {
-            string addStr;
-            cin >> addStr;
-            historySt.push(currStr);
-            currStr += addStr;
+            string queries_row_item = queries_row_temp[j];
+
+            queries[i][j] = queries_row_item;
         }
-        else if (selectNum == 2)
-        {
-            int l;
-            cin >> l;
-            historySt.push(currStr);
-            currStr.erase(currStr.size() - l);
-        }
-        else if (selectNum == 3)
-        {
-            int k;
-            cin >> k;
-            cout << currStr[k - 1] << endl;
-        }
-        else
-        {
-            currStr = historySt.top();
-            historySt.pop();
-        }
-        option--;
     }
+
+    vector<int> result = contacts(queries);
+
+    for (size_t i = 0; i < result.size(); i++)
+    {
+        fout << result[i];
+
+        if (i != result.size() - 1)
+        {
+            fout << "\n";
+        }
+    }
+
+    fout << "\n";
+
+    fout.close();
+
     return 0;
+}
+
+string ltrim(const string &str)
+{
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
+
+    return s;
+}
+
+string rtrim(const string &str)
+{
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end());
+
+    return s;
+}
+
+vector<string> split(const string &str)
+{
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos)
+    {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
 }
