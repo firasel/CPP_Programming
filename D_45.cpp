@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <queue>
 #include <math.h>
+#include <string.h>
 using namespace std;
 
 class TreeNode
@@ -71,6 +72,48 @@ void insertNode(TreeNode *&root, int val)
     }
 }
 
+string colorMixing(int n, string s)
+{
+    string result;
+    int i = 0, j = 1;
+    while (j < n)
+    {
+        if ((s[i] == 'R' && s[j] == 'B') || (s[i] == 'B' && s[j] == 'R'))
+        {
+            result += 'P';
+            i++;
+            j++;
+        }
+        else if ((s[i] == 'R' && s[j] == 'G') || (s[i] == 'G' && s[j] == 'R'))
+        {
+            result += 'Y';
+            i++;
+            j++;
+        }
+        else if ((s[i] == 'B' && s[j] == 'G') || (s[i] == 'G' && s[j] == 'B'))
+        {
+            result += 'C';
+            i++;
+            j++;
+        }
+        else if (s[i] != s[j])
+        {
+            result.push_back(s[i]);
+            result.push_back(s[j]);
+        }
+        else if (s[i] == s[j])
+        {
+            i++;
+            j++;
+        }
+        i++;
+        j++;
+    }
+    if (n % 2 != 0)
+        result += s[n - 1];
+    return result;
+}
+
 int main()
 {
     // int a;
@@ -123,12 +166,20 @@ int main()
     //     q--;
     // }
 
-    int l;
-    cin >> l;
-    int nodes = pow(2, l - 1);
-    int val = pow(2, l - 2);
-    val = val > 0 ? val : 1;
-    cout << nodes * val << endl;
-    cout << pow(2, 18) << endl;
+    int t;
+    cin >> t;
+    while (t)
+    {
+        int n;
+        cin >> n;
+        string s, result = "";
+        cin >> s;
+        result = colorMixing(n, s);
+        result = colorMixing(result.size(), result);
+        if (result != "")
+            cout << result << endl;
+        t--;
+    }
+
     return 0;
 }
