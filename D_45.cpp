@@ -121,44 +121,36 @@ int main()
     int n, e, l;
     cin >> n >> e;
     map<int, vector<int>> levelShop;
-    // levelShop[0].push_back(0);
     for (int i = 0; i < e; i++)
     {
         int a, b;
         cin >> a >> b;
-        int level = -1;
-        for (auto shops : levelShop)
-            for (int shop : shops.second)
-                if (shop == a)
-                    level = shops.first;
-        if (level == -1)
-        {
-            levelShop[0].push_back(a);
-            level = 0;
-        }
-        levelShop[level + 1].push_back(b);
+        levelShop[a].push_back(b);
+        levelShop[b].push_back(a);
     }
 
     cin >> l;
-    sort(levelShop[l].begin(), levelShop[l].end());
     map<int, bool> visited;
-    for (int shop : levelShop[l])
+    queue<pair<int, int>> q;
+    q.push(make_pair(0, 0));
+    visited[0] = true;
+
+    while (!q.empty())
     {
-        if (visited[shop] != true)
+        auto node = q.front();
+        q.pop();
+        if (node.first == l)
         {
-            cout << shop << " ";
-            visited[shop] = true;
+            cout << node.second << " ";
         }
-    }
-    cout << endl;
-    for (auto element : levelShop)
-    {
-        cout << element.first << ": ";
-        for (int i : element.second)
+        for (auto it : levelShop[node.second])
         {
-            cout << i << " ";
+            if (!visited[it])
+            {
+                visited[it] = true;
+                q.push(make_pair((node.first + 1), it));
+            }
         }
-        cout << endl;
     }
 
     return 0;
