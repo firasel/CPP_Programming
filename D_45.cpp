@@ -3,6 +3,8 @@
 #include <queue>
 #include <math.h>
 #include <string.h>
+#include <map>
+#include <vector>
 using namespace std;
 
 class TreeNode
@@ -116,69 +118,47 @@ string colorMixing(int n, string s)
 
 int main()
 {
-    // int a;
-    // cin >> a;
-    // TreeNode *root = NULL;
-    // insertNode(root, a);
-    // queue<bool> treeQueue;
-    // treeQueue.push(true);
-    // while (!treeQueue.empty())
-    // {
-    //     treeQueue.pop();
-    //     int x, y;
-    //     cin >> x >> y;
-    //     bool n1 = false;
-    //     bool n2 = false;
-    //     if (x != -1)
-    //     {
-    //         n1 = true;
-    //         insertNode(root, x);
-    //     }
-    //     if (y != -1)
-    //     {
-    //         n2 = true;
-    //         insertNode(root, y);
-    //     }
-    //     if (n1)
-    //         treeQueue.push(n1);
-    //     if (n2)
-    //         treeQueue.push(n2);
-    // }
-
-    // int q;
-    // cin >> q;
-    // while (q)
-    // {
-    //     int op;
-    //     cin >> op;
-    //     if (op == 1)
-    //     {
-    //         int val;
-    //         cin >> val;
-    //         insertNode(root, val);
-    //     }
-    //     else if (op == 2)
-    //     {
-    //         int delValue;
-    //         removeMaxToTree(root, delValue);
-    //         cout << delValue << endl;
-    //     }
-    //     q--;
-    // }
-
-    int t;
-    cin >> t;
-    while (t)
+    int n, e, l;
+    cin >> n >> e;
+    map<int, vector<int>> levelShop;
+    // levelShop[0].push_back(0);
+    for (int i = 0; i < e; i++)
     {
-        int n;
-        cin >> n;
-        string s, result = "";
-        cin >> s;
-        result = colorMixing(n, s);
-        result = colorMixing(result.size(), result);
-        if (result != "")
-            cout << result << endl;
-        t--;
+        int a, b;
+        cin >> a >> b;
+        int level = -1;
+        for (auto shops : levelShop)
+            for (int shop : shops.second)
+                if (shop == a)
+                    level = shops.first;
+        if (level == -1)
+        {
+            levelShop[0].push_back(a);
+            level = 0;
+        }
+        levelShop[level + 1].push_back(b);
+    }
+
+    cin >> l;
+    sort(levelShop[l].begin(), levelShop[l].end());
+    map<int, bool> visited;
+    for (int shop : levelShop[l])
+    {
+        if (visited[shop] != true)
+        {
+            cout << shop << " ";
+            visited[shop] = true;
+        }
+    }
+    cout << endl;
+    for (auto element : levelShop)
+    {
+        cout << element.first << ": ";
+        for (int i : element.second)
+        {
+            cout << i << " ";
+        }
+        cout << endl;
     }
 
     return 0;
