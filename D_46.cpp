@@ -4,25 +4,42 @@ using namespace std;
 class Solution
 {
 public:
-    int removeDuplicates(vector<int> &nums)
+    int lengthOfLongestSubstring(string s)
     {
-        int k = 0;
-        for (int i = 0; i < nums.size(); i++)
+        map<char, int> visited;
+        int max = 0, count = 0;
+        for (int i = 1; i <= s.length(); i++)
         {
-            if (nums[k] != nums[i])
+            if (!visited[s[i - 1]])
             {
-                nums[k + 1] = nums[i];
-                k++;
+                visited[s[i - 1]] = i;
+                count++;
+            }
+            else
+            {
+                if (max < count)
+                {
+                    max = count;
+                }
+                s = s.substr(visited[s[i - 1]]);
+                i = 0;
+                count = 0;
+                visited.clear();
             }
         }
-        return k + 1;
+        if (max < count)
+        {
+            max = count;
+        }
+
+        return max;
     }
 };
 
 int main()
 {
     Solution st;
-    vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 7, 7, 7};
-    cout << st.removeDuplicates(nums) << endl;
+    int res = st.lengthOfLongestSubstring(" ");
+    cout << res << endl;
     return 0;
 }
