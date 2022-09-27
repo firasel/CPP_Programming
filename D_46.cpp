@@ -4,42 +4,34 @@ using namespace std;
 class Solution
 {
 public:
-    int lengthOfLongestSubstring(string s)
+    int removeElement(vector<int> &nums, int val)
     {
-        map<char, int> visited;
-        int max = 0, count = 0;
-        for (int i = 1; i <= s.length(); i++)
+        int count = 0, last = nums.size() - 1;
+        for (int i = 0; i < nums.size(); i++)
         {
-            if (!visited[s[i - 1]])
+            if (nums[i] == val)
             {
-                visited[s[i - 1]] = i;
-                count++;
+                while (true && last >= 0)
+                {
+                    if (val != nums[last])
+                        break;
+                    last--;
+                }
+                nums[i] = last > 0 ? nums[last] : 0;
+                last--;
             }
             else
-            {
-                if (max < count)
-                {
-                    max = count;
-                }
-                s = s.substr(visited[s[i - 1]]);
-                i = 0;
-                count = 0;
-                visited.clear();
-            }
+                count++;
         }
-        if (max < count)
-        {
-            max = count;
-        }
-
-        return max;
+        return count;
     }
 };
 
 int main()
 {
     Solution st;
-    int res = st.lengthOfLongestSubstring(" ");
+    vector<int> nums = {0, 1, 2, 2, 3, 0, 4, 2};
+    int res = st.removeElement(nums, 2);
     cout << res << endl;
     return 0;
 }
