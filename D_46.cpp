@@ -4,34 +4,37 @@ using namespace std;
 class Solution
 {
 public:
-    int removeElement(vector<int> &nums, int val)
+    int removeDuplicates(vector<int> &nums)
     {
-        int count = 0, last = nums.size() - 1;
-        for (int i = 0; i < nums.size(); i++)
+        int count = 0;
+        int i;
+        for (i = 0; i < nums.size() - 1; i++)
         {
-            if (nums[i] == val)
+            if (nums[i] == nums[i + 1])
             {
-                while (true && last >= 0)
+                count++;
+                if (count > 1)
                 {
-                    if (val != nums[last])
-                        break;
-                    last--;
+                    nums.erase(nums.begin() + i + 1);
+                    i--;
                 }
-                nums[i] = last > 0 ? nums[last] : 0;
-                last--;
             }
             else
-                count++;
+            {
+                count = 0;
+            }
         }
-        return count;
+        return i + 1;
     }
 };
 
 int main()
 {
     Solution st;
-    vector<int> nums = {0, 1, 2, 2, 3, 0, 4, 2};
-    int res = st.removeElement(nums, 2);
+    vector<int> nums = {0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
+    int res = st.removeDuplicates(nums);
+
     cout << res << endl;
+
     return 0;
 }
