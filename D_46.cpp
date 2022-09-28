@@ -1,40 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class ListNode
+{
+public:
+    int val;
+    ListNode *next;
+    ListNode(int val)
+    {
+        this->val = val;
+        next = NULL;
+    }
+};
+
 class Solution
 {
 public:
-    int removeDuplicates(vector<int> &nums)
+    ListNode *deleteDuplicates(ListNode *head)
     {
-        int count = 0;
-        int i;
-        for (i = 0; i < nums.size() - 1; i++)
+        if (head == NULL || head->next == NULL)
+            return head;
+        ListNode *prev = NULL;
+        ListNode *curr = head;
+        ListNode *next = head->next;
+        int dt;
+        while (curr != NULL)
         {
-            if (nums[i] == nums[i + 1])
+            if (next != NULL && curr->val == next->val)
             {
-                count++;
-                if (count > 1)
-                {
-                    nums.erase(nums.begin() + i + 1);
-                    i--;
-                }
+                ListNode *temp = next->next;
+                ListNode *del1 = curr;
+                ListNode *del2 = next;
+                if (prev != NULL)
+                    prev->next = temp;
+                else
+                    head = temp;
+                curr = temp;
+                next = temp != NULL ? temp->next : temp;
+                dt = del1->val;
+                delete del1;
+                delete del2;
+            }
+            else if (dt == curr->val)
+            {
+                ListNode *temp = curr->next;
+                ListNode *del1 = curr;
+                if (prev != NULL)
+                    prev->next = temp;
+                else
+                    head = temp;
+                curr = temp;
+                next = temp != NULL ? temp->next : temp;
+                delete del1;
             }
             else
             {
-                count = 0;
+                prev = curr;
+                curr = next;
+                next = next != NULL ? next->next : next;
             }
         }
-        return i + 1;
+        return head;
     }
 };
 
 int main()
 {
-    Solution st;
-    vector<int> nums = {0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
-    int res = st.removeDuplicates(nums);
-
-    cout << res << endl;
-
     return 0;
 }
