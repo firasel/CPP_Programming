@@ -13,58 +13,53 @@ public:
     }
 };
 
+class TreeNode
+{
+public:
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int val)
+    {
+        this->val = val;
+        left = NULL;
+        right = NULL;
+    }
+};
+
 class Solution
 {
 public:
-    ListNode *deleteDuplicates(ListNode *head)
+    TreeNode *tHead = NULL;
+    TreeNode *createBST(vector<int> nums, int start, int end)
     {
-        if (head == NULL || head->next == NULL)
-            return head;
-        ListNode *prev = NULL;
-        ListNode *curr = head;
-        ListNode *next = head->next;
-        int dt;
-        while (curr != NULL)
-        {
-            if (next != NULL && curr->val == next->val)
-            {
-                ListNode *temp = next->next;
-                ListNode *del1 = curr;
-                ListNode *del2 = next;
-                if (prev != NULL)
-                    prev->next = temp;
-                else
-                    head = temp;
-                curr = temp;
-                next = temp != NULL ? temp->next : temp;
-                dt = del1->val;
-                delete del1;
-                delete del2;
-            }
-            else if (dt == curr->val)
-            {
-                ListNode *temp = curr->next;
-                ListNode *del1 = curr;
-                if (prev != NULL)
-                    prev->next = temp;
-                else
-                    head = temp;
-                curr = temp;
-                next = temp != NULL ? temp->next : temp;
-                delete del1;
-            }
-            else
-            {
-                prev = curr;
-                curr = next;
-                next = next != NULL ? next->next : next;
-            }
-        }
-        return head;
+        if (start >= end)
+            return NULL;
+        int mid = (start + end) / 2;
+        TreeNode *root = new TreeNode(nums[mid]);
+        root->left = createBST(nums, start, mid);
+        root->right = createBST(nums, mid + 1, end);
+        return root;
+    }
+
+    TreeNode *sortedListToBST(ListNode *head)
+    {
+        // if (head == NULL)
+        //     return tHead;
+        vector<int> nums = {1, 2, 3, 4, 5};
+        // while (head != NULL)
+        // {
+        //     nums.push_back(head->val);
+        //     head = head->next;
+        // }
+        createBST(nums, 0, nums.size());
+        return tHead;
     }
 };
 
 int main()
 {
+    Solution st;
+    st.sortedListToBST(NULL);
     return 0;
 }
