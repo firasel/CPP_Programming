@@ -1,34 +1,67 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution
+class ListNode
 {
 public:
-    int singleNumber(vector<int> &nums)
+    int val;
+    ListNode *next;
+    ListNode(int val)
     {
-        sort(nums.begin(), nums.end());
-        int uniNum;
-        bool chk = false;
-        for (int i = 0; i < nums.size() - 1; i++)
-        {
-            if (nums[i] == nums[i + 1])
-                i++;
-            else
-            {
-                uniNum = nums[i];
-                chk = true;
-            }
-        }
-        if (!chk && nums.size() % 2 == 1)
-            uniNum = nums[nums.size() - 1];
-        return uniNum;
+        this->val = val;
+        next = NULL;
+    }
+};
+
+class TreeNode
+{
+public:
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int val)
+    {
+        this->val = val;
+        left = NULL;
+        right = NULL;
+    }
+};
+
+class BSTIterator
+{
+public:
+    queue<int> allNodes;
+    BSTIterator(TreeNode *root)
+    {
+        while (!allNodes.empty())
+            allNodes.pop();
+        preOrder(root);
+    }
+    void preOrder(TreeNode *root)
+    {
+        if (root == NULL)
+            return;
+        preOrder(root->left);
+        allNodes.push(root->val);
+        preOrder(root->right);
+    }
+
+    int next()
+    {
+        if (allNodes.empty())
+            return NULL;
+        int num = allNodes.front();
+        allNodes.pop();
+        return num;
+    }
+
+    bool hasNext()
+    {
+        return !allNodes.empty();
     }
 };
 
 int main()
 {
-    Solution st;
-    vector<int> nums = {1, 0, 1};
-    cout << st.singleNumber(nums) << endl;
     return 0;
 }
