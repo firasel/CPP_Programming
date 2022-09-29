@@ -1,65 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class ListNode
-{
-public:
-    int val;
-    ListNode *next;
-    ListNode(int val)
-    {
-        this->val = val;
-        next = NULL;
-    }
-};
-
-class TreeNode
-{
-public:
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int val)
-    {
-        this->val = val;
-        left = NULL;
-        right = NULL;
-    }
-};
-
 class Solution
 {
 public:
-    TreeNode *tHead = NULL;
-    TreeNode *createBST(vector<int> nums, int start, int end)
+    int singleNumber(vector<int> &nums)
     {
-        if (start >= end)
-            return NULL;
-        int mid = (start + end) / 2;
-        TreeNode *root = new TreeNode(nums[mid]);
-        root->left = createBST(nums, start, mid);
-        root->right = createBST(nums, mid + 1, end);
-        return root;
-    }
-
-    TreeNode *sortedListToBST(ListNode *head)
-    {
-        // if (head == NULL)
-        //     return tHead;
-        vector<int> nums = {1, 2, 3, 4, 5};
-        // while (head != NULL)
-        // {
-        //     nums.push_back(head->val);
-        //     head = head->next;
-        // }
-        createBST(nums, 0, nums.size());
-        return tHead;
+        sort(nums.begin(), nums.end());
+        int uniNum;
+        bool chk = false;
+        for (int i = 0; i < nums.size() - 1; i++)
+        {
+            if (nums[i] == nums[i + 1])
+                i++;
+            else
+            {
+                uniNum = nums[i];
+                chk = true;
+            }
+        }
+        if (!chk && nums.size() % 2 == 1)
+            uniNum = nums[nums.size() - 1];
+        return uniNum;
     }
 };
 
 int main()
 {
     Solution st;
-    st.sortedListToBST(NULL);
+    vector<int> nums = {1, 0, 1};
+    cout << st.singleNumber(nums) << endl;
     return 0;
 }
