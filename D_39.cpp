@@ -153,7 +153,7 @@ int main()
     cout << inOrderStr << endl
          << endl;
 
-    root = deleteNode(root, 3);
+    root = deleteNode(root, 0);
 
     inOrderStr = "";
     inOrder(root, inOrderStr);

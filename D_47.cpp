@@ -18,112 +18,95 @@ public:
 class Solution
 {
 public:
-  void insertNode(TreeNode *&root, int pos, int value, bool left)
+  TreeNode *inOrderSuccessor(TreeNode *root)
   {
-    if (root == NULL && pos == 0)
+    TreeNode *curr = root;
+    while (curr->left != NULL)
     {
-      root = new TreeNode(value);
-      return;
+      curr = curr->left;
     }
-    if (root)
-      cout << root->val << " " << left << " ";
-    if (!root->left && pos == 1)
-    {
-      root->left = new TreeNode(value);
-      return;
-    }
-    if (!root->right && pos == 1)
-    {
-      root->right = new TreeNode(value);
-      return;
-    }
-    if (root->left && left)
-      insertNode(root->left, pos - 1, value, left);
-    if (root->right && !left)
-      insertNode(root->right, pos - 1, value, left);
+    return curr;
   }
 
-  TreeNode *recoverFromPreorder(string traversal)
+  TreeNode *deleteNode(TreeNode *root, int key)
   {
-    if (traversal == "" || traversal[0] == '-')
-      return NULL;
-    string numStr = "";
-    for (int i = 0; i < traversal.length(); i++)
+    if (root == NULL)
+      return root;
+    if (root->val == key)
     {
-      if (traversal[i] != '-')
-        numStr += traversal[i];
+      if (!root->left && !root->right)
+      {
+        delete root;
+        return NULL;
+      }
+      else if (root->left == NULL)
+      {
+        TreeNode *temp = root->right;
+        delete root;
+        return temp;
+      }
+      else if (root->right == NULL)
+      {
+        TreeNode *temp = root->left;
+        delete root;
+        return temp;
+      }
       else
-        break;
+      {
+        TreeNode *temp = inOrderSuccessor(root->right);
+        root->val = temp->val;
+        root->right = deleteNode(root->right, temp->val);
+      }
     }
-    int num = stoi(numStr);
+    return root;
+  }
 
-    TreeNode *root = new TreeNode(num);
-    int s = 0, e = 0;
-    string curr, next;
-
-    for (int i = 0; i < traversal.length(); i++)
+  TreeNode *trimBST(TreeNode *root, int low, int high)
+  {
+    if (root == NULL)
+      return root;
+    if (root->val >= low && root->val <= high)
     {
-      if (traversal[i] == '-')
-      {
-        s = i;
-        curr += traversal[i];
-      }
-      if (s != 0 && traversal[i] != '-')
-      {
-        s = i;
-        break;
-      }
+      root->left = trimBST(root->left, low, high);
+      root->right = trimBST(root->right, low, high);
     }
-
-    for (int i = s; i < traversal.length(); i++)
+    else
     {
-      if (traversal[i] == '-')
-      {
-        e = i;
-        next += traversal[i];
-      }
-      if (traversal[i] != '-')
-      {
-        if (e != 0 && curr == next)
-        {
-          e = i;
-          break;
-        }
-        else
-        {
-          next = "";
-          e = 0;
-        }
-      }
+      root = deleteNode(root, root->val);
+      trimBST(root, low, high);
     }
 
-    int st = s, ed = e - s - next.length();
-    string s1 = s == e ? "" : traversal.substr(st, ed);
-
-    st = e;
-    string s2 = s == e ? "" : traversal.substr(st);
-
-    if (traversal != s1)
-      root->left = recoverFromPreorder(s1);
-    if (traversal != s2)
-      root->right = recoverFromPreorder(s2);
     return root;
   }
 };
 
-void inOrder(TreeNode *root)
+void preOrder(TreeNode *root)
 {
   if (root == NULL)
     return;
   cout << root->val << " ";
-  inOrder(root->left);
-  inOrder(root->right);
+  preOrder(root->left);
+  preOrder(root->right);
 }
 
 int main()
 {
   Solution st;
-  TreeNode *root = st.recoverFromPreorder("1-401--349---90--88");
-  inOrder(root);
+  TreeNode *mainRoot = new TreeNode(2);
+  TreeNode *root1 = new TreeNode(1);
+  TreeNode *root2 = new TreeNode(3);
+  // TreeNode *root3 = new TreeNode(1);
+  // TreeNode *root4 = new TreeNode(4);
+
+  mainRoot->left = root1;
+  mainRoot->right = root2;
+  // root1->right = root2;
+  // root2->left = root3;
+  // mainRoot->right = root4;
+
+  preOrder(mainRoot);
+  cout << endl;
+  TreeNode *root = st.trimBST(mainRoot, 3, 4);
+  preOrder(root);
   return 0;
 }
