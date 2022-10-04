@@ -18,18 +18,21 @@ public:
 class Solution
 {
 public:
-  bool evaluateTree(TreeNode *root)
+  int mostWordsFound(vector<string> &sentences)
   {
-    if (root->val > 1)
+    int max = 0;
+    for (auto str : sentences)
     {
-      if (root->val == 2)
-        return evaluateTree(root->left) || evaluateTree(root->right) ? 1 : 0;
-      if (root->val == 3)
-        return evaluateTree(root->left) && evaluateTree(root->right) ? 1 : 0;
+      int count = 0;
+      for (auto ch : str)
+        if (ch == ' ')
+          count++;
+      if (str != "" && str != " ")
+        count++;
+      if (max < count)
+        max = count;
     }
-    else
-      return root->val;
-    return root->val;
+    return max;
   }
 };
 
@@ -45,28 +48,31 @@ void preOrder(TreeNode *root)
 int main()
 {
   Solution st;
-  TreeNode *mainRoot = new TreeNode(2);
-  TreeNode *root1 = new TreeNode(1);
-  TreeNode *root2 = new TreeNode(3);
-  TreeNode *root3 = new TreeNode(0);
-  TreeNode *root4 = new TreeNode(1);
+  // TreeNode *mainRoot = new TreeNode(2);
+  // TreeNode *root1 = new TreeNode(1);
+  // TreeNode *root2 = new TreeNode(3);
+  // TreeNode *root3 = new TreeNode(0);
+  // TreeNode *root4 = new TreeNode(1);
   // TreeNode *root5 = new TreeNode(4);
   // TreeNode *root6 = new TreeNode(7);
   // TreeNode *root7 = new TreeNode(3);
   // TreeNode *root8 = new TreeNode(8);
 
-  mainRoot->left = root1;
-  mainRoot->right = root2;
-  root2->left = root3;
-  root2->right = root4;
+  // mainRoot->left = root1;
+  // mainRoot->right = root2;
+  // root2->left = root3;
+  // root2->right = root4;
   // root1->right = root4;
   // root4->right = root7;
   // root2->left = root5;
   // root2->right = root6;
   // root6->right = root8;
 
-  preOrder(mainRoot);
-  cout << endl;
-  cout << st.evaluateTree(mainRoot) << endl;
+  // preOrder(mainRoot);
+  // cout << endl;
+  vector<string> sentences = {"alice and bob love leetcode", "i think so too", "this is great thanks very much"};
+  vector<string> sentences2 = {"please wait", "continue to fight", "continue to win"};
+  cout << st.mostWordsFound(sentences) << endl;
+  cout << st.mostWordsFound(sentences2) << endl;
   return 0;
 }
