@@ -18,38 +18,49 @@ public:
 class Solution
 {
 public:
-  vector<int> nums;
-
-  void inOrder(TreeNode *root)
+  bool findNodePath(TreeNode *root, int val, string &path)
   {
-    if (root == NULL)
-      return;
-    inOrder(root->left);
-    nums.push_back(root->val);
-    inOrder(root->right);
+    if (!root)
+      return false;
+    if (root->val == val)
+      return true;
+    path += 'L';
+    auto result = findNodePath(root->left, val, path);
+    if (result)
+      return true;
+    path.pop_back();
+    path += 'R';
+    result = findNodePath(root->right, val, path);
+    if (result)
+      return true;
+    path.pop_back();
+    return false;
   }
 
-  TreeNode *makeBalanceBST(TreeNode *root, int start, int end)
+  TreeNode *LCAFind(TreeNode *root, int x, int y)
   {
-    if (start > end)
+    if (!root)
+      return NULL;
+    if (root->val == x)
       return root;
-    int mid = (start + end) / 2;
-    TreeNode *newNode = new TreeNode(nums[mid]);
-    root = newNode;
-    root->left = makeBalanceBST(root->left, start, mid - 1);
-    root->right = makeBalanceBST(root->right, mid + 1, end);
-    return root;
+    if (root->val == y)
+      return root;
+    TreeNode *root1 = LCAFind(root->left, x, y);
+    TreeNode *root2 = LCAFind(root->right, x, y);
+    if (root1 && root2)
+      return root;
+    return root1 ? root1 : root2;
   }
 
-  TreeNode *balanceBST(TreeNode *root)
+  string getDirections(TreeNode *root, int startValue, int destValue)
   {
-    TreeNode *newRoot = NULL;
-    if (root == NULL)
-      return newRoot;
-    nums.clear();
-    inOrder(root);
-    newRoot = makeBalanceBST(newRoot, 0, nums.size() - 1);
-    return newRoot;
+    root = LCAFind(root, startValue, destValue);
+    string startPath = "", endPath = "";
+    findNodePath(root, startValue, startPath);
+    findNodePath(root, destValue, endPath);
+    for (auto &str : startPath)
+      str = 'U';
+    return startPath + endPath;
   }
 };
 
@@ -65,19 +76,21 @@ void preOrder(TreeNode *root)
 int main()
 {
   Solution st;
-  TreeNode *mainRoot = new TreeNode(1);
-  TreeNode *root1 = new TreeNode(2);
-  TreeNode *root2 = new TreeNode(3);
-  TreeNode *root3 = new TreeNode(4);
-  // TreeNode *root4 = new TreeNode(2);
-  // TreeNode *root5 = new TreeNode(5);
+  TreeNode *mainRoot = new TreeNode(5);
+  TreeNode *root1 = new TreeNode(1);
+  TreeNode *root2 = new TreeNode(2);
+  TreeNode *root3 = new TreeNode(3);
+  TreeNode *root4 = new TreeNode(6);
+  TreeNode *root5 = new TreeNode(4);
   // TreeNode *root6 = new TreeNode(7);
   // TreeNode *root7 = new TreeNode(3);
   // TreeNode *root8 = new TreeNode(8);
 
-  mainRoot->right = root1;
-  root1->right = root2;
-  root2->right = root3;
+  mainRoot->left = root1;
+  mainRoot->right = root2;
+  root1->left = root3;
+  root2->left = root4;
+  root2->right = root5;
   // root1->right = root4;
   // root4->right = root7;
   // root2->left = root5;
@@ -86,8 +99,6 @@ int main()
 
   preOrder(mainRoot);
   cout << endl;
-  TreeNode *root = st.balanceBST(mainRoot);
-  cout << endl;
-  preOrder(root);
+  cout << st.getDirections(mainRoot, 3, 6) << endl;
   return 0;
 }
