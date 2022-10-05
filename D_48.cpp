@@ -4,45 +4,25 @@ using namespace std;
 class Solution
 {
 public:
-  string longestDiverseString(int a, int b, int c)
+  vector<int> decompressRLElist(vector<int> &nums)
   {
-    string s = "";
-    int total = a + b + c;
-    map<char, int> count;
-    for (int i = 0; i < total; i++)
+    vector<int> result;
+    for (int i = 0; i < nums.size(); i += 2)
     {
-      if ((a >= b && a >= c && count['a'] != 2) || ((count['b'] == 2 || count['c'] == 2) && a > 0))
-      {
-        s += "a";
-        count['a']++;
-        count['b'] = 0;
-        count['c'] = 0;
-        a--;
-      }
-      else if ((b >= a && b >= c && count['b'] != 2) || ((count['a'] == 2 || count['c'] == 2) && b > 0))
-      {
-        s += "b";
-        count['a'] = 0;
-        count['b']++;
-        count['c'] = 0;
-        b--;
-      }
-      else if ((c >= a && c >= b && count['c'] != 2) || ((count['a'] == 2 || count['b'] == 2) && c > 0))
-      {
-        s += "c";
-        count['a'] = 0;
-        count['b'] = 0;
-        count['c']++;
-        c--;
-      }
+      for (int j = 0; j < nums[i]; j++)
+        result.push_back(nums[i + 1]);
     }
-    return s;
+    return result;
   }
 };
 
 int main()
 {
   Solution st;
-  cout << st.longestDiverseString(1, 1, 7) << endl;
+  vector<int> nums = {1, 1, 2, 3, 3, 4};
+  vector<int> result = st.decompressRLElist(nums);
+  for (auto i : result)
+    cout << i << " ";
+  cout << endl;
   return 0;
 }
