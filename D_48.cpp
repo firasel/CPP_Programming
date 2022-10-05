@@ -16,48 +16,37 @@ public:
 class Solution
 {
 public:
-  int numComponents(ListNode *head, vector<int> &nums)
+  int pairSum(ListNode *head)
   {
-    int count = 0;
-    bool prev = false;
+    int max = 0;
+    vector<int> nums;
     while (head != NULL)
     {
-      bool found = false;
-      for (auto i : nums)
-      {
-        if (i == head->val)
-        {
-          found = true;
-          prev = true;
-          break;
-        }
-      }
-      if (prev && !found)
-      {
-        count++;
-        prev = false;
-      }
+      nums.push_back(head->val);
       head = head->next;
     }
-    if (prev)
-      count++;
-    return count;
+    int size = nums.size();
+    for (int i = 0; i < size / 2; i++)
+    {
+      if (max < (nums[i] + nums[size - 1 - i]))
+        max = (nums[i] + nums[size - 1 - i]);
+    }
+    return max;
   }
 };
 
 int main()
 {
-  ListNode *head = new ListNode(0);
-  ListNode *node1 = new ListNode(1);
+  ListNode *head = new ListNode(5);
+  ListNode *node1 = new ListNode(4);
   ListNode *node2 = new ListNode(2);
-  ListNode *node3 = new ListNode(3);
+  ListNode *node3 = new ListNode(1);
   head->next = node1;
   node1->next = node2;
   node2->next = node3;
 
   Solution st;
-  vector<int> nums = {0, 1, 3};
-  int result = st.numComponents(head, nums);
+  int result = st.pairSum(head);
   cout << result << endl;
   return 0;
 };
