@@ -16,12 +16,22 @@ public:
 class Solution
 {
 public:
-  void deleteNode(ListNode *node)
+  ListNode *swapNodes(ListNode *head, int k)
   {
-    ListNode *del = node->next;
-    node->val = node->next->val;
-    node->next = del->next;
-    delete del;
+    vector<ListNode *> lists;
+    while (head != NULL)
+    {
+      lists.push_back(head);
+      head = head->next;
+    }
+    int size = lists.size();
+    swap(lists[k - 1], lists[size - k]);
+    lists[size - 1]->next = NULL;
+    for (int i = 0; i < size - 1; i++)
+    {
+      lists[i]->next = lists[i + 1];
+    }
+    return lists[0];
   }
 };
 
@@ -35,16 +45,18 @@ void printList(ListNode *head)
 
 int main()
 {
-  ListNode *head = new ListNode(4);
-  ListNode *node1 = new ListNode(5);
-  ListNode *node2 = new ListNode(1);
-  ListNode *node3 = new ListNode(9);
+  ListNode *head = new ListNode(1);
+  ListNode *node1 = new ListNode(2);
+  ListNode *node2 = new ListNode(3);
+  ListNode *node3 = new ListNode(4);
+  ListNode *node4 = new ListNode(5);
   head->next = node1;
   node1->next = node2;
   node2->next = node3;
+  node3->next = node4;
 
   Solution st;
-  st.deleteNode(node1);
+  st.swapNodes(head, 2);
   printList(head);
   cout << endl;
   return 0;
