@@ -1,71 +1,74 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class TreeNode
+class ListNode
 {
 public:
   int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode(int val)
+  ListNode *next;
+  ListNode(int val)
   {
     this->val = val;
-    left = NULL;
-    right = NULL;
+    next = NULL;
   }
 };
 
 class Solution
 {
 public:
-  void preOrder(TreeNode *root, vector<TreeNode *> &lists)
+  ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
   {
-    if (root == NULL)
-      return;
-    lists.push_back(root);
-    preOrder(root->left, lists);
-    preOrder(root->right, lists);
-  }
-  void flatten(TreeNode *root)
-  {
-    if (root == NULL)
-      return;
-    vector<TreeNode *> lists;
-    preOrder(root, lists);
-    int size = lists.size();
-    for (int i = 0; i < size - 1; i++)
+    map<ListNode *, int> nodesList;
+    while (headA != NULL)
     {
-      lists[i]->left = NULL;
-      lists[i]->right = lists[i + 1];
+      nodesList[headA]++;
+      headA = headA->next;
     }
+
+    while (headB != NULL)
+    {
+      nodesList[headB]++;
+      headB = headB->next;
+    }
+
+    for (auto node : nodesList)
+    {
+      if (node.second == 2)
+        return node.first;
+    }
+    return NULL;
   }
 };
 
-void printList(TreeNode *head)
+void printList(ListNode *head)
 {
   if (head == NULL)
     return;
   cout << head->val << " ";
-  printList(head->right);
+  printList(head->next);
 }
 
 int main()
 {
-  TreeNode *root = new TreeNode(1);
-  TreeNode *node1 = new TreeNode(2);
-  TreeNode *node2 = new TreeNode(3);
-  TreeNode *node3 = new TreeNode(4);
-  TreeNode *node4 = new TreeNode(5);
-  TreeNode *node5 = new TreeNode(6);
-  root->left = node1;
-  node1->left = node2;
-  node1->right = node3;
-  root->right = node4;
-  node4->right = node5;
+  ListNode *root = new ListNode(1);
+  ListNode *node1 = new ListNode(9);
+  ListNode *node2 = new ListNode(1);
+  ListNode *node3 = new ListNode(2);
+  ListNode *node4 = new ListNode(4);
+  ListNode *node5 = new ListNode(3);
+  root->next = node1;
+  node1->next = node2;
+  node2->next = node3;
+  node3->next = node4;
+  node5->next = node3;
 
   Solution st;
-  st.flatten(root);
+  ListNode *res = st.getIntersectionNode(root, node5);
+  if (res)
+    cout << res->val << endl;
   printList(root);
+  cout << endl;
+  printList(node5);
   cout << endl;
   return 0;
 };
