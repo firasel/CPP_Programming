@@ -8,30 +8,37 @@ using namespace std;
 class Solution
 {
 public:
-  int hardestWorker(int n, vector<vector<int>> &logs)
+  int searchInsert(vector<int> &nums, int target)
   {
-    int id;
-    int max = 0, prev = 0, size = logs.size();
-    for (int i = 0; i < size; i++)
+    int start = 0, end = nums.size() - 1;
+    if (nums.size() == 0)
+      return start;
+    while (start <= end)
     {
-      if (max < (logs[i][1] - prev))
+      int mid = (start + end) / 2;
+      if (nums[mid] > target)
       {
-        max = logs[i][1] - prev;
-        id = logs[i][0];
+        end = mid - 1;
       }
-      else if (max == (logs[i][1] - prev))
-        id = min(id, logs[i][0]);
-      prev = logs[i][1];
+      else if (nums[mid] < target)
+      {
+        start = mid + 1;
+      }
+      else if (nums[mid] == target)
+      {
+        return mid;
+      }
     }
-    return id;
+
+    return start;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<vector<int>> logs = {{0, 3}, {2, 5}, {0, 9}, {1, 15}};
-  cout << st.hardestWorker(10, logs) << endl;
+  vector<int> nums = {1, 3, 5, 6};
+  cout << st.searchInsert(nums, 7) << endl;
 
   return 0;
 }
