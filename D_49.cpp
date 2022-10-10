@@ -8,27 +8,33 @@ using namespace std;
 class Solution
 {
 public:
-  bool isPerfectSquare(int num)
+  int findTheDistanceValue(vector<int> &arr1, vector<int> &arr2, int d)
   {
-    if (num < 2)
-      return true;
-    int temp = num / 2;
-    for (long long int i = 0; i <= temp; i++)
+    int count = 0;
+    for (auto num : arr1)
     {
-      if ((i * i) == num)
-        return true;
-      else if ((i * i) > num)
-        return false;
+      bool chk = true;
+      for (auto num2 : arr2)
+      {
+        if (abs(num - num2) <= d)
+        {
+          chk = false;
+          break;
+        }
+      }
+      if (chk)
+        count++;
     }
-    return false;
+    return count;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {0, 1, 2, 3, 3, 3, 4, 2, 1, 0, 0};
-  cout << st.isPerfectSquare(16) << endl;
+  vector<int> nums = {4, 5, 8};
+  vector<int> nums2 = {10, 9, 1, 8};
+  cout << st.findTheDistanceValue(nums, nums2, 2) << endl;
 
   return 0;
 }
