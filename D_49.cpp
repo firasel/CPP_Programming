@@ -8,20 +8,19 @@ using namespace std;
 class Solution
 {
 public:
-  int peakIndexInMountainArray(vector<int> &arr)
+  bool isPerfectSquare(int num)
   {
-    int start = 0, end = arr.size() - 1;
-    while (start <= end)
+    if (num < 2)
+      return true;
+    int temp = num / 2;
+    for (long long int i = 0; i <= temp; i++)
     {
-      int mid = (start + end) / 2;
-      if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1])
-        return mid;
-      else if (arr[mid] < arr[mid - 1])
-        end = mid - 1;
-      else
-        start = mid + 1;
+      if ((i * i) == num)
+        return true;
+      else if ((i * i) > num)
+        return false;
     }
-    return start;
+    return false;
   }
 };
 
@@ -29,7 +28,7 @@ int main()
 {
   Solution st;
   vector<int> nums = {0, 1, 2, 3, 3, 3, 4, 2, 1, 0, 0};
-  cout << st.peakIndexInMountainArray(nums) << endl;
+  cout << st.isPerfectSquare(16) << endl;
 
   return 0;
 }
