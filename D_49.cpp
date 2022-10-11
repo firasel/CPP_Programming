@@ -8,27 +8,20 @@ using namespace std;
 class Solution
 {
 public:
-  int mySqrt(int x)
+  char nextGreatestLetter(vector<char> &letters, char target)
   {
-    if (x < 2)
-      return x;
-    int start = 0, end = x, mid;
-    while (start < end)
-    {
-      int mid = (start + end) / 2;
-      if ((x / mid) >= mid)
-        start = mid + 1;
-      else
-        end = mid;
-    }
-    return end - 1;
+    for (auto ch : letters)
+      if (ch > target)
+        return ch;
+    return letters[0];
   }
 };
 
 int main()
 {
   Solution st;
-  cout << st.mySqrt(16) << endl;
+  vector<char> chars = {'c', 'f', 'j'};
+  cout << st.nextGreatestLetter(chars, 'a') << endl;
 
   return 0;
 }
