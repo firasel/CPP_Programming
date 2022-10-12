@@ -5,23 +5,39 @@
 #include <string.h>
 using namespace std;
 
+int testNum = 4;
+bool isBadVersion(int version)
+{
+  return version == testNum;
+}
+
 class Solution
 {
 public:
-  char nextGreatestLetter(vector<char> &letters, char target)
+  int firstBadVersion(int n)
   {
-    for (auto ch : letters)
-      if (ch > target)
-        return ch;
-    return letters[0];
+    int start = 0, end = n, mid;
+    while (true)
+    {
+      mid = start + ((end - start) / 2);
+      if (isBadVersion(mid))
+      {
+        if (mid > 0 && isBadVersion(mid - 1))
+          end = mid - 1;
+        else
+          return mid;
+      }
+      else
+        start = mid + 1;
+    }
+    return mid;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<char> chars = {'c', 'f', 'j'};
-  cout << st.nextGreatestLetter(chars, 'a') << endl;
+  cout << st.firstBadVersion(5) << endl;
 
   return 0;
 }
