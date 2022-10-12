@@ -14,30 +14,48 @@ bool isBadVersion(int version)
 class Solution
 {
 public:
-  int firstBadVersion(int n)
+  vector<int> searchRange(vector<int> &nums, int target)
   {
-    int start = 0, end = n, mid;
-    while (true)
+    vector<int> result = {-1, -1};
+    int start = 0, end = nums.size() - 1, mid;
+    while (start <= end)
     {
       mid = start + ((end - start) / 2);
-      if (isBadVersion(mid))
+      if (nums[mid] == target)
       {
-        if (mid > 0 && isBadVersion(mid - 1))
-          end = mid - 1;
-        else
-          return mid;
+        result[0] = mid;
+        end = mid - 1;
       }
+      else if (nums[mid] > target)
+        end = mid - 1;
       else
         start = mid + 1;
     }
-    return mid;
+
+    start = 0, end = nums.size() - 1;
+    while (start <= end)
+    {
+      mid = start + ((end - start) / 2);
+      if (nums[mid] == target)
+      {
+        result[1] = mid;
+        start = mid + 1;
+      }
+      else if (nums[mid] > target)
+        end = mid - 1;
+      else
+        start = mid + 1;
+    }
+    return result;
   }
 };
 
 int main()
 {
   Solution st;
-  cout << st.firstBadVersion(5) << endl;
+  vector<int> nums = {5, 7, 7, 8, 8, 10};
+  vector<int> result = st.searchRange(nums, 8);
+  cout << result[0] << " " << result[1] << endl;
 
   return 0;
 }
