@@ -14,48 +14,22 @@ bool isBadVersion(int version)
 class Solution
 {
 public:
-  vector<int> searchRange(vector<int> &nums, int target)
+  int largestPerimeter(vector<int> &nums)
   {
-    vector<int> result = {-1, -1};
-    int start = 0, end = nums.size() - 1, mid;
-    while (start <= end)
-    {
-      mid = start + ((end - start) / 2);
-      if (nums[mid] == target)
-      {
-        result[0] = mid;
-        end = mid - 1;
-      }
-      else if (nums[mid] > target)
-        end = mid - 1;
-      else
-        start = mid + 1;
-    }
-
-    start = 0, end = nums.size() - 1;
-    while (start <= end)
-    {
-      mid = start + ((end - start) / 2);
-      if (nums[mid] == target)
-      {
-        result[1] = mid;
-        start = mid + 1;
-      }
-      else if (nums[mid] > target)
-        end = mid - 1;
-      else
-        start = mid + 1;
-    }
-    return result;
+    sort(nums.begin(), nums.end());
+    int size = nums.size();
+    for (int i = size - 3; i >= 0; i--)
+      if (nums[i] + nums[i + 1] > nums[i + 2])
+        return nums[i] + nums[i + 1] + nums[i + 2];
+    return 0;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {5, 7, 7, 8, 8, 10};
-  vector<int> result = st.searchRange(nums, 8);
-  cout << result[0] << " " << result[1] << endl;
+  vector<int> nums = {2, 1, 2};
+  cout << st.largestPerimeter(nums) << endl;
 
   return 0;
 }
