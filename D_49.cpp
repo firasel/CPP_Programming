@@ -14,24 +14,26 @@ bool isBadVersion(int version)
 class Solution
 {
 public:
-  int arrangeCoins(int n)
+  int findKthPositive(vector<int> &arr, int k)
   {
-    int count = 0;
-    for (int i = 1; i <= n; i++)
+    int start = 0, end = arr.size() - 1, mid;
+    while (start <= end)
     {
-      if (i <= n)
-        count++;
-      n -= i;
+      mid = start + ((end - start) / 2);
+      if (arr[mid] - mid > k)
+        end = mid - 1;
+      else
+        start = mid + 1;
     }
-    return count;
+    return start + k;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {2, 1, 2};
-  cout << st.arrangeCoins(5) << endl;
+  vector<int> nums = {2, 3, 4, 7, 11};
+  cout << st.findKthPositive(nums, 5) << endl;
 
   return 0;
 }
