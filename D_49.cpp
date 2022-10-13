@@ -14,14 +14,16 @@ bool isBadVersion(int version)
 class Solution
 {
 public:
-  int largestPerimeter(vector<int> &nums)
+  int arrangeCoins(int n)
   {
-    sort(nums.begin(), nums.end());
-    int size = nums.size();
-    for (int i = size - 3; i >= 0; i--)
-      if (nums[i] + nums[i + 1] > nums[i + 2])
-        return nums[i] + nums[i + 1] + nums[i + 2];
-    return 0;
+    int count = 0;
+    for (int i = 1; i <= n; i++)
+    {
+      if (i <= n)
+        count++;
+      n -= i;
+    }
+    return count;
   }
 };
 
@@ -29,7 +31,7 @@ int main()
 {
   Solution st;
   vector<int> nums = {2, 1, 2};
-  cout << st.largestPerimeter(nums) << endl;
+  cout << st.arrangeCoins(5) << endl;
 
   return 0;
 }
