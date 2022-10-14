@@ -14,30 +14,26 @@ bool isBadVersion(int version)
 class Solution
 {
 public:
-  vector<int> twoSum(vector<int> &numbers, int target)
+  int specialArray(vector<int> &nums)
   {
-    int start = 0, end = numbers.size() - 1;
-    while (start < end)
+    for (int i = 0; i < 1001; i++)
     {
-      if (numbers[start] + numbers[end] == target)
-        return {start + 1, end + 1};
-      else if (numbers[start] + numbers[end] > target)
-        end--;
-      else
-        start++;
+      int count = 0;
+      for (auto num : nums)
+        if (num >= i)
+          count++;
+      if (count == i)
+        return count;
     }
-    return {0, 0};
+    return -1;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {2, 7, 11, 15};
-  vector<int> res = st.twoSum(nums, 9);
-  for (auto num : res)
-    cout << num << " ";
-  cout << endl;
+  vector<int> nums = {0, 4, 3, 0, 4};
+  cout << st.specialArray(nums) << endl;
 
   return 0;
 }
