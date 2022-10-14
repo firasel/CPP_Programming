@@ -5,35 +5,57 @@
 #include <string.h>
 using namespace std;
 
-int testNum = 4;
-bool isBadVersion(int version)
+class ListNode
 {
-  return version == testNum;
-}
+public:
+  int val;
+  ListNode *next;
+  ListNode(int val)
+  {
+    this->val = val;
+    next = NULL;
+  }
+};
 
 class Solution
 {
 public:
-  int specialArray(vector<int> &nums)
+  ListNode *deleteMiddle(ListNode *head)
   {
-    for (int i = 0; i < 1001; i++)
+    ListNode *slow = head, *fast = head, *prev = head;
+    while (fast && fast->next != NULL)
     {
-      int count = 0;
-      for (auto num : nums)
-        if (num >= i)
-          count++;
-      if (count == i)
-        return count;
+      prev = slow;
+      slow = slow->next;
+      if (fast->next)
+        fast = fast->next->next;
     }
-    return -1;
+    if (prev == slow)
+      return NULL;
+    prev->next = slow->next;
+    delete slow;
+    return head;
   }
 };
 
 int main()
 {
+  ListNode *head = new ListNode(1);
+  ListNode *node2 = new ListNode(2);
+  ListNode *node3 = new ListNode(3);
+  ListNode *node4 = new ListNode(4);
+  head->next = node2;
+  node2->next = node3;
+  node3->next = node4;
+
   Solution st;
-  vector<int> nums = {0, 4, 3, 0, 4};
-  cout << st.specialArray(nums) << endl;
+  ListNode *res = st.deleteMiddle(head);
+  while (res)
+  {
+    cout << res->val << " ";
+    res = res->next;
+  }
+  cout << endl;
 
   return 0;
 }
