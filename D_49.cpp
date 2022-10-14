@@ -14,26 +14,30 @@ bool isBadVersion(int version)
 class Solution
 {
 public:
-  int findKthPositive(vector<int> &arr, int k)
+  vector<int> twoSum(vector<int> &numbers, int target)
   {
-    int start = 0, end = arr.size() - 1, mid;
-    while (start <= end)
+    int start = 0, end = numbers.size() - 1;
+    while (start < end)
     {
-      mid = start + ((end - start) / 2);
-      if (arr[mid] - mid > k)
-        end = mid - 1;
+      if (numbers[start] + numbers[end] == target)
+        return {start + 1, end + 1};
+      else if (numbers[start] + numbers[end] > target)
+        end--;
       else
-        start = mid + 1;
+        start++;
     }
-    return start + k;
+    return {0, 0};
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {2, 3, 4, 7, 11};
-  cout << st.findKthPositive(nums, 5) << endl;
+  vector<int> nums = {2, 7, 11, 15};
+  vector<int> res = st.twoSum(nums, 9);
+  for (auto num : res)
+    cout << num << " ";
+  cout << endl;
 
   return 0;
 }
