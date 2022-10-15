@@ -8,37 +8,60 @@ using namespace std;
 class Solution
 {
 public:
-  bool searchMatrix(vector<vector<int>> &matrix, int target)
+  int countTime(string time)
   {
-    for (auto nums : matrix)
+    int h = 1, m = 1;
+    if (time[0] == '?' && time[1] == '?')
+      h = 24;
+    else if (time[0] == '?')
     {
-      int size = nums.size() - 1;
-      if (nums[0] > target)
-        return false;
-      if (nums[size] >= target)
+      int num = time[1] - '0';
+      int count = 0;
+      while (true)
       {
-        int start = 0, end = size, mid;
-        while (start <= end)
-        {
-          mid = (start + end) / 2;
-          if (nums[mid] == target)
-            return true;
-          else if (nums[mid] < target)
-            start = mid + 1;
-          else
-            end = mid - 1;
-        }
+        int res = stoi(to_string(count) + to_string(num));
+        if (res > 23)
+          break;
+        count++;
       }
+      h = count;
     }
-    return false;
+    else if (time[1] == '?')
+    {
+      if (time[0] == '2')
+        h = 4;
+      else
+        h = 10;
+    }
+
+    if (time[3] == '?' && time[4] == '?')
+      m = 60;
+    else if (time[3] == '?')
+    {
+      int num = time[4] - '0';
+      int count = 0;
+      while (true)
+      {
+        int res = stoi(to_string(count) + to_string(num));
+        if (res > 59)
+          break;
+        count++;
+      }
+      m = count;
+    }
+    else if (time[4] == '?')
+      m = 10;
+
+    return h * m;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<vector<int>> grid = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}};
-  cout << st.searchMatrix(grid, 3) << endl;
+  cout << st.countTime("?5:00") << endl;
+  cout << st.countTime("0?:0?") << endl;
+  cout << st.countTime("??:??") << endl;
 
   return 0;
 }
