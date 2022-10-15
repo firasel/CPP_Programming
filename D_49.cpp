@@ -5,57 +5,28 @@
 #include <string.h>
 using namespace std;
 
-class ListNode
-{
-public:
-  int val;
-  ListNode *next;
-  ListNode(int val)
-  {
-    this->val = val;
-    next = NULL;
-  }
-};
-
 class Solution
 {
 public:
-  ListNode *deleteMiddle(ListNode *head)
+  int countNegatives(vector<vector<int>> &grid)
   {
-    ListNode *slow = head, *fast = head, *prev = head;
-    while (fast && fast->next != NULL)
+    int count = 0;
+    for (auto nums : grid)
     {
-      prev = slow;
-      slow = slow->next;
-      if (fast->next)
-        fast = fast->next->next;
+      int size = nums.size() - 1;
+      for (int i = size; i >= 0; i--)
+        if (nums[i] < 0)
+          count++;
     }
-    if (prev == slow)
-      return NULL;
-    prev->next = slow->next;
-    delete slow;
-    return head;
+    return count;
   }
 };
 
 int main()
 {
-  ListNode *head = new ListNode(1);
-  ListNode *node2 = new ListNode(2);
-  ListNode *node3 = new ListNode(3);
-  ListNode *node4 = new ListNode(4);
-  head->next = node2;
-  node2->next = node3;
-  node3->next = node4;
-
   Solution st;
-  ListNode *res = st.deleteMiddle(head);
-  while (res)
-  {
-    cout << res->val << " ";
-    res = res->next;
-  }
-  cout << endl;
+  vector<vector<int>> grid = {{4, 3, 2, -1}, {3, 2, 1, -1}, {1, 1, -1, -2}, {-1, -1, -2, -3}};
+  cout << st.countNegatives(grid) << endl;
 
   return 0;
 }
