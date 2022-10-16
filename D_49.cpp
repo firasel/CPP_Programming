@@ -8,38 +8,29 @@ using namespace std;
 class Solution
 {
 public:
-  int findMaxK(vector<int> &nums)
+  int countDistinctIntegers(vector<int> &nums)
   {
-    sort(nums.begin(), nums.end());
-    int size = nums.size() - 1;
-    for (int i = size; i >= 0; i--)
+    map<int, int> numCount;
+    for (auto num : nums)
     {
-      if (nums[i] < 0)
-        break;
-      else
+      int revNum = 0, prevNum = num;
+      while (num > 0)
       {
-        int start = 0, end = size, target = nums[i] * -1;
-        while (start <= end)
-        {
-          int mid = (start + end) / 2;
-          if (nums[mid] == target)
-            return target * -1;
-          else if (nums[mid] < target)
-            start = mid + 1;
-          else
-            end = mid - 1;
-        }
+        revNum = (revNum * 10) + (num % 10);
+        num /= 10;
       }
+      numCount[revNum] = 1;
+      numCount[prevNum] = 1;
     }
-    return -1;
+    return numCount.size();
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {-1, 10, 6, 7, -7, 1};
-  cout << st.findMaxK(nums) << endl;
+  vector<int> nums = {1, 13, 10, 12, 31};
+  cout << st.countDistinctIntegers(nums) << endl;
 
   return 0;
 }
