@@ -24,13 +24,29 @@ public:
     }
     return numCount.size();
   }
+  bool sumOfNumberAndReverse(int num)
+  {
+    int i = num / 2;
+    for (i; i <= num; i++)
+    {
+      int revNum = 0, currNum = i;
+      while (currNum > 0)
+      {
+        revNum = (revNum * 10) + (currNum % 10);
+        currNum /= 10;
+      }
+      if (revNum + i == num)
+        return true;
+    }
+    return false;
+  }
 };
 
 int main()
 {
   Solution st;
   vector<int> nums = {1, 13, 10, 12, 31};
-  cout << st.countDistinctIntegers(nums) << endl;
+  cout << st.sumOfNumberAndReverse(181) << endl;
 
   return 0;
 }
