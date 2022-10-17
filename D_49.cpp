@@ -8,27 +8,19 @@ using namespace std;
 class Solution
 {
 public:
-  bool judgeSquareSum(int c)
+  bool checkIfPangram(string sentence)
   {
-    long long int left = 0, right = sqrt(c);
-    while (left <= right)
-    {
-      long long int total = left * left + right * right;
-      if (total < c)
-        left++;
-      else if (total > c)
-        right--;
-      else
-        return true;
-    }
-    return false;
+    unordered_map<char, int> alphabet;
+    for (auto ch : sentence)
+      alphabet[ch]++;
+    return alphabet.size() == 26;
   }
 };
 
 int main()
 {
   Solution st;
-  cout << st.judgeSquareSum(5) << endl;
+  cout << st.checkIfPangram("thequickbrownfoxjumpsoverthelazydog") << endl;
 
   return 0;
 }
