@@ -1,43 +1,33 @@
 #include <iostream>
-#include <vector>
-#include <map>
-#include <set>
-#include <algorithm>
 using namespace std;
-
-class Solution
-{
-public:
-  vector<string> topKFrequent(vector<string> &words, int k)
-  {
-    vector<string> res;
-    sort(words.begin(), words.end());
-    map<string, int> freqMap;
-    for (auto str : words)
-      freqMap[str]++;
-    multimap<int, string, greater<int>> freqSrtMap;
-
-    for (auto el : freqMap)
-      freqSrtMap.insert({el.second, el.first});
-    int i = 0;
-    for (auto el : freqSrtMap)
-    {
-      res.push_back(el.second);
-      i++;
-      if (i >= k)
-        break;
-    }
-    return res;
-  }
-};
 
 int main()
 {
-  Solution st;
-  vector<string> words = {"i", "love", "leetcode", "i", "love", "coding"};
-  vector<string> res = st.topKFrequent(words, 2);
-  for (auto str : res)
-    cout << str << " ";
-  cout << endl;
+  int t, d = 0;
+  cin >> t;
+  while (t--)
+  {
+    int a, f;
+    cin >> a >> f;
+    if (d++)
+      cout << endl;
+    while (f--)
+    {
+      for (int i = 1; i <= a; i++)
+      {
+        for (int j = 1; j <= i; j++)
+          cout << i;
+        cout << endl;
+      }
+      for (int i = a - 1; i > 0; i--)
+      {
+        for (int j = 1; j <= i; j++)
+          cout << i;
+        cout << endl;
+      }
+      if (f > 0)
+        cout << endl;
+    }
+  }
   return 0;
 }
