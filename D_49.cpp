@@ -1,43 +1,38 @@
 #include <iostream>
+#include <algorithm>
 #include <vector>
 using namespace std;
 
 int main()
 {
-  int n, q, pos = -1;
-  cin >> n;
-  vector<int> nums;
-  for (int i = 0; i < n; i++)
+  int t, n, c;
+  cin >> t;
+  while (t--)
   {
-    int num;
-    cin >> num;
-    if (nums.size() == 0 || nums[pos] != num)
+    cin >> n >> c;
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++)
+      cin >> nums[i];
+    sort(nums.begin(), nums.end());
+    int start = 0, end = nums[n - 1], mid, res = 0;
+    while (start <= end)
     {
-      nums.push_back(num);
-      pos++;
+      mid = (start + end) / 2;
+      int cCount = 1, prev = 0;
+      for (int i = 1; i < n && cCount < c; i++)
+      {
+        if (nums[i] - nums[prev] >= mid)
+          prev = i, cCount++;
+      }
+      if (cCount >= c)
+      {
+        res = mid;
+        start = mid + 1;
+      }
+      else
+        end = mid - 1;
     }
-  }
-  cin >> q;
-  while (q--)
-  {
-    int num;
-    cin >> num;
-    int sl = 0, tl = INT32_MAX;
-    for (auto el : nums)
-    {
-      if (el < num && el > sl)
-        sl = el;
-      if (el > num && el < tl)
-        tl = el;
-    }
-    if (sl == 0)
-      cout << "X ";
-    else
-      cout << sl << " ";
-    if (tl == INT32_MAX)
-      cout << "X" << endl;
-    else
-      cout << tl << endl;
+    cout << res << endl;
   }
   return 0;
 }
