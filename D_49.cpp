@@ -1,33 +1,26 @@
 #include <iostream>
 using namespace std;
+#include <vector>
+#include <algorithm>
 
 int main()
 {
-  int t, d = 0;
-  cin >> t;
-  while (t--)
+  int n, d, r;
+  while (cin >> n >> d >> r && (n || d || r))
   {
-    int a, f;
-    cin >> a >> f;
-    if (d++)
-      cout << endl;
-    while (f--)
-    {
-      for (int i = 1; i <= a; i++)
-      {
-        for (int j = 1; j <= i; j++)
-          cout << i;
-        cout << endl;
-      }
-      for (int i = a - 1; i > 0; i--)
-      {
-        for (int j = 1; j <= i; j++)
-          cout << i;
-        cout << endl;
-      }
-      if (f > 0)
-        cout << endl;
-    }
+    int sum = 0;
+    vector<int> m(n);
+    vector<int> e(n);
+    for (int i = 0; i < n; i++)
+      cin >> m[i];
+    for (int i = 0; i < n; i++)
+      cin >> e[i];
+    sort(m.begin(), m.end());
+    sort(e.begin(), e.end(), greater<int>());
+    for (int i = 0; i < n; i++)
+      if (m[i] + e[i] > d)
+        sum += (m[i] + e[i]) - d;
+    cout << sum * r << endl;
   }
   return 0;
 }
