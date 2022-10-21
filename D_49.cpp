@@ -4,24 +4,24 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> twoSum(vector<int> &nums, int target)
+  void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
   {
-    int size = nums.size();
-    for (int i = 0; i < size - 1; i++)
-    {
-      for (int j = i + 1; j < size; j++)
-        if (nums[i] + nums[j] == target)
-          return {i, j};
-    }
-    return {-1, -1};
+    for (auto num : nums2)
+      nums1[m++] = num;
+    sort(nums1.begin(), nums1.end());
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {2, 7, 11, 15};
-  vector<int> res = st.twoSum(nums, 9);
-  cout << res[0] << " " << res[1] << endl;
+  vector<int> nums1 = {1, 2, 3, 0, 0, 0};
+  vector<int> nums2 = {2, 5, 6};
+  int m = 3, n = 3;
+  st.merge(nums1, m, nums2, n);
+  for (auto num : nums1)
+    cout << num << " ";
+  cout << endl;
+
   return 0;
 }
