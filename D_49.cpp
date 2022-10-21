@@ -1,36 +1,27 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-void A(int n, int pos)
+class Solution
 {
-  cout << "sin(" << pos;
-  if (pos < n)
+public:
+  vector<int> twoSum(vector<int> &nums, int target)
   {
-    if (pos & 1)
-      cout << "-";
-    else
-      cout << "+";
-    A(n, pos + 1);
+    int size = nums.size();
+    for (int i = 0; i < size - 1; i++)
+    {
+      for (int j = i + 1; j < size; j++)
+        if (nums[i] + nums[j] == target)
+          return {i, j};
+    }
+    return {-1, -1};
   }
-  cout << ")";
-}
-
-void S(int n, int pos)
-{
-  if (pos < n)
-  {
-    cout << "(";
-    S(n, pos + 1);
-    cout << ")";
-  }
-  A(n + 1 - pos, 1);
-  cout << "+" << pos;
-}
+};
 
 int main()
 {
-  int n;
-  cin >> n;
-  S(n, 1);
+  Solution st;
+  vector<int> nums = {2, 7, 11, 15};
+  vector<int> res = st.twoSum(nums, 9);
+  cout << res[0] << " " << res[1] << endl;
   return 0;
 }
