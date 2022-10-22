@@ -4,27 +4,29 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
+  int maxProfit(vector<int> &prices)
   {
-    map<int, int> numsMap;
-    vector<int> result;
-    for (auto num : nums1)
-      numsMap[num]++;
-    for (auto num : nums2)
-      if (--numsMap[num] >= 0)
-        result.push_back(num);
-    return result;
+    int max = INT_MIN, min = INT_MAX, res = 0;
+    for (auto num : prices)
+    {
+      if (num > max)
+        max = num;
+      if (num < min)
+        min = num, max = num;
+      if (max - min > res)
+        res = max - min;
+    }
+    if (max - min > res)
+      res = max - min;
+    return res;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums1 = {1, 2, 2, 1};
-  vector<int> nums2 = {2, 2};
-  vector<int> res = st.intersect(nums1, nums2);
-  for (auto num : res)
-    cout << num << " ";
-  cout << endl;
+  vector<int> nums1 = {7, 1, 5, 3, 6, 4};
+  int res = st.maxProfit(nums1);
+  cout << res << endl;
   return 0;
 }
