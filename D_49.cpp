@@ -4,24 +4,27 @@ using namespace std;
 class Solution
 {
 public:
-  void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
+  vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
   {
+    map<int, int> numsMap;
+    vector<int> result;
+    for (auto num : nums1)
+      numsMap[num]++;
     for (auto num : nums2)
-      nums1[m++] = num;
-    sort(nums1.begin(), nums1.end());
+      if (--numsMap[num] >= 0)
+        result.push_back(num);
+    return result;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums1 = {1, 2, 3, 0, 0, 0};
-  vector<int> nums2 = {2, 5, 6};
-  int m = 3, n = 3;
-  st.merge(nums1, m, nums2, n);
-  for (auto num : nums1)
+  vector<int> nums1 = {1, 2, 2, 1};
+  vector<int> nums2 = {2, 2};
+  vector<int> res = st.intersect(nums1, nums2);
+  for (auto num : res)
     cout << num << " ";
   cout << endl;
-
   return 0;
 }
