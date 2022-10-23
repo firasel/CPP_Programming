@@ -4,23 +4,22 @@ using namespace std;
 class Solution
 {
 public:
-  vector<vector<int>> matrixReshape(vector<vector<int>> &mat, int r, int c)
+  vector<vector<int>> generate(int numRows)
   {
-    if ((mat.size() * mat[0].size()) != r * c)
-      return mat;
     vector<vector<int>> res;
-    queue<int> allNums;
-    for (auto nums : mat)
-      for (auto num : nums)
-        allNums.push(num);
-
-    for (int i = 0; i < r; i++)
+    if (numRows >= 1)
+      res.push_back({1});
+    if (numRows >= 2)
+      res.push_back({1, 1});
+    for (int i = 2; i < numRows; i++)
     {
       vector<int> temp;
-      for (int j = 0; j < c; j++)
+      for (int j = 0; j <= i; j++)
       {
-        temp.push_back(allNums.front());
-        allNums.pop();
+        if (j == 0 || j == i)
+          temp.push_back(1);
+        else
+          temp.push_back(res[i - 1][j - 1] + res[i - 1][j]);
       }
       res.push_back(temp);
     }
@@ -31,8 +30,7 @@ public:
 int main()
 {
   Solution st;
-  vector<vector<int>> nums = {{1, 2}, {3, 4}};
-  vector<vector<int>> res = st.matrixReshape(nums, 1, 4);
+  vector<vector<int>> res = st.generate(10);
   for (auto allNums : res)
   {
     for (auto num : allNums)
