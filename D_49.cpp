@@ -4,29 +4,32 @@ using namespace std;
 class Solution
 {
 public:
-  int maxProfit(vector<int> &prices)
+  int strToInt(string str, int curr)
   {
-    int max = INT_MIN, min = INT_MAX, res = 0;
-    for (auto num : prices)
-    {
-      if (num > max)
-        max = num;
-      if (num < min)
-        min = num, max = num;
-      if (max - min > res)
-        res = max - min;
-    }
-    if (max - min > res)
-      res = max - min;
-    return res;
+    if (str[0] >= '0' && str[0] <= '9')
+      curr = curr * 10 + (str[0] - '0');
+    if (str.length() >= 1)
+      return strToInt(str.substr(1), curr);
+    return curr;
+  }
+
+  bool haveConflict(vector<string> &event1, vector<string> &event2)
+  {
+    int ev1st = strToInt(event1[0], 0), ev1end = strToInt(event1[1], 0), ev2st = strToInt(event2[0], 0), ev2end = strToInt(event2[1], 0);
+    if (ev1st > ev2st && ev1st > ev2end)
+      return false;
+    else if (ev1end >= ev2st)
+      return true;
+    return false;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums1 = {7, 1, 5, 3, 6, 4};
-  int res = st.maxProfit(nums1);
+  vector<string> nums1 = {"10:13", "13:02"};
+  vector<string> nums2 = {"13:17", "21:38"};
+  bool res = st.haveConflict(nums1, nums2);
   cout << res << endl;
   return 0;
 }
