@@ -4,32 +4,41 @@ using namespace std;
 class Solution
 {
 public:
-  int strToInt(string str, int curr)
+  vector<vector<int>> matrixReshape(vector<vector<int>> &mat, int r, int c)
   {
-    if (str[0] >= '0' && str[0] <= '9')
-      curr = curr * 10 + (str[0] - '0');
-    if (str.length() >= 1)
-      return strToInt(str.substr(1), curr);
-    return curr;
-  }
+    if ((mat.size() * mat[0].size()) != r * c)
+      return mat;
+    vector<vector<int>> res;
+    queue<int> allNums;
+    for (auto nums : mat)
+      for (auto num : nums)
+        allNums.push(num);
 
-  bool haveConflict(vector<string> &event1, vector<string> &event2)
-  {
-    int ev1st = strToInt(event1[0], 0), ev1end = strToInt(event1[1], 0), ev2st = strToInt(event2[0], 0), ev2end = strToInt(event2[1], 0);
-    if (ev1st > ev2st && ev1st > ev2end)
-      return false;
-    else if (ev1end >= ev2st)
-      return true;
-    return false;
+    for (int i = 0; i < r; i++)
+    {
+      vector<int> temp;
+      for (int j = 0; j < c; j++)
+      {
+        temp.push_back(allNums.front());
+        allNums.pop();
+      }
+      res.push_back(temp);
+    }
+    return res;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<string> nums1 = {"10:13", "13:02"};
-  vector<string> nums2 = {"13:17", "21:38"};
-  bool res = st.haveConflict(nums1, nums2);
-  cout << res << endl;
+  vector<vector<int>> nums = {{1, 2}, {3, 4}};
+  vector<vector<int>> res = st.matrixReshape(nums, 1, 4);
+  for (auto allNums : res)
+  {
+    for (auto num : allNums)
+      cout << num << " ";
+    cout << endl;
+  }
+
   return 0;
 }
