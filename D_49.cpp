@@ -4,27 +4,28 @@ using namespace std;
 class Solution
 {
 public:
-  int firstUniqChar(string s)
+  bool canConstruct(string ransomNote, string magazine)
   {
-    unordered_map<char, int> charMap;
-    for (int i = 0; i < s.length(); i++)
+    if (ransomNote == magazine)
+      return true;
+    if (ransomNote.length() > magazine.length())
+      return false;
+    for (auto ch : ransomNote)
     {
-      if (charMap[s[i]] == 0)
-      {
-        size_t found = s.find(s[i], i + 1);
-        if (found == string::npos)
-          return i;
-        charMap[s[i]]++;
-      }
+      size_t found = magazine.find(ch);
+      if (found == string::npos)
+        return false;
+      else
+        magazine[found] = 'A';
     }
-    return -1;
+    return true;
   }
 };
 
 int main()
 {
   Solution st;
-  int res = st.firstUniqChar("aab");
+  bool res = st.canConstruct("a", "b");
   cout << res << endl;
 
   return 0;
