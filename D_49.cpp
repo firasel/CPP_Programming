@@ -4,28 +4,18 @@ using namespace std;
 class Solution
 {
 public:
-  bool canConstruct(string ransomNote, string magazine)
+  bool isAnagram(string s, string t)
   {
-    if (ransomNote == magazine)
-      return true;
-    if (ransomNote.length() > magazine.length())
-      return false;
-    for (auto ch : ransomNote)
-    {
-      size_t found = magazine.find(ch);
-      if (found == string::npos)
-        return false;
-      else
-        magazine[found] = 'A';
-    }
-    return true;
+    sort(s.begin(), s.end());
+    sort(t.begin(), t.end());
+    return s == t;
   }
 };
 
 int main()
 {
   Solution st;
-  bool res = st.canConstruct("a", "b");
+  bool res = st.isAnagram("anagram", "nagaram");
   cout << res << endl;
 
   return 0;
