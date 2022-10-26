@@ -16,18 +16,38 @@ public:
 class Solution
 {
 public:
-  bool hasCycle(ListNode *head)
+  ListNode *removeElements(ListNode *head, int val)
   {
-    ListNode *s = head;
-    ListNode *f = head;
-    while (f != NULL && f->next != NULL)
+    if (head == NULL)
+      return head;
+    ListNode *prev = NULL;
+    ListNode *temp = head;
+    while (temp != NULL)
     {
-      if (s->next == f->next->next)
-        return true;
-      s = s->next;
-      f = f->next->next;
+      if (temp->val == val)
+      {
+        if (prev == NULL)
+        {
+          ListNode *del = temp;
+          head = head->next;
+          temp = temp->next;
+          delete del;
+        }
+        else
+        {
+          ListNode *del = temp;
+          prev->next = temp->next;
+          temp = temp->next;
+          delete del;
+        }
+      }
+      else
+      {
+        prev = temp;
+        temp = temp->next;
+      }
     }
-    return false;
+    return head;
   }
 };
 
@@ -41,19 +61,24 @@ void printList(ListNode *head)
 
 int main()
 {
-  ListNode *root = new ListNode(3);
+  ListNode *root = new ListNode(1);
   ListNode *node1 = new ListNode(2);
-  ListNode *node2 = new ListNode(0);
-  ListNode *node3 = new ListNode(4);
+  ListNode *node2 = new ListNode(6);
+  ListNode *node3 = new ListNode(3);
+  ListNode *node4 = new ListNode(4);
+  ListNode *node5 = new ListNode(5);
+  ListNode *node6 = new ListNode(6);
 
   root->next = node1;
   node1->next = node2;
   node2->next = node3;
-  node3->next = node1;
+  node3->next = node4;
+  node4->next = node5;
+  node5->next = node6;
 
   Solution st;
-  bool res = st.hasCycle(root);
-  cout << res << endl;
+  ListNode *res = st.removeElements(root, 6);
+  printList(res);
 
   return 0;
 }
