@@ -16,38 +16,41 @@ public:
 class Solution
 {
 public:
-  ListNode *removeElements(ListNode *head, int val)
+  void traverseList(ListNode *head, vector<int> &nums)
   {
     if (head == NULL)
-      return head;
-    ListNode *prev = NULL;
-    ListNode *temp = head;
-    while (temp != NULL)
+      return;
+    nums.push_back(head->val);
+    traverseList(head->next, nums);
+  }
+
+  ListNode *makeLinkedList(vector<int> nums)
+  {
+    ListNode *head = NULL;
+    ListNode *curr = NULL;
+    for (auto num : nums)
     {
-      if (temp->val == val)
+      if (head == NULL)
       {
-        if (prev == NULL)
-        {
-          ListNode *del = temp;
-          head = head->next;
-          temp = temp->next;
-          delete del;
-        }
-        else
-        {
-          ListNode *del = temp;
-          prev->next = temp->next;
-          temp = temp->next;
-          delete del;
-        }
+        head = new ListNode(num);
+        curr = head;
       }
       else
       {
-        prev = temp;
-        temp = temp->next;
+        curr->next = new ListNode(num);
+        curr = curr->next;
       }
     }
     return head;
+  }
+
+  ListNode *mergeKLists(vector<ListNode *> &lists)
+  {
+    vector<int> nums;
+    for (auto head : lists)
+      traverseList(head, nums);
+    sort(nums.begin(), nums.end());
+    return makeLinkedList(nums);
   }
 };
 
@@ -66,18 +69,24 @@ int main()
   ListNode *node2 = new ListNode(6);
   ListNode *node3 = new ListNode(3);
   ListNode *node4 = new ListNode(4);
-  ListNode *node5 = new ListNode(5);
-  ListNode *node6 = new ListNode(6);
 
   root->next = node1;
   node1->next = node2;
   node2->next = node3;
   node3->next = node4;
-  node4->next = node5;
-  node5->next = node6;
+
+  ListNode *root2 = new ListNode(1);
+  ListNode *node2_1 = new ListNode(2);
+  ListNode *node2_2 = new ListNode(6);
+  ListNode *node2_3 = new ListNode(3);
+
+  root2->next = node2_1;
+  node2_1->next = node2_2;
+  node2_2->next = node2_3;
 
   Solution st;
-  ListNode *res = st.removeElements(root, 6);
+  vector<ListNode *> lists = {root, root2};
+  ListNode *res = st.mergeKLists(lists);
   printList(res);
 
   return 0;
