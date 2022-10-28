@@ -24,49 +24,36 @@ void printList(ListNode *head)
 class Solution
 {
 public:
-  ListNode *reverseKGroup(ListNode *head, int k)
+  vector<vector<string>> groupAnagrams(vector<string> &strs)
   {
-    if (head == NULL)
-      return head;
-    int count = 0;
-    ListNode *prevHead = head;
-    ListNode *temp = head;
-    stack<int> nums;
-    while (temp != NULL)
+    vector<vector<string>> res;
+    unordered_map<string, vector<string>> strMap;
+    string tempStr;
+    for (int i = 0; i < strs.size(); i++)
     {
-      nums.push(temp->val);
-      if (++count == k)
-      {
-        count = 0;
-        while (!nums.empty() && prevHead != NULL)
-        {
-          prevHead->val = nums.top();
-          nums.pop();
-          prevHead = prevHead->next;
-        }
-      }
-      temp = temp->next;
+      tempStr = strs[i];
+      sort(strs[i].begin(), strs[i].end());
+      strMap[strs[i]].push_back(tempStr);
     }
-    return head;
+    for (auto i : strMap)
+      res.push_back(i.second);
+    return res;
   }
 };
 
 int main()
 {
-  ListNode *root = new ListNode(1);
-  ListNode *node1 = new ListNode(2);
-  ListNode *node2 = new ListNode(3);
-  ListNode *node3 = new ListNode(4);
-  ListNode *node4 = new ListNode(5);
-
-  root->next = node1;
-  node1->next = node2;
-  node2->next = node3;
-  node3->next = node4;
-
   Solution st;
-  ListNode *res = st.reverseKGroup(root, 3);
-  printList(res);
+  vector<string> strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
+  vector<vector<string>> res = st.groupAnagrams(strs);
+  for (auto allStr : res)
+  {
+    for (auto str : allStr)
+    {
+      cout << str << " ";
+    }
+    cout << endl;
+  }
 
   return 0;
 }
