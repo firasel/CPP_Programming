@@ -24,36 +24,65 @@ void printList(ListNode *head)
 class Solution
 {
 public:
-  vector<vector<string>> groupAnagrams(vector<string> &strs)
+  // string longestPalindrome(string s)
+  // {
+  //   string temp = s;
+  //   reverse(temp.begin(), temp.end());
+  //   if (temp == s)
+  //     return s;
+  //   else if (s.length() > 2)
+  //   {
+  //     temp = longestPalindrome(s.substr(0, s.length() - 2));
+  //     temp = longestPalindrome(s.substr(1));
+  //   }
+  //   return temp;
+  // }
+  string oddString(vector<string> &words)
   {
-    vector<vector<string>> res;
-    unordered_map<string, vector<string>> strMap;
-    string tempStr;
-    for (int i = 0; i < strs.size(); i++)
+    vector<string> nums;
+    for (auto word : words)
     {
-      tempStr = strs[i];
-      sort(strs[i].begin(), strs[i].end());
-      strMap[strs[i]].push_back(tempStr);
+      string str = "";
+      for (int i = 0; i < word.length() - 1; i++)
+      {
+        str += to_string((97 - word[i + 1]) - (97 - word[i])) + '_';
+      }
+      nums.push_back(str);
     }
-    for (auto i : strMap)
-      res.push_back(i.second);
-    return res;
+    cout << endl;
+    for (auto num : nums)
+      cout << num << " ";
+    cout << endl;
+    string res = nums[0];
+    int index = 0;
+    for (int i = 1; i < nums.size() - 1; i++)
+    {
+      if (nums[i] != nums[i + 1])
+      {
+        if (res == nums[i])
+        {
+          index = i + 1;
+          res = nums[i++ + 1];
+        }
+        else
+        {
+          index = i;
+          res = nums[i];
+        }
+      }
+    }
+
+    return words[index];
   }
 };
 
 int main()
 {
   Solution st;
-  vector<string> strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
-  vector<vector<string>> res = st.groupAnagrams(strs);
-  for (auto allStr : res)
-  {
-    for (auto str : allStr)
-    {
-      cout << str << " ";
-    }
-    cout << endl;
-  }
+  string str = "cbbd";
+  vector<string> words = {"adc", "wzy", "abc"};
+  string res = st.oddString(words);
+  cout << res << endl;
 
   return 0;
 }
