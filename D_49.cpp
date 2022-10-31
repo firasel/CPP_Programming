@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
 class ListNode
@@ -24,64 +25,24 @@ void printList(ListNode *head)
 class Solution
 {
 public:
-  // string longestPalindrome(string s)
-  // {
-  //   string temp = s;
-  //   reverse(temp.begin(), temp.end());
-  //   if (temp == s)
-  //     return s;
-  //   else if (s.length() > 2)
-  //   {
-  //     temp = longestPalindrome(s.substr(0, s.length() - 2));
-  //     temp = longestPalindrome(s.substr(1));
-  //   }
-  //   return temp;
-  // }
-  string oddString(vector<string> &words)
+  string defangIPaddr(string address)
   {
-    vector<string> nums;
-    for (auto word : words)
+    string ans = "";
+    for (auto ch : address)
     {
-      string str = "";
-      for (int i = 0; i < word.length() - 1; i++)
-      {
-        str += to_string((97 - word[i + 1]) - (97 - word[i])) + '_';
-      }
-      nums.push_back(str);
+      if (ch == '.')
+        ans += "[.]";
+      else
+        ans += ch;
     }
-    cout << endl;
-    for (auto num : nums)
-      cout << num << " ";
-    cout << endl;
-    string res = nums[0];
-    int index = 0;
-    for (int i = 1; i < nums.size() - 1; i++)
-    {
-      if (nums[i] != nums[i + 1])
-      {
-        if (res == nums[i])
-        {
-          index = i + 1;
-          res = nums[i++ + 1];
-        }
-        else
-        {
-          index = i;
-          res = nums[i];
-        }
-      }
-    }
-
-    return words[index];
+    return ans;
   }
 };
 
 int main()
 {
   Solution st;
-  string str = "cbbd";
-  vector<string> words = {"adc", "wzy", "abc"};
-  string res = st.oddString(words);
+  string res = st.defangIPaddr("255.100.50.0");
   cout << res << endl;
 
   return 0;
