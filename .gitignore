@@ -1,5 +1,7 @@
+*
+!*.*
+!*/
 *.exe
 *.o
 *.json
 .vscode
-tempCodeRunnerFile.cpp
