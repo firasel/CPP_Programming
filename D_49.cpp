@@ -19,59 +19,41 @@ public:
 class Solution
 {
 public:
-  vector<int> nums;
-  void preOrderTraverse(TreeNode *root)
+  TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
   {
-    if (root == NULL)
-      return;
-    preOrderTraverse(root->left);
-    nums.push_back(root->val);
-    preOrderTraverse(root->right);
-  }
-
-  bool findTargetSum(int start, int end, int target)
-  {
-    bool result = false;
-    if (start >= end)
-      return result;
-    if (nums[end] < target / 2)
-      return result;
-    int res = nums[start] + nums[end];
-    if (res == target)
-      return true;
-    if (res > target)
-      return findTargetSum(start, end - 1, target);
-    if (res < target)
-      return findTargetSum(start + 1, end, target);
-    return result;
-  }
-
-  bool findTarget(TreeNode *root, int k)
-  {
-    nums.clear();
-    preOrderTraverse(root);
-    return findTargetSum(0, nums.size() - 1, k);
+    if (root->val > q->val && root->val > p->val && root->left)
+      return lowestCommonAncestor(root->left, p, q);
+    if (root->val < q->val && root->val < p->val && root->right)
+      return lowestCommonAncestor(root->right, p, q);
+    return root;
   }
 };
 
 int main()
 {
   Solution st;
-  TreeNode *root = new TreeNode(5);
-  TreeNode *node1 = new TreeNode(3);
-  TreeNode *node2 = new TreeNode(6);
-  TreeNode *node3 = new TreeNode(2);
+  TreeNode *root = new TreeNode(6);
+  TreeNode *node1 = new TreeNode(2);
+  TreeNode *node2 = new TreeNode(8);
+  TreeNode *node3 = new TreeNode(0);
   TreeNode *node4 = new TreeNode(4);
   TreeNode *node5 = new TreeNode(7);
+  TreeNode *node6 = new TreeNode(9);
+  TreeNode *node7 = new TreeNode(3);
+  TreeNode *node8 = new TreeNode(5);
 
   root->left = node1;
   root->right = node2;
   node1->left = node3;
   node1->right = node4;
-  node2->right = node5;
+  node4->left = node7;
+  node4->right = node8;
 
-  bool res = st.findTarget(root, 9);
-  cout << res << endl;
+  node2->left = node5;
+  node2->right = node6;
+
+  TreeNode *res = st.lowestCommonAncestor(root, node7, node6);
+  cout << res->val << endl;
 
   return 0;
 }
