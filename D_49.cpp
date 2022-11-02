@@ -19,13 +19,9 @@ public:
 class Solution
 {
 public:
-  TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+  bool isValidBST(TreeNode *root, long low = LONG_MIN, long high = LONG_MAX)
   {
-    if (root->val > q->val && root->val > p->val && root->left)
-      return lowestCommonAncestor(root->left, p, q);
-    if (root->val < q->val && root->val < p->val && root->right)
-      return lowestCommonAncestor(root->right, p, q);
-    return root;
+    return !root || (root->val > low && root->val < high && isValidBST(root->left, low, root->val) && isValidBST(root->right, root->val, high));
   }
 };
 
@@ -52,8 +48,8 @@ int main()
   node2->left = node5;
   node2->right = node6;
 
-  TreeNode *res = st.lowestCommonAncestor(root, node7, node6);
-  cout << res->val << endl;
+  bool res = st.isValidBST(root);
+  cout << res << endl;
 
   return 0;
 }
