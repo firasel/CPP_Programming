@@ -4,16 +4,22 @@ using namespace std;
 class Solution
 {
 public:
-  int singleNumber(vector<int> &nums)
+  int majorityElement(vector<int> &nums)
   {
     sort(nums.begin(), nums.end());
-    int ans = nums[0];
-    for (int i = 0; i < nums.size(); i += 2)
+    int ans = nums[nums.size() - 1];
+    int count = 1;
+    for (int i = 0; i < nums.size() - 1; i++)
     {
-      if (nums[i] != nums[i + 1])
+      if (nums[i] == nums[i + 1])
       {
-        ans = nums[i];
-        break;
+        count++;
+      }
+      else
+      {
+        if (count > nums.size() / 2)
+          ans = nums[i];
+        count = 0;
       }
     }
     return ans;
@@ -23,7 +29,7 @@ public:
 int main()
 {
   Solution st;
-  vector<int> nums = {4, 1, 4, 1, 2};
-  cout << st.singleNumber(nums) << endl;
+  vector<int> nums = {-1, 1, 1, 1, 2, 1};
+  cout << st.majorityElement(nums) << endl;
   return 0;
 }
