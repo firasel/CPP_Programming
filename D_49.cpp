@@ -1,29 +1,29 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+
+class Solution
+{
+public:
+  int singleNumber(vector<int> &nums)
+  {
+    sort(nums.begin(), nums.end());
+    int ans = nums[0];
+    for (int i = 0; i < nums.size(); i += 2)
+    {
+      if (nums[i] != nums[i + 1])
+      {
+        ans = nums[i];
+        break;
+      }
+    }
+    return ans;
+  }
+};
 
 int main()
 {
-  int n, m;
-  cin >> n >> m;
-  vector<int> nums1(n);
-  vector<int> nums2(m);
-  for (int i = 0; i < n; i++)
-    cin >> nums1[i];
-  for (int i = 0; i < m; i++)
-    cin >> nums2[i];
-  sort(nums1.begin(), nums1.end());
-  sort(nums2.begin(), nums2.end());
-  int count = 0;
-  if (nums1[0] < nums2[m - 1])
-  {
-    int conNum = nums2[(m - 1) / 2];
-    for (int i = 0; i < n; i++)
-      count += abs(nums1[i] - conNum);
-    for (int i = 0; i < m; i++)
-      count += abs(nums2[i] - conNum);
-  }
-  cout << count << endl;
+  Solution st;
+  vector<int> nums = {4, 1, 4, 1, 2};
+  cout << st.singleNumber(nums) << endl;
   return 0;
 }
