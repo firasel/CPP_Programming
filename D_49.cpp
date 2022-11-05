@@ -1,33 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int digit_sum(long long num)
+class Solution
 {
-  long long sum = 0;
-  while (num > 0)
+public:
+  void rotate(vector<vector<int>> &matrix)
   {
-    sum += num % 10;
-    num /= 10;
+    reverse(matrix.begin(), matrix.end());
+    int size = matrix.size();
+    for (int j = 0; j < size; j++)
+    {
+      for (int i = j + 1; i < size; i++)
+      {
+        int temp = matrix[j][i];
+        matrix[j][i] = matrix[i][j];
+        matrix[i][j] = temp;
+      }
+    }
   }
-  return sum;
-}
+};
 
 int main()
 {
-  long long n, s;
-  cin >> n >> s;
-  long long lo = 1, hi = n + 1;
-  while (lo < hi)
+  Solution st;
+  vector<vector<int>> matrix = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+  st.rotate(matrix);
+  for (auto nums : matrix)
   {
-    long long mid = lo + (hi - lo) / 2;
-    if (mid - digit_sum(mid) >= s)
-      hi = mid;
-    else
-      lo = mid + 1;
+    for (auto num : nums)
+      cout << num << " ";
+    cout << endl;
   }
-  if (lo > n)
-    cout << 0 << endl;
-  else
-    cout << n - lo + 1 << endl;
+  cout << endl;
   return 0;
 }
