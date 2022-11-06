@@ -4,33 +4,50 @@ using namespace std;
 class Solution
 {
 public:
-  int eraseOverlapIntervals(vector<vector<int>> &intervals)
+  vector<vector<int>> generateMatrix(int n)
   {
-    sort(intervals.begin(), intervals.end());
-    int count = 0, prev = intervals[0][1];
-    for (int i = 1; i < intervals.size(); i++)
+    int cnt = 1, top = 0, right = n - 1, bottom = n - 1, left = 0;
+    vector<vector<int>> res(n, vector<int>(n, 1));
+    while (top <= bottom && left <= right)
     {
-      if (prev > intervals[i][0])
+      for (int i = left; i <= right; i++)
       {
-        count++;
-        prev = min(prev, intervals[i][1]);
+        res[top][i] = cnt++;
       }
-      else
-        prev = intervals[i][1];
+      top++;
+
+      for (int i = top; i <= bottom; i++)
+      {
+        res[i][right] = cnt++;
+      }
+      right--;
+
+      for (int i = right; i >= left; i--)
+      {
+        res[bottom][i] = cnt++;
+      }
+      bottom--;
+
+      for (int i = bottom; i >= top; i--)
+      {
+        res[i][left] = cnt++;
+      }
+      left++;
     }
-    return count;
+    return res;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<vector<int>> intervals = {{1, 100}, {11, 22}, {1, 11}, {2, 12}};
-  vector<vector<int>> intervals2 = {
-      {-52, 31}, {-73, -26}, {82, 97}, {-65, -11}, {-62, -49}, {95, 99}, {58, 95}, {-31, 49}, {66, 98}, {-63, 2}, {30, 47}, {-40, -26}};
-  int res = st.eraseOverlapIntervals(intervals);
-  int res2 = st.eraseOverlapIntervals(intervals2);
-  cout << res << endl;
-  cout << res2 << endl;
+  vector<vector<int>> res = st.generateMatrix(4);
+  for (auto nums : res)
+  {
+    for (auto num : nums)
+      cout << num << " ";
+    cout << endl;
+  }
+
   return 0;
 }
