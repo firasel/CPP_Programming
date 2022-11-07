@@ -4,38 +4,30 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> productExceptSelf(vector<int> &nums)
+  int subarraySum(vector<int> &nums, int k)
   {
-    int size = nums.size(), prev = 1, curr = 1;
-    vector<int> res(size, 0);
-    int total = accumulate(nums.begin(), nums.end(), 1, multiplies<int>());
-    for (int i = 0; i < size; i++)
+    int cnt = 0, sum = 0;
+    unordered_map<int, int> trackMp;
+    trackMp[0] = 1;
+    for (int i = 0; i < nums.size(); i++)
     {
-      res[i] = prev;
-      prev *= nums[i];
+      sum += nums[i];
+      if (trackMp.find(sum - k) != trackMp.end())
+      {
+        cnt += trackMp[sum - k];
+      }
+      trackMp[sum]++;
     }
-    prev = 1;
-    for (int i = size - 1; i >= 0; i--)
-    {
-      curr = prev * nums[i];
-      nums[i] = prev;
-      prev = curr;
-    }
-
-    for (int i = 0; i < size; i++)
-      res[i] *= nums[i];
-    return res;
+    return cnt;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {1, 2, 3, 4};
-  vector<int> res = st.productExceptSelf(nums);
-  for (auto num : res)
-    cout << num << " ";
-  cout << endl;
+  vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 1, 23, 21, 3, 1, 2, 1, 1, 1, 1, 1, 12, 2, 3, 2, 3, 2, 2};
+  int res = st.subarraySum(nums, 22);
+  cout << res << endl;
 
   return 0;
 }
