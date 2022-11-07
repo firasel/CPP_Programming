@@ -4,36 +4,26 @@ using namespace std;
 class Solution
 {
 public:
-  vector<vector<int>> generateMatrix(int n)
+  vector<int> productExceptSelf(vector<int> &nums)
   {
-    int cnt = 1, top = 0, right = n - 1, bottom = n - 1, left = 0;
-    vector<vector<int>> res(n, vector<int>(n, 1));
-    while (top <= bottom && left <= right)
+    int size = nums.size(), prev = 1, curr = 1;
+    vector<int> res(size, 0);
+    int total = accumulate(nums.begin(), nums.end(), 1, multiplies<int>());
+    for (int i = 0; i < size; i++)
     {
-      for (int i = left; i <= right; i++)
-      {
-        res[top][i] = cnt++;
-      }
-      top++;
-
-      for (int i = top; i <= bottom; i++)
-      {
-        res[i][right] = cnt++;
-      }
-      right--;
-
-      for (int i = right; i >= left; i--)
-      {
-        res[bottom][i] = cnt++;
-      }
-      bottom--;
-
-      for (int i = bottom; i >= top; i--)
-      {
-        res[i][left] = cnt++;
-      }
-      left++;
+      res[i] = prev;
+      prev *= nums[i];
     }
+    prev = 1;
+    for (int i = size - 1; i >= 0; i--)
+    {
+      curr = prev * nums[i];
+      nums[i] = prev;
+      prev = curr;
+    }
+
+    for (int i = 0; i < size; i++)
+      res[i] *= nums[i];
     return res;
   }
 };
@@ -41,13 +31,11 @@ public:
 int main()
 {
   Solution st;
-  vector<vector<int>> res = st.generateMatrix(4);
-  for (auto nums : res)
-  {
-    for (auto num : nums)
-      cout << num << " ";
-    cout << endl;
-  }
+  vector<int> nums = {1, 2, 3, 4};
+  vector<int> res = st.productExceptSelf(nums);
+  for (auto num : res)
+    cout << num << " ";
+  cout << endl;
 
   return 0;
 }
