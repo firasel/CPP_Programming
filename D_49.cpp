@@ -5,36 +5,33 @@ using namespace std;
 class Solution
 {
 public:
-  bool wordPattern(string pattern, string s)
+  vector<int> partitionLabels(string s)
   {
-    unordered_map<char, string> chMp;
-    unordered_map<string, char> wdMp;
-    istringstream ss(s);
-    string word;
-    int i = 0;
-    while (ss >> word)
+    vector<int> ans;
+    int start = 0, last = -1, pos;
+    for (int i = 0; i < s.size(); i++)
     {
-      if (chMp.find(pattern[i]) == chMp.end() && wdMp.find(word) == wdMp.end())
+      pos = s.find_last_of(s[i]);
+      if (pos > last)
+        last = pos;
+      if (last == i)
       {
-        chMp[pattern[i]] = word;
-        wdMp[word] = pattern[i];
+        ans.push_back(last + 1 - start);
+        last += 1;
+        start = last;
       }
-      else
-      {
-        if (chMp[pattern[i]] != word || wdMp[word] != pattern[i])
-          return false;
-      }
-      i++;
-    };
-    return chMp.size() == wdMp.size() && i == pattern.size();
+    }
+    return ans;
   }
 };
 
 int main()
 {
   Solution st;
-  bool res = st.wordPattern("abba", "dog cat cat dog");
-  cout << res << endl;
+  vector<int> res = st.partitionLabels("caedbdedda");
+  for (auto num : res)
+    cout << num << " ";
+  cout << endl;
 
   return 0;
 }
