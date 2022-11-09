@@ -5,29 +5,35 @@ using namespace std;
 class Solution
 {
 public:
-  int longestPalindrome(string s)
+  bool wordPattern(string pattern, string s)
   {
-    int cnt = 0, temp = 0, size = s.size();
-    if (size < 1)
-      return cnt;
-    else if (size < 2)
-      return 1;
-    sort(s.begin(), s.end());
-    for (int i = 0; i < size; i++)
+    unordered_map<char, string> chMp;
+    unordered_map<string, char> wdMp;
+    istringstream ss(s);
+    string word;
+    int i = 0;
+    while (ss >> word)
     {
-      if (i != size - 1 && s[i] == s[i + 1])
-        i++, cnt += 2;
-      else if (temp == 0)
-        temp = 1;
-    }
-    return cnt + temp;
+      if (chMp.find(pattern[i]) == chMp.end() && wdMp.find(word) == wdMp.end())
+      {
+        chMp[pattern[i]] = word;
+        wdMp[word] = pattern[i];
+      }
+      else
+      {
+        if (chMp[pattern[i]] != word || wdMp[word] != pattern[i])
+          return false;
+      }
+      i++;
+    };
+    return chMp.size() == wdMp.size() && i == pattern.size();
   }
 };
 
 int main()
 {
   Solution st;
-  int res = st.longestPalindrome("abccccdd");
+  bool res = st.wordPattern("abba", "dog cat cat dog");
   cout << res << endl;
 
   return 0;
