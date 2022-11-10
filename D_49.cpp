@@ -5,18 +5,23 @@ using namespace std;
 class Solution
 {
 public:
-  vector<vector<string>> groupAnagrams(vector<string> &strs)
+  string multiply(string num1, string num2)
   {
-    vector<vector<string>> ans;
-    unordered_map<string, vector<string>> res;
-    for (int i = 0; i < strs.size(); i++)
+    if (num1 == "0" || num2 == "0")
+      return "0";
+    int len1 = num1.length(), len2 = num2.length();
+    string ans(len1 + len2, '0');
+    for (int i = len1 - 1; i >= 0; i--)
     {
-      string temp = strs[i];
-      sort(temp.begin(), temp.end());
-      res[temp].push_back(strs[i]);
+      for (int j = len2 - 1; j >= 0; j--)
+      {
+        int res = (ans[i + j + 1] - '0') + ((num1[i] - '0') * (num2[j] - '0'));
+        ans[i + j + 1] = res % 10 + '0';
+        ans[i + j] += res / 10;
+      }
     }
-    for (auto strVect : res)
-      ans.push_back(strVect.second);
+    if (ans[0] == '0')
+      return ans.substr(1);
     return ans;
   }
 };
@@ -24,15 +29,7 @@ public:
 int main()
 {
   Solution st;
-  vector<string> strs = {"", "", ""};
-  vector<vector<string>> res = st.groupAnagrams(strs);
-  for (auto strs : res)
-  {
-    for (auto w : strs)
-      cout << w << " ";
-    cout << endl;
-  }
-  cout << endl;
-
+  string res = st.multiply("123", "456");
+  cout << res << endl;
   return 0;
 }
