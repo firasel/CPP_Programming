@@ -5,22 +5,18 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> partitionLabels(string s)
+  vector<vector<string>> groupAnagrams(vector<string> &strs)
   {
-    vector<int> ans;
-    int start = 0, last = -1, pos;
-    for (int i = 0; i < s.size(); i++)
+    vector<vector<string>> ans;
+    unordered_map<string, vector<string>> res;
+    for (int i = 0; i < strs.size(); i++)
     {
-      pos = s.find_last_of(s[i]);
-      if (pos > last)
-        last = pos;
-      if (last == i)
-      {
-        ans.push_back(last + 1 - start);
-        last += 1;
-        start = last;
-      }
+      string temp = strs[i];
+      sort(temp.begin(), temp.end());
+      res[temp].push_back(strs[i]);
     }
+    for (auto strVect : res)
+      ans.push_back(strVect.second);
     return ans;
   }
 };
@@ -28,9 +24,14 @@ public:
 int main()
 {
   Solution st;
-  vector<int> res = st.partitionLabels("caedbdedda");
-  for (auto num : res)
-    cout << num << " ";
+  vector<string> strs = {"", "", ""};
+  vector<vector<string>> res = st.groupAnagrams(strs);
+  for (auto strs : res)
+  {
+    for (auto w : strs)
+      cout << w << " ";
+    cout << endl;
+  }
   cout << endl;
 
   return 0;
