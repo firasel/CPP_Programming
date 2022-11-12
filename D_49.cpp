@@ -5,26 +5,45 @@ using namespace std;
 class Solution
 {
 public:
-  vector<string> findRepeatedDnaSequences(string s)
+  string longestPalindrome(string s)
   {
-    vector<string> res;
-    if (s.size() < 10)
-      return res;
-    unordered_map<string, int> mp;
-    for (int i = 0; i + 9 < s.size(); i++)
-      mp[s.substr(i, 10)]++;
-    for (auto subStr : mp)
-      if (subStr.second > 1)
-        res.push_back(subStr.first);
-    return res;
+    int ans_len = 0, size = s.size(), left, right;
+    string ans = "";
+    for (int i = 0; i < size; i++)
+    {
+      left = right = i;
+      while (left >= 0 && right < size && s[left] == s[right])
+      {
+        if (right - left + 1 > ans_len)
+        {
+          ans = s.substr(left, right - left + 1);
+          ans_len = right - left + 1;
+        }
+        left--;
+        right++;
+      }
+
+      left = i;
+      right = i + 1;
+      while (left >= 0 && right < size && s[left] == s[right])
+      {
+        if (right - left + 1 > ans_len)
+        {
+          ans = s.substr(left, right - left + 1);
+          ans_len = right - left + 1;
+        }
+        left--;
+        right++;
+      }
+    }
+    return ans;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<string> res = st.findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
-  for (auto str : res)
-    cout << str << endl;
+  string res = st.longestPalindrome("cbbd");
+  cout << res << endl;
   return 0;
 }
