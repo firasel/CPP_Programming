@@ -17,49 +17,17 @@ public:
 class Solution
 {
 public:
-  ListNode *head = NULL, *curr = NULL;
-
-  void createNode(int num1, int num2, int &carr)
+  int distinctAverages(vector<int> &nums)
   {
-    int sum = num1 + num2 + carr;
-    carr = sum > 9 ? sum / 10 : 0;
-    if (!head)
+    unordered_set<float> uniNum;
+    sort(nums.begin(), nums.end());
+    int s = 0, e = nums.size() - 1;
+    while (s < e)
     {
-      head = new ListNode(sum % 10);
-      curr = head;
+      uniNum.insert(((float)nums[s] + (float)nums[e]) / 2);
+      s++, e--;
     }
-    else
-    {
-      curr->next = new ListNode(sum % 10);
-      curr = curr->next;
-    }
-  }
-
-  ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
-  {
-    head = NULL;
-    int carr = 0;
-    while (l1 && l2)
-    {
-      createNode(l1->val, l2->val, carr);
-      l1 = l1->next;
-      l2 = l2->next;
-    }
-
-    while (l1)
-    {
-      createNode(l1->val, 0, carr);
-      l1 = l1->next;
-    }
-
-    while (l2)
-    {
-      createNode(l2->val, 0, carr);
-      l2 = l2->next;
-    }
-    if (carr != 0)
-      createNode(0, 0, carr);
-    return head;
+    return uniNum.size();
   }
 };
 
@@ -74,22 +42,9 @@ void printLinkedList(ListNode *head)
 int main()
 {
   Solution st;
-  ListNode *list1 = new ListNode(2);
-  ListNode *l1_1 = new ListNode(4);
-  ListNode *l1_2 = new ListNode(3);
-
-  list1->next = l1_1;
-  l1_1->next = l1_2;
-
-  ListNode *list2 = new ListNode(5);
-  ListNode *l2_1 = new ListNode(6);
-  ListNode *l2_2 = new ListNode(4);
-
-  list2->next = l2_1;
-  l2_1->next = l2_2;
-
-  ListNode *res = st.addTwoNumbers(list1, list2);
-  printLinkedList(res);
-  cout << endl;
+  vector<int> nums = {9, 5, 7, 8, 7, 9, 8, 2, 0, 7};
+  int res = st.distinctAverages(nums);
+  // printLinkedList(res);
+  cout << res << endl;
   return 0;
 }
