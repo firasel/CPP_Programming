@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
-#include <string.h>
+#include <iostream>
+#include <numeric>
+
 using namespace std;
 
 class ListNode
@@ -17,10 +19,20 @@ public:
 class Solution
 {
 public:
-  vector<double> convertTemperature(double celsius)
+  int subarrayLCM(vector<int> &nums, int k)
   {
-    cout << setprecision(5) << fixed;
-    return {celsius + 273.15, (celsius * 9 / 5) + 32};
+    unsigned int ans = 0, size = nums.size();
+    for (int i = 0; i < size; i++)
+    {
+      unsigned int temp = nums[i];
+      for (int j = i; j < size; j++)
+      {
+        temp = lcm(temp, nums[j]);
+        if (temp == k)
+          ans++;
+      }
+    }
+    return ans;
   }
 };
 
@@ -35,10 +47,8 @@ void printLinkedList(ListNode *head)
 int main()
 {
   Solution st;
-  vector<int> nums = {9, 5, 7, 8, 7, 9, 8, 2, 0, 7};
-  vector<double> res = st.convertTemperature(36.50);
-  // printLinkedList(res);
-  for (auto num : res)
-    cout << num << endl;
+  vector<int> nums = {3, 6, 2, 7, 1};
+  int res = st.subarrayLCM(nums, 6);
+  cout << res << endl;
   return 0;
 }
