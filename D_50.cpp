@@ -4,12 +4,12 @@
 #include <iomanip>
 using namespace std;
 
-void sqrtOfNUm(vector<long long> &nums, int index, int size)
+void sqrtOfNUm(vector<long long> &nums, int size)
 {
-  if (index >= size)
+  if (size >= 0)
     return;
-  sqrtOfNUm(nums, index + 1, size);
-  cout << fixed << setprecision(4) << sqrt(nums[index]) << endl;
+  cout << fixed << setprecision(4) << sqrt(nums[size--]) << endl;
+  sqrtOfNUm(nums, size);
 }
 
 int main()
@@ -18,6 +18,6 @@ int main()
   vector<long long> nums;
   while (cin >> num)
     nums.push_back(num);
-  sqrtOfNUm(nums, 0, nums.size());
+  sqrtOfNUm(nums, nums.size() - 1);
   return 0;
 }
