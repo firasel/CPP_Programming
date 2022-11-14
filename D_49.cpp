@@ -27,31 +27,42 @@ void printLinkedList(ListNode *head)
 class Solution
 {
 public:
-  string reverseWords(string s)
+  ListNode *swapPairs(ListNode *head)
   {
-    string ans = "", temp = " ";
-    for (auto ch : s)
+    ListNode *prev = NULL, *temp1 = head, *temp2 = NULL, *temp = NULL, *res = NULL;
+    while (temp1 && temp1->next)
     {
-      if (ch != ' ')
-        temp += ch;
-      else if (ch == ' ' && temp != "" && temp != " ")
-      {
-        ans = temp + ans;
-        temp = " ";
-      }
+      temp2 = temp1->next;
+      temp = temp2->next;
+      temp2->next = temp1;
+      temp1->next = temp;
+      if (prev)
+        prev->next = temp2;
+      if (!res)
+        res = temp2;
+      prev = temp1;
+      temp1 = temp;
     }
-    if (temp != "")
-      ans = temp + ans;
-    while (ans[0] == ' ')
-      ans.erase(0, 1);
-    return ans;
+    if (res)
+      return res;
+    return head;
   }
 };
 
 int main()
 {
   Solution st;
-  string res = st.reverseWords("the sky is blue");
-  cout << res << endl;
+  ListNode *list1 = new ListNode(1);
+  ListNode *l2 = new ListNode(2);
+  ListNode *l3 = new ListNode(3);
+  ListNode *l4 = new ListNode(4);
+
+  list1->next = l2;
+  l2->next = l3;
+  l3->next = l4;
+
+  ListNode *res = st.swapPairs(list1);
+  printLinkedList(res);
+  cout << endl;
   return 0;
 }
