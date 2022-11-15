@@ -27,116 +27,45 @@ void printLinkedList(ListNode *head)
 class Solution
 {
 public:
-  ListNode *swapPairs(ListNode *head)
+  ListNode *reverseList(ListNode *head, ListNode *endNode)
   {
-    ListNode *prev = NULL, *temp1 = head, *temp2 = NULL, *temp = NULL, *res = NULL;
-    while (temp1 && temp1->next)
+    ListNode *prev = NULL, *curr = head, *next = NULL, *ans = head;
+    while (curr && curr != endNode)
     {
-      temp2 = temp1->next;
-      temp = temp2->next;
-      temp2->next = temp1;
-      temp1->next = temp;
-      if (prev)
-        prev->next = temp2;
-      if (!res)
-        res = temp2;
-      prev = temp1;
-      temp1 = temp;
+      next = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = next;
     }
-    if (res)
-      return res;
-    return head;
-  }
-};
-
-class MyLinkedList
-{
-  MyLinkedList *head;
-
-public:
-  int val;
-  MyLinkedList *next;
-  MyLinkedList()
-  {
-    head = NULL;
+    return ans;
   }
 
-  MyLinkedList(int val)
+  ListNode *reverseKGroup(ListNode *head, int k)
   {
-    this->val = val;
-    next = NULL;
-  }
-
-  int get(int index)
-  {
-    MyLinkedList *temp = head;
-    int cnt = 0;
-    while (index != cnt && temp)
-      temp = temp->next, cnt++;
-    if (temp)
-      return temp->val;
-    return -1;
-  }
-
-  void addAtHead(int val)
-  {
-    MyLinkedList *newNode = new MyLinkedList(val);
-    newNode->next = head;
-    head = newNode;
-  }
-
-  void addAtTail(int val)
-  {
-    if (head == NULL)
+    if (k < 2)
+      return head;
+    int cnt = 1;
+    ListNode *temp = head, *prev = head, *lastPrev = NULL, *next = NULL, *ans = NULL;
+    while (temp)
     {
-      addAtHead(val);
-      return;
-    }
-    MyLinkedList *temp = head;
-    while (temp->next != NULL)
+      cnt++;
       temp = temp->next;
-    MyLinkedList *newNode = new MyLinkedList(val);
-    temp->next = newNode;
-  }
-
-  void addAtIndex(int index, int val)
-  {
-    if (index == 0)
-    {
-      addAtHead(val);
-      return;
+      if (cnt == k && temp)
+      {
+        if (!ans)
+          ans = temp;
+        next = temp->next;
+        ListNode *curr = reverseList(prev, next);
+        if (lastPrev)
+          lastPrev->next = temp;
+        curr->next = next;
+        lastPrev = curr;
+        prev = next;
+        temp = curr;
+        cnt = 0;
+      }
     }
-    MyLinkedList *temp = head;
-    int cnt = 1;
-    while (cnt != index && temp)
-      temp = temp->next, cnt++;
-    if (temp == NULL)
-      return;
-    MyLinkedList *newNode = new MyLinkedList(val);
-    newNode->next = temp->next;
-    temp->next = newNode;
-  }
-
-  void deleteAtIndex(int index)
-  {
-    if (index == 0)
-    {
-      MyLinkedList *del = head;
-      head = head->next;
-      delete del;
-      return;
-    }
-    MyLinkedList *temp = head;
-    int cnt = 1;
-    while (cnt != index && temp)
-      temp = temp->next, cnt++;
-    if (temp == NULL)
-      return;
-    MyLinkedList *del = temp->next;
-    if (del == NULL)
-      return;
-    temp->next = temp->next->next;
-    delete del;
+    return ans;
   }
 };
 
@@ -147,12 +76,14 @@ int main()
   ListNode *l2 = new ListNode(2);
   ListNode *l3 = new ListNode(3);
   ListNode *l4 = new ListNode(4);
+  ListNode *l5 = new ListNode(5);
 
   list1->next = l2;
   l2->next = l3;
   l3->next = l4;
+  l4->next = l5;
 
-  ListNode *res = st.swapPairs(list1);
+  ListNode *res = st.reverseKGroup(list1, 3);
   printLinkedList(res);
   cout << endl;
   return 0;
