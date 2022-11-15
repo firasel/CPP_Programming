@@ -40,32 +40,32 @@ public:
     return ans;
   }
 
-  ListNode *reverseKGroup(ListNode *head, int k)
+  void reorderList(ListNode *head)
   {
-    if (k < 2)
-      return head;
-    int cnt = 1;
-    ListNode *temp = head, *prev = head, *lastPrev = NULL, *next = NULL, *ans = NULL;
+    if (!head)
+      return;
+    ListNode *temp = head, *next = NULL, *prevLast = NULL, *last = NULL;
     while (temp)
     {
-      cnt++;
-      temp = temp->next;
-      if (cnt == k && temp)
+      last = temp;
+      next = temp->next;
+      while (last->next)
       {
-        if (!ans)
-          ans = temp;
-        next = temp->next;
-        ListNode *curr = reverseList(prev, next);
-        if (lastPrev)
-          lastPrev->next = temp;
-        curr->next = next;
-        lastPrev = curr;
-        prev = next;
-        temp = curr;
-        cnt = 0;
+        prevLast = last;
+        last = last->next;
       }
+      if (temp == last)
+        break;
+      if (prevLast)
+        prevLast->next = NULL;
+      if (last && last != next)
+        last->next = next;
+      temp->next = last;
+      if (temp->next)
+        temp = temp->next->next;
+      else
+        break;
     }
-    return ans;
   }
 };
 
@@ -81,10 +81,10 @@ int main()
   list1->next = l2;
   l2->next = l3;
   l3->next = l4;
-  l4->next = l5;
+  // l4->next = l5;
 
-  ListNode *res = st.reverseKGroup(list1, 3);
-  printLinkedList(res);
+  st.reorderList(list1);
+  printLinkedList(list1);
   cout << endl;
   return 0;
 }
