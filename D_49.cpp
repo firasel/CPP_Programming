@@ -27,44 +27,30 @@ void printLinkedList(ListNode *head)
 class Solution
 {
 public:
-  ListNode *reverseList(ListNode *head, ListNode *endNode)
-  {
-    ListNode *prev = NULL, *curr = head, *next = NULL, *ans = head;
-    while (curr && curr != endNode)
-    {
-      next = curr->next;
-      curr->next = prev;
-      prev = curr;
-      curr = next;
-    }
-    return ans;
-  }
-
   void reorderList(ListNode *head)
   {
-    if (!head)
-      return;
-    ListNode *temp = head, *next = NULL, *prevLast = NULL, *last = NULL;
+    ListNode *temp = head, *next = NULL;
+    stack<ListNode *> listSt;
+    while (temp)
+      listSt.push(temp), temp = temp->next;
+    temp = head;
     while (temp)
     {
-      last = temp;
-      next = temp->next;
-      while (last->next)
+      if (temp == listSt.top())
       {
-        prevLast = last;
-        last = last->next;
+        temp->next = NULL;
+        break;
       }
-      if (temp == last)
+      next = temp->next;
+      temp->next = listSt.top();
+      listSt.top()->next = next;
+      if (next == listSt.top())
+      {
+        next->next = NULL;
         break;
-      if (prevLast)
-        prevLast->next = NULL;
-      if (last && last != next)
-        last->next = next;
-      temp->next = last;
-      if (temp->next)
-        temp = temp->next->next;
-      else
-        break;
+      }
+      listSt.pop();
+      temp = next;
     }
   }
 };
@@ -81,7 +67,7 @@ int main()
   list1->next = l2;
   l2->next = l3;
   l3->next = l4;
-  // l4->next = l5;
+  l4->next = l5;
 
   st.reorderList(list1);
   printLinkedList(list1);
