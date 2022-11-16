@@ -4,61 +4,44 @@
 
 using namespace std;
 
-class MinStack
+class Solution
 {
 public:
-  multiset<int> sortNums;
-  vector<int> nums;
-  MinStack()
+  string minRemoveToMakeValid(string s)
   {
-    sortNums.clear();
-    nums.clear();
-  }
+    stack<char> st;
+    for (int i = 0; i < s.size(); i++)
+    {
+      char temp = s[i];
+      if (temp == '(' || temp == ')')
+      {
+        if (temp == '(')
+          st.push(temp);
+        else if (!st.empty() && st.top() == '(')
+        {
+          st.pop();
+        }
+        else
+        {
+          s.erase(i, 1);
+          i--;
+        }
+      }
+    }
+    while (!st.empty())
+    {
+      s.erase(s.find_last_of(st.top()), 1);
+      st.pop();
+    }
 
-  void push(int val)
-  {
-    sortNums.insert(val);
-    nums.push_back(val);
-  }
-
-  void pop()
-  {
-    sortNums.erase(sortNums.find(nums.back()));
-    nums.pop_back();
-  }
-
-  int top()
-  {
-    return nums.back();
-  }
-
-  int getMin()
-  {
-    return *sortNums.begin();
+    return s;
   }
 };
 
 int main()
 {
-  MinStack *obj = new MinStack();
-  obj->push(-2);
-  obj->push(0);
-  obj->push(-3);
-
-  cout << obj->getMin() << endl;
-  obj->pop();
-  cout << obj->top() << endl;
-  cout << obj->getMin() << endl;
-
-  cout << "Set: ";
-  for (auto num : obj->sortNums)
-    cout << num << " ";
-  cout << endl;
-
-  cout << "Vector: ";
-  for (auto num : obj->nums)
-    cout << num << " ";
-  cout << endl;
-
+  Solution st;
+  string res = st.minRemoveToMakeValid("a)b(c)d))((le(et))");
+  cout << res << endl;
   return 0;
 }
