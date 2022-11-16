@@ -7,41 +7,30 @@ using namespace std;
 class Solution
 {
 public:
-  string minRemoveToMakeValid(string s)
+  int findTheWinner(int n, int k)
   {
-    stack<char> st;
-    for (int i = 0; i < s.size(); i++)
+    int cnt = 1, temp;
+    queue<int> nums;
+    for (int i = 1; i <= n; i++)
+      nums.push(i);
+    while (nums.size() > 1)
     {
-      char temp = s[i];
-      if (temp == '(' || temp == ')')
-      {
-        if (temp == '(')
-          st.push(temp);
-        else if (!st.empty() && st.top() == '(')
-        {
-          st.pop();
-        }
-        else
-        {
-          s.erase(i, 1);
-          i--;
-        }
-      }
+      temp = nums.front();
+      nums.pop();
+      if (cnt == k)
+        cnt = 0;
+      else
+        nums.push(temp);
+      cnt++;
     }
-    while (!st.empty())
-    {
-      s.erase(s.find_last_of(st.top()), 1);
-      st.pop();
-    }
-
-    return s;
+    return nums.front();
   }
 };
 
 int main()
 {
   Solution st;
-  string res = st.minRemoveToMakeValid("a)b(c)d))((le(et))");
+  int res = st.findTheWinner(5, 2);
   cout << res << endl;
   return 0;
 }
