@@ -1,24 +1,24 @@
 #include <iostream>
-#include <algorithm>
+#include <vector>
 using namespace std;
+
+int findMinDif(vector<int> &nums, int n, int sum, int totalSum)
+{
+  if (n == 0)
+    return abs((totalSum - sum) - sum);
+  return min(findMinDif(nums, n - 1, sum + nums[n - 1], totalSum), findMinDif(nums, n - 1, sum, totalSum));
+}
 
 int main()
 {
-  int t, cnt = 1;
-  cin >> t;
-  while (t--)
+  int n, sum = 0;
+  cin >> n;
+  vector<int> nums(n);
+  for (int i = 0; i < n; i++)
   {
-    int n, k, limit = 0;
-    cin >> n >> k;
-    string s = "";
-    for (int i = 0; i < n; i++)
-      s += 65 + i;
-    cout << "Case " << cnt++ << ":" << endl;
-    do
-    {
-      cout << s << endl;
-      limit++;
-    } while (next_permutation(s.begin(), s.end()) && limit < k);
+    cin >> nums[i];
+    sum += nums[i];
   }
+  cout << findMinDif(nums, n, 0, sum) << endl;
   return 0;
 }
