@@ -4,73 +4,61 @@
 
 using namespace std;
 
-class ListNode
+class MinStack
 {
 public:
-  int val;
-  ListNode *next;
-  ListNode(int val)
+  multiset<int> sortNums;
+  vector<int> nums;
+  MinStack()
   {
-    this->val = val;
-    next = NULL;
+    sortNums.clear();
+    nums.clear();
   }
-};
 
-void printLinkedList(ListNode *head)
-{
-  if (head == NULL)
-    return;
-  cout << head->val << " ";
-  printLinkedList(head->next);
-}
-
-class Solution
-{
-public:
-  void reorderList(ListNode *head)
+  void push(int val)
   {
-    ListNode *temp = head, *next = NULL;
-    stack<ListNode *> listSt;
-    while (temp)
-      listSt.push(temp), temp = temp->next;
-    temp = head;
-    while (temp)
-    {
-      if (temp == listSt.top())
-      {
-        temp->next = NULL;
-        break;
-      }
-      next = temp->next;
-      temp->next = listSt.top();
-      listSt.top()->next = next;
-      if (next == listSt.top())
-      {
-        next->next = NULL;
-        break;
-      }
-      listSt.pop();
-      temp = next;
-    }
+    sortNums.insert(val);
+    nums.push_back(val);
+  }
+
+  void pop()
+  {
+    sortNums.erase(sortNums.find(nums.back()));
+    nums.pop_back();
+  }
+
+  int top()
+  {
+    return nums.back();
+  }
+
+  int getMin()
+  {
+    return *sortNums.begin();
   }
 };
 
 int main()
 {
-  Solution st;
-  ListNode *list1 = new ListNode(1);
-  ListNode *l2 = new ListNode(2);
-  ListNode *l3 = new ListNode(3);
-  ListNode *l4 = new ListNode(4);
-  ListNode *l5 = new ListNode(5);
+  MinStack *obj = new MinStack();
+  obj->push(-2);
+  obj->push(0);
+  obj->push(-3);
 
-  list1->next = l2;
-  l2->next = l3;
-  l3->next = l4;
-  l4->next = l5;
+  cout << obj->getMin() << endl;
+  obj->pop();
+  cout << obj->top() << endl;
+  cout << obj->getMin() << endl;
 
-  st.reorderList(list1);
-  printLinkedList(list1);
+  cout << "Set: ";
+  for (auto num : obj->sortNums)
+    cout << num << " ";
   cout << endl;
+
+  cout << "Vector: ";
+  for (auto num : obj->nums)
+    cout << num << " ";
+  cout << endl;
+
   return 0;
 }
