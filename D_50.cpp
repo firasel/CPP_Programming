@@ -2,37 +2,23 @@
 #include <algorithm>
 using namespace std;
 
-void calcPalindrome(long long num, int it = 1)
-{
-  if (it == 1000)
-    return;
-  long long num2, sum;
-  string s1, s2;
-  s1 = to_string(num);
-  reverse(s1.begin(), s1.end());
-  num2 = stoi(s1);
-  sum = num + num2;
-  s1 = to_string(sum);
-  s2 = s1;
-  reverse(s2.begin(), s2.end());
-  if (s1 == s2)
-  {
-    cout << it << " " << sum << endl;
-    return;
-  }
-  if (sum < UINT32_MAX)
-    calcPalindrome(sum, it += 1);
-}
-
 int main()
 {
-  int t;
+  int t, cnt = 1;
   cin >> t;
   while (t--)
   {
-    long long num;
-    cin >> num;
-    calcPalindrome(num);
+    int n, k, limit = 0;
+    cin >> n >> k;
+    string s = "";
+    for (int i = 0; i < n; i++)
+      s += 65 + i;
+    cout << "Case " << cnt++ << ":" << endl;
+    do
+    {
+      cout << s << endl;
+      limit++;
+    } while (next_permutation(s.begin(), s.end()) && limit < k);
   }
   return 0;
 }
