@@ -1,23 +1,38 @@
-#include <math.h>
 #include <iostream>
-#include <vector>
-#include <iomanip>
+#include <algorithm>
 using namespace std;
 
-void sqrtOfNUm(vector<long long> &nums, int size)
+void calcPalindrome(long long num, int it = 1)
 {
-  if (size >= 0)
+  if (it == 1000)
     return;
-  cout << fixed << setprecision(4) << sqrt(nums[size--]) << endl;
-  sqrtOfNUm(nums, size);
+  long long num2, sum;
+  string s1, s2;
+  s1 = to_string(num);
+  reverse(s1.begin(), s1.end());
+  num2 = stoi(s1);
+  sum = num + num2;
+  s1 = to_string(sum);
+  s2 = s1;
+  reverse(s2.begin(), s2.end());
+  if (s1 == s2)
+  {
+    cout << it << " " << sum << endl;
+    return;
+  }
+  if (sum < UINT32_MAX)
+    calcPalindrome(sum, it += 1);
 }
 
 int main()
 {
-  long long num;
-  vector<long long> nums;
-  while (cin >> num)
-    nums.push_back(num);
-  sqrtOfNUm(nums, nums.size() - 1);
+  int t;
+  cin >> t;
+  while (t--)
+  {
+    long long num;
+    cin >> num;
+    calcPalindrome(num);
+  }
   return 0;
 }
