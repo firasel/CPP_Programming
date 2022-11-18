@@ -18,42 +18,61 @@ public:
   }
 };
 
-void printTree(TreeNode *root, string &str)
+void printTree(TreeNode *root)
 {
   if (root == NULL)
-  {
-    str += "NULL_";
     return;
-  }
   cout << root->val << " ";
-  str += to_string(root->val) + '_';
-  printTree(root->left, str);
-  printTree(root->right, str);
+  printTree(root->left);
+  printTree(root->right);
 };
 
 class Solution
 {
 public:
-  void targetSumFind(TreeNode *root, vector<int> nums, vector<vector<int>> &res, int sum, int targetSum)
+  TreeNode *inOrderSuccessor(TreeNode *root)
   {
-    if (!root)
-      return;
-    nums.push_back(root->val);
-    sum += root->val;
-    if (!root->left && !root->right && sum == targetSum)
-    {
-      res.push_back(nums);
-      return;
-    }
-    targetSumFind(root->left, nums, res, sum, targetSum);
-    targetSumFind(root->right, nums, res, sum, targetSum);
+    TreeNode *curr = root;
+    while (curr->left != NULL)
+      curr = curr->left;
+    return curr;
   }
-  vector<vector<int>> pathSum(TreeNode *root, int targetSum)
+
+  TreeNode *deleteNode(TreeNode *root, int key)
   {
-    vector<int> nums;
-    vector<vector<int>> res;
-    targetSumFind(root, nums, res, 0, targetSum);
-    return res;
+    if (root == NULL)
+      return root;
+    if (root->val > key)
+      root->left = deleteNode(root->left, key);
+    else if (root->val < key)
+      root->right = deleteNode(root->right, key);
+    else if (root->val == key)
+    {
+      if (!root->left && !root->right)
+      {
+        delete root;
+        return NULL;
+      }
+      else if (root->left == NULL)
+      {
+        TreeNode *temp = root->right;
+        delete root;
+        return temp;
+      }
+      else if (root->right == NULL)
+      {
+        TreeNode *temp = root->left;
+        delete root;
+        return temp;
+      }
+      else
+      {
+        TreeNode *temp = inOrderSuccessor(root->right);
+        root->val = temp->val;
+        root->right = deleteNode(root->right, temp->val);
+      }
+    }
+    return root;
   }
 };
 
@@ -71,13 +90,9 @@ int main()
   n2->right = n4;
   n3->right = n5;
 
-  vector<vector<int>> res = st.pathSum(root, 8);
+  TreeNode *res = st.deleteNode(root, 3);
 
-  for (auto nums : res)
-  {
-    for (auto num : nums)
-      cout << num << " ";
-    cout << endl;
-  }
+  printTree(res);
+  cout << endl;
   return 0;
 }
