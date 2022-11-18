@@ -34,74 +34,65 @@ void printTree(TreeNode *root, string &str)
 class Solution
 {
 public:
-  void printVector(vector<int> nums)
+  void traverseRightSide(TreeNode *root, vector<int> &nums)
   {
-    cout << "Vect: ";
-    for (auto num : nums)
-      cout
-          << num << " ";
-    cout << endl;
+    if (!root)
+      return;
+    nums.push_back(root->val);
+    traverseRightSide(root->right, nums);
   }
 
-  int searchVector(vector<int> &nums, int val)
+  vector<int> rightSideView(TreeNode *root)
   {
-    for (int i = 0; i < nums.size(); i++)
+    vector<int> nums;
+    if (!root)
+      return nums;
+    TreeNode *temp;
+    int ans;
+    queue<TreeNode *> allNodes;
+    allNodes.push(root);
+    allNodes.push(NULL);
+    while (!allNodes.empty())
     {
-      if (nums[i] == val)
-        return i;
+      temp = allNodes.front();
+      allNodes.pop();
+      if (temp)
+      {
+        ans = temp->val;
+        if (!temp->right && temp->left)
+          allNodes.push(temp->left);
+        if (temp->right)
+          allNodes.push(temp->right);
+      }
+      else
+      {
+        if (!allNodes.empty())
+          allNodes.push(NULL);
+        nums.push_back(ans);
+      }
     }
-    return -1;
-  }
-
-  void copyVector(vector<int> &nums, vector<int> &res, int st, int end)
-  {
-    res.clear();
-    for (st; st < end; st++)
-    {
-      res.push_back(nums[st]);
-    }
-  }
-
-  TreeNode *createBST(vector<int> &preorder, vector<int> &inorder)
-  {
-    if (inorder.size() == 0 || preorder.size() == 0)
-      return NULL;
-    int pos = searchVector(inorder, preorder[0]);
-    if (pos == -1)
-      return NULL;
-    TreeNode *root = new TreeNode(preorder[0]);
-    preorder.erase(preorder.begin());
-    vector<int> temp;
-    copyVector(inorder, temp, 0, pos);
-    if (!temp.empty())
-      root->left = createBST(preorder, temp);
-
-    copyVector(inorder, temp, pos + 1, inorder.size());
-    if (!temp.empty())
-      root->right = createBST(preorder, temp);
-
-    return root;
-  }
-
-  TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder)
-  {
-    TreeNode *root;
-    root = createBST(preorder, inorder);
-    return root;
+    return nums;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums1 = {3, 9, 20, 15, 7};
-  vector<int> nums2 = {9, 3, 15, 20, 7};
-  TreeNode *res = st.buildTree(nums1, nums2);
+  TreeNode *root = new TreeNode(1);
+  TreeNode *n2 = new TreeNode(2);
+  TreeNode *n3 = new TreeNode(3);
+  TreeNode *n4 = new TreeNode(5);
+  TreeNode *n5 = new TreeNode(4);
+
+  root->left = n2;
+  root->right = n3;
+  n2->right = n4;
+  n3->right = n5;
+
+  vector<int> res = st.rightSideView(root);
+
+  for (auto num : res)
+    cout << num << " ";
   cout << endl;
-  string treeStr = "";
-  printTree(res, treeStr);
-  cout << endl;
-  cout << endl
-       << treeStr << endl;
   return 0;
 }
