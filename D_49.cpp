@@ -34,44 +34,26 @@ void printTree(TreeNode *root, string &str)
 class Solution
 {
 public:
-  void traverseRightSide(TreeNode *root, vector<int> &nums)
+  void targetSumFind(TreeNode *root, vector<int> nums, vector<vector<int>> &res, int sum, int targetSum)
   {
     if (!root)
       return;
     nums.push_back(root->val);
-    traverseRightSide(root->right, nums);
+    sum += root->val;
+    if (!root->left && !root->right && sum == targetSum)
+    {
+      res.push_back(nums);
+      return;
+    }
+    targetSumFind(root->left, nums, res, sum, targetSum);
+    targetSumFind(root->right, nums, res, sum, targetSum);
   }
-
-  vector<int> rightSideView(TreeNode *root)
+  vector<vector<int>> pathSum(TreeNode *root, int targetSum)
   {
     vector<int> nums;
-    if (!root)
-      return nums;
-    TreeNode *temp;
-    int ans;
-    queue<TreeNode *> allNodes;
-    allNodes.push(root);
-    allNodes.push(NULL);
-    while (!allNodes.empty())
-    {
-      temp = allNodes.front();
-      allNodes.pop();
-      if (temp)
-      {
-        ans = temp->val;
-        if (!temp->right && temp->left)
-          allNodes.push(temp->left);
-        if (temp->right)
-          allNodes.push(temp->right);
-      }
-      else
-      {
-        if (!allNodes.empty())
-          allNodes.push(NULL);
-        nums.push_back(ans);
-      }
-    }
-    return nums;
+    vector<vector<int>> res;
+    targetSumFind(root, nums, res, 0, targetSum);
+    return res;
   }
 };
 
@@ -89,10 +71,13 @@ int main()
   n2->right = n4;
   n3->right = n5;
 
-  vector<int> res = st.rightSideView(root);
+  vector<vector<int>> res = st.pathSum(root, 8);
 
-  for (auto num : res)
-    cout << num << " ";
-  cout << endl;
+  for (auto nums : res)
+  {
+    for (auto num : nums)
+      cout << num << " ";
+    cout << endl;
+  }
   return 0;
 }
