@@ -30,69 +30,39 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  TreeNode *inOrderSuccessor(TreeNode *root)
+  void inOrder(TreeNode *root, int k, vector<int> &nums)
   {
-    TreeNode *curr = root;
-    while (curr->left != NULL)
-      curr = curr->left;
-    return curr;
+    if (!root && k == nums.size())
+      return;
+    if (root->left)
+      inOrder(root->left, k, nums);
+    nums.push_back(root->val);
+    if (root->right)
+      inOrder(root->right, k, nums);
   }
 
-  TreeNode *deleteNode(TreeNode *root, int key)
+  int kthSmallest(TreeNode *root, int k)
   {
-    if (root == NULL)
-      return root;
-    if (root->val > key)
-      root->left = deleteNode(root->left, key);
-    else if (root->val < key)
-      root->right = deleteNode(root->right, key);
-    else if (root->val == key)
-    {
-      if (!root->left && !root->right)
-      {
-        delete root;
-        return NULL;
-      }
-      else if (root->left == NULL)
-      {
-        TreeNode *temp = root->right;
-        delete root;
-        return temp;
-      }
-      else if (root->right == NULL)
-      {
-        TreeNode *temp = root->left;
-        delete root;
-        return temp;
-      }
-      else
-      {
-        TreeNode *temp = inOrderSuccessor(root->right);
-        root->val = temp->val;
-        root->right = deleteNode(root->right, temp->val);
-      }
-    }
-    return root;
+    vector<int> nums;
+    inOrder(root, k, nums);
+    return nums[k - 1];
   }
 };
 
 int main()
 {
   Solution st;
-  TreeNode *root = new TreeNode(1);
-  TreeNode *n2 = new TreeNode(2);
-  TreeNode *n3 = new TreeNode(3);
-  TreeNode *n4 = new TreeNode(5);
-  TreeNode *n5 = new TreeNode(4);
+  TreeNode *root = new TreeNode(3);
+  TreeNode *n2 = new TreeNode(1);
+  TreeNode *n3 = new TreeNode(4);
+  TreeNode *n4 = new TreeNode(2);
 
   root->left = n2;
   root->right = n3;
   n2->right = n4;
-  n3->right = n5;
 
-  TreeNode *res = st.deleteNode(root, 3);
+  int res = st.kthSmallest(root, 3);
 
-  printTree(res);
-  cout << endl;
+  cout << res << endl;
   return 0;
 }
