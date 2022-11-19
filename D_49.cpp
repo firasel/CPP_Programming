@@ -30,22 +30,24 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  void inOrder(TreeNode *root, int k, vector<int> &nums)
+  void inOrder(TreeNode *root, int k, int &cnt, int &ans)
   {
-    if (!root && k == nums.size())
+    if (!root && cnt > k)
       return;
     if (root->left)
-      inOrder(root->left, k, nums);
-    nums.push_back(root->val);
+      inOrder(root->left, k, cnt, ans);
+    cnt++;
+    if (k == cnt)
+      ans = root->val;
     if (root->right)
-      inOrder(root->right, k, nums);
+      inOrder(root->right, k, cnt, ans);
   }
 
   int kthSmallest(TreeNode *root, int k)
   {
-    vector<int> nums;
-    inOrder(root, k, nums);
-    return nums[k - 1];
+    int ans, cnt = 0;
+    inOrder(root, k, cnt, ans);
+    return ans;
   }
 };
 
