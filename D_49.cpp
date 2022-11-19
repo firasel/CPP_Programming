@@ -30,13 +30,16 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int findNumbers(vector<int> &nums)
+  vector<int> sortedSquares(vector<int> &nums)
   {
-    int cnt = 0;
-    for (auto num : nums)
-      if (to_string(num).length() % 2 == 0)
-        cnt++;
-    return cnt;
+    int size = nums.size();
+    for (int i = 0; i < size; i++)
+      if (nums[i] < 0)
+        nums[i] = abs(nums[i]);
+    sort(nums.begin(), nums.end());
+    for (int i = 0; i < size; i++)
+      nums[i] = nums[i] * nums[i];
+    return nums;
   }
 };
 
@@ -51,9 +54,9 @@ int main()
   // root->left = n2;
   // root->right = n3;
   // n2->right = n4;
-  vector<int> nums = {12, 345, 2, 6, 7896};
-  int res = st.findNumbers(nums);
-
-  cout << res << endl;
+  vector<int> nums = {-7, -3, 2, 3, 11};
+  vector<int> res = st.sortedSquares(nums);
+  for (auto num : res)
+    cout << num << endl;
   return 0;
 }
