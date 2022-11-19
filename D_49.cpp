@@ -30,21 +30,13 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int findMaxConsecutiveOnes(vector<int> &nums)
+  int findNumbers(vector<int> &nums)
   {
-    int ans = 0, cnt = 0, size = nums.size();
-    for (int i = 0; i < size; i++)
-    {
-      if (nums[i] == 0)
-      {
-        ans = ans < cnt ? cnt : ans;
-        cnt = 0;
-      }
-      else
+    int cnt = 0;
+    for (auto num : nums)
+      if (to_string(num).length() % 2 == 0)
         cnt++;
-    }
-    ans = ans < cnt ? cnt : ans;
-    return ans;
+    return cnt;
   }
 };
 
@@ -59,8 +51,8 @@ int main()
   // root->left = n2;
   // root->right = n3;
   // n2->right = n4;
-  vector<int> nums = {1, 1, 0, 1, 1, 1};
-  int res = st.findMaxConsecutiveOnes(nums);
+  vector<int> nums = {12, 345, 2, 6, 7896};
+  int res = st.findNumbers(nums);
 
   cout << res << endl;
   return 0;
