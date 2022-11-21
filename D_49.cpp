@@ -30,12 +30,13 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int removeElement(vector<int> &nums, int val)
+  int removeDuplicates(vector<int> &nums)
   {
-    for (auto it = nums.begin(); it != nums.end(); ++it)
-      if (*it == val)
-        nums.erase(it--);
-    return nums.size();
+    int k = 0, i, size = nums.size();
+    for (i = 0; i < size; i++)
+      if (nums[k] != nums[i])
+        nums[++k] = nums[i];
+    return k + 1;
   }
 };
 
@@ -43,8 +44,8 @@ int main()
 {
   Solution st;
 
-  vector<int> nums1 = {0, 1, 2, 2, 3, 0, 4, 2};
-  int res = st.removeElement(nums1, 2);
+  vector<int> nums1 = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+  int res = st.removeDuplicates(nums1);
   cout << res << endl;
   for (auto num : nums1)
     cout << num << " ";
