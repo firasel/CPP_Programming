@@ -30,12 +30,16 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
+  int findJudge(int n, vector<vector<int>> &trust)
   {
-    n--;
-    while (n >= 0)
-      nums1[m++] = nums2[n--];
-    sort(nums1.begin(), nums1.end());
+    vector<int> track(n + 1, 0);
+    int size = trust.size();
+    for (int i = 0; i < size; i++)
+      track[trust[i][0]]--, track[trust[i][1]]++;
+    for (int i = 1; i <= n; i++)
+      if (track[i] == n - 1)
+        return i;
+    return -1;
   }
 };
 
@@ -43,11 +47,8 @@ int main()
 {
   Solution st;
 
-  vector<int> nums1 = {1, 2, 3, 0, 0, 0};
-  vector<int> nums2 = {2, 5, 6};
-  st.merge(nums1, 3, nums2, 3);
-  for (auto num : nums1)
-    cout << num << " ";
-  cout << endl;
+  vector<vector<int>> nums1 = {{1, 3}, {2, 3}};
+  int res = st.findJudge(3, nums1);
+  cout << res << endl;
   return 0;
 }
