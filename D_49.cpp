@@ -30,16 +30,17 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int findJudge(int n, vector<vector<int>> &trust)
+  vector<int> findSmallestSetOfVertices(int n, vector<vector<int>> &edges)
   {
-    vector<int> track(n + 1, 0);
-    int size = trust.size();
+    vector<int> track(n, 0);
+    vector<int> ans;
+    int size = edges.size();
     for (int i = 0; i < size; i++)
-      track[trust[i][0]]--, track[trust[i][1]]++;
-    for (int i = 1; i <= n; i++)
-      if (track[i] == n - 1)
-        return i;
-    return -1;
+      track[edges[i][1]] += 1;
+    for (int i = 0; i < n; i++)
+      if (track[i] == 0)
+        ans.push_back(i);
+    return ans;
   }
 };
 
@@ -47,8 +48,9 @@ int main()
 {
   Solution st;
 
-  vector<vector<int>> nums1 = {{1, 3}, {2, 3}};
-  int res = st.findJudge(3, nums1);
-  cout << res << endl;
+  vector<vector<int>> nums1 = {{0, 1}, {0, 2}, {2, 5}, {3, 4}, {4, 2}};
+  vector<int> res = st.findSmallestSetOfVertices(6, nums1);
+  for (auto num : res)
+    cout << num << endl;
   return 0;
 }
