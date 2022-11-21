@@ -30,17 +30,23 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  vector<int> findSmallestSetOfVertices(int n, vector<vector<int>> &edges)
+  void visitRoom(vector<vector<int>> &rooms, map<int, bool> &mp, int key)
   {
-    vector<int> track(n, 0);
-    vector<int> ans;
-    int size = edges.size();
-    for (int i = 0; i < size; i++)
-      track[edges[i][1]] += 1;
-    for (int i = 0; i < n; i++)
-      if (track[i] == 0)
-        ans.push_back(i);
-    return ans;
+    if (mp.find(key) == mp.end())
+    {
+      mp[key] = true;
+      for (auto num : rooms[key])
+        if (mp.find(num) == mp.end())
+          visitRoom(rooms, mp, num);
+    }
+  }
+  bool canVisitAllRooms(vector<vector<int>> &rooms)
+  {
+    map<int, bool> mp;
+    visitRoom(rooms, mp, 0);
+    if (mp.size() == rooms.size())
+      return true;
+    return false;
   }
 };
 
@@ -48,9 +54,8 @@ int main()
 {
   Solution st;
 
-  vector<vector<int>> nums1 = {{0, 1}, {0, 2}, {2, 5}, {3, 4}, {4, 2}};
-  vector<int> res = st.findSmallestSetOfVertices(6, nums1);
-  for (auto num : res)
-    cout << num << endl;
+  vector<vector<int>> nums1 = {{1, 3}, {3, 0, 1}, {2}, {0}};
+  bool res = st.canVisitAllRooms(nums1);
+  cout << res << endl;
   return 0;
 }
