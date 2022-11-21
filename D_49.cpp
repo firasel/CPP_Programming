@@ -30,23 +30,12 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  void visitRoom(vector<vector<int>> &rooms, map<int, bool> &mp, int key)
+  int removeElement(vector<int> &nums, int val)
   {
-    if (mp.find(key) == mp.end())
-    {
-      mp[key] = true;
-      for (auto num : rooms[key])
-        if (mp.find(num) == mp.end())
-          visitRoom(rooms, mp, num);
-    }
-  }
-  bool canVisitAllRooms(vector<vector<int>> &rooms)
-  {
-    map<int, bool> mp;
-    visitRoom(rooms, mp, 0);
-    if (mp.size() == rooms.size())
-      return true;
-    return false;
+    for (auto it = nums.begin(); it != nums.end(); ++it)
+      if (*it == val)
+        nums.erase(it--);
+    return nums.size();
   }
 };
 
@@ -54,8 +43,11 @@ int main()
 {
   Solution st;
 
-  vector<vector<int>> nums1 = {{1, 3}, {3, 0, 1}, {2}, {0}};
-  bool res = st.canVisitAllRooms(nums1);
+  vector<int> nums1 = {0, 1, 2, 2, 3, 0, 4, 2};
+  int res = st.removeElement(nums1, 2);
   cout << res << endl;
+  for (auto num : nums1)
+    cout << num << " ";
+  cout << endl;
   return 0;
 }
