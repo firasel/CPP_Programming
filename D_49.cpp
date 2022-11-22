@@ -30,16 +30,24 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  bool checkIfExist(vector<int> &arr)
+  bool validMountainArray(vector<int> &arr)
   {
-    unordered_set<int> set;
-    for (int num : arr)
+    int size = arr.size() - 1, flag = 0, i = 0;
+    if (size < 2)
+      return false;
+    for (i = 0; i < size - 1; i++)
     {
-      if (set.count(2 * num) || !(num % 2) && set.count(num / 2))
-        return true;
-      set.insert(num);
+      if (arr[i] == arr[i + 1])
+        return false;
+      if (arr[i] > arr[i + 1])
+        break;
     }
-    return false;
+    if (i == 0)
+      return false;
+    for (i; i < size; i++)
+      if (arr[i] == arr[i + 1] || arr[i] < arr[i + 1])
+        return false;
+    return true;
   }
 };
 
@@ -47,9 +55,9 @@ int main()
 {
   Solution st;
 
-  vector<int> nums1 = {10, 2, 5, 3};
+  vector<int> nums1 = {0, 3, 2, 1};
   vector<int> nums2 = {3, 4};
-  bool res = st.checkIfExist(nums1);
+  bool res = st.validMountainArray(nums1);
   cout << res << endl;
   return 0;
 }
