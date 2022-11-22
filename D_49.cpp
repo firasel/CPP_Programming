@@ -30,24 +30,16 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  vector<int> topKFrequent(vector<int> &nums, int k)
+  bool checkIfExist(vector<int> &arr)
   {
-    int size = nums.size();
-    unordered_map<int, int> mp;
-    vector<pair<int, int>> track;
-    vector<int> ans;
-    for (int i = 0; i < size; i++)
-      mp[nums[i]]++;
-    for (auto mpEl : mp)
-      track.push_back(make_pair(mpEl.second, mpEl.first));
-    sort(track.rbegin(), track.rend());
-    for (auto mpEl : track)
+    unordered_set<int> set;
+    for (int num : arr)
     {
-      ans.push_back(mpEl.second);
-      if (--k <= 0)
-        return ans;
+      if (set.count(2 * num) || !(num % 2) && set.count(num / 2))
+        return true;
+      set.insert(num);
     }
-    return ans;
+    return false;
   }
 };
 
@@ -55,11 +47,9 @@ int main()
 {
   Solution st;
 
-  vector<int> nums1 = {1, 1, 1, 2, 2, 3};
+  vector<int> nums1 = {10, 2, 5, 3};
   vector<int> nums2 = {3, 4};
-  vector<int> res = st.topKFrequent(nums1, 2);
-  for (auto num : res)
-    cout << num << " ";
-  cout << endl;
+  bool res = st.checkIfExist(nums1);
+  cout << res << endl;
   return 0;
 }
