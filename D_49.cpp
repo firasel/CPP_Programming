@@ -30,10 +30,24 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int findKthLargest(vector<int> &nums, int k)
+  vector<int> topKFrequent(vector<int> &nums, int k)
   {
-    sort(nums.begin(), nums.end());
-    return nums[nums.size() - k];
+    int size = nums.size();
+    unordered_map<int, int> mp;
+    vector<pair<int, int>> track;
+    vector<int> ans;
+    for (int i = 0; i < size; i++)
+      mp[nums[i]]++;
+    for (auto mpEl : mp)
+      track.push_back(make_pair(mpEl.second, mpEl.first));
+    sort(track.rbegin(), track.rend());
+    for (auto mpEl : track)
+    {
+      ans.push_back(mpEl.second);
+      if (--k <= 0)
+        return ans;
+    }
+    return ans;
   }
 };
 
@@ -41,9 +55,11 @@ int main()
 {
   Solution st;
 
-  vector<int> nums1 = {3, 2, 1, 5, 6, 4};
+  vector<int> nums1 = {1, 1, 1, 2, 2, 3};
   vector<int> nums2 = {3, 4};
-  int res = st.findKthLargest(nums1, 2);
-  cout << res << endl;
+  vector<int> res = st.topKFrequent(nums1, 2);
+  for (auto num : res)
+    cout << num << " ";
+  cout << endl;
   return 0;
 }
