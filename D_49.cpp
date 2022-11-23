@@ -30,24 +30,19 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  bool validMountainArray(vector<int> &arr)
+  string frequencySort(string s)
   {
-    int size = arr.size() - 1, flag = 0, i = 0;
-    if (size < 2)
-      return false;
-    for (i = 0; i < size - 1; i++)
-    {
-      if (arr[i] == arr[i + 1])
-        return false;
-      if (arr[i] > arr[i + 1])
-        break;
-    }
-    if (i == 0)
-      return false;
-    for (i; i < size; i++)
-      if (arr[i] == arr[i + 1] || arr[i] < arr[i + 1])
-        return false;
-    return true;
+    unordered_map<char, string> mp;
+    vector<pair<int, char>> charVect;
+    for (char ch : s)
+      mp[ch] += ch;
+    for (auto mpEl : mp)
+      charVect.push_back(make_pair(mpEl.second.length(), mpEl.first));
+    sort(charVect.rbegin(), charVect.rend());
+    s = "";
+    for (auto vectEl : charVect)
+      s += mp[vectEl.second];
+    return s;
   }
 };
 
@@ -57,7 +52,7 @@ int main()
 
   vector<int> nums1 = {0, 3, 2, 1};
   vector<int> nums2 = {3, 4};
-  bool res = st.validMountainArray(nums1);
+  string res = st.frequencySort("aacccaa");
   cout << res << endl;
   return 0;
 }
