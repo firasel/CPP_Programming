@@ -30,19 +30,33 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  string frequencySort(string s)
+  vector<vector<int>> kClosest(vector<vector<int>> &points, int k)
   {
-    unordered_map<char, string> mp;
-    vector<pair<int, char>> charVect;
-    for (char ch : s)
-      mp[ch] += ch;
-    for (auto mpEl : mp)
-      charVect.push_back(make_pair(mpEl.second.length(), mpEl.first));
-    sort(charVect.rbegin(), charVect.rend());
-    s = "";
-    for (auto vectEl : charVect)
-      s += mp[vectEl.second];
-    return s;
+    vector<vector<int>> ans;
+    if (points.size() == 0)
+      return ans;
+    priority_queue<pair<int, pair<int, int>>> pq;
+    int dis;
+    for (auto point : points)
+    {
+      dis = point[0] * point[0] + point[1] * point[1];
+      if (pq.size() < k)
+        pq.push({dis, {point[0], point[1]}});
+      else
+      {
+        if (dis < pq.top().first)
+        {
+          pq.pop();
+          pq.push({dis, {point[0], point[1]}});
+        }
+      }
+    }
+    while (!pq.empty())
+    {
+      ans.push_back({pq.top().second.first, pq.top().second.second});
+      pq.pop();
+    }
+    return ans;
   }
 };
 
@@ -50,9 +64,13 @@ int main()
 {
   Solution st;
 
-  vector<int> nums1 = {0, 3, 2, 1};
-  vector<int> nums2 = {3, 4};
-  string res = st.frequencySort("aacccaa");
-  cout << res << endl;
+  vector<vector<int>> nums = {{3, 3}, {5, -1}, {-2, 4}};
+  vector<vector<int>> res = st.kClosest(nums, 2);
+  for (auto nums : res)
+  {
+    for (auto num : nums)
+      cout << num << " ";
+    cout << endl;
+  }
   return 0;
 }
