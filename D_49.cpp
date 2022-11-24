@@ -30,33 +30,28 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  vector<vector<int>> kClosest(vector<vector<int>> &points, int k)
+  int minSubArrayLen(int target, vector<int> &nums)
   {
-    vector<vector<int>> ans;
-    if (points.size() == 0)
-      return ans;
-    priority_queue<pair<int, pair<int, int>>> pq;
-    int dis;
-    for (auto point : points)
+    int ans = INT32_MAX, size = nums.size();
+    for (int i = 1; i < size; i++)
+      nums[i] = nums[i - 1] + nums[i];
+    if (nums.back() < target)
+      return 0;
+    else if (nums.back() == target)
+      return size;
+    for (int i = size - 1; i >= 0; i--)
     {
-      dis = point[0] * point[0] + point[1] * point[1];
-      if (pq.size() < k)
-        pq.push({dis, {point[0], point[1]}});
-      else
+      if (nums[i] >= target && ans > i + 1)
+        ans = i + 1;
+      for (int j = 0; j < i; j++)
       {
-        if (dis < pq.top().first)
-        {
-          pq.pop();
-          pq.push({dis, {point[0], point[1]}});
-        }
+        if (nums[i] - nums[j] >= target && ans > i - j)
+          ans = i - j;
+        else if (nums[i] - nums[j] < target)
+          break;
       }
     }
-    while (!pq.empty())
-    {
-      ans.push_back({pq.top().second.first, pq.top().second.second});
-      pq.pop();
-    }
-    return ans;
+    return ans == INT32_MAX ? 0 : ans;
   }
 };
 
@@ -64,13 +59,8 @@ int main()
 {
   Solution st;
 
-  vector<vector<int>> nums = {{3, 3}, {5, -1}, {-2, 4}};
-  vector<vector<int>> res = st.kClosest(nums, 2);
-  for (auto nums : res)
-  {
-    for (auto num : nums)
-      cout << num << " ";
-    cout << endl;
-  }
+  vector<int> nums = {1, 1, 1, 1, 1, 1, 1, 1};
+  int res = st.minSubArrayLen(11, nums);
+  cout << res << endl;
   return 0;
 }
