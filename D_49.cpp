@@ -32,24 +32,17 @@ class Solution
 public:
   int minSubArrayLen(int target, vector<int> &nums)
   {
-    int ans = INT32_MAX, size = nums.size();
-    for (int i = 1; i < size; i++)
-      nums[i] = nums[i - 1] + nums[i];
-    if (nums.back() < target)
-      return 0;
-    else if (nums.back() == target)
-      return size;
-    for (int i = size - 1; i >= 0; i--)
+    int ans = INT32_MAX, size = nums.size(), sum = 0, left = 0, right = 0;
+    while (right < size)
     {
-      if (nums[i] >= target && ans > i + 1)
-        ans = i + 1;
-      for (int j = 0; j < i; j++)
+      sum += nums[right];
+      while (sum >= target)
       {
-        if (nums[i] - nums[j] >= target && ans > i - j)
-          ans = i - j;
-        else if (nums[i] - nums[j] < target)
-          break;
+        ans = min(right - left + 1, ans);
+        sum -= nums[left];
+        left++;
       }
+      right++;
     }
     return ans == INT32_MAX ? 0 : ans;
   }
