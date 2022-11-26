@@ -30,30 +30,39 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int minSubArrayLen(int target, vector<int> &nums)
+  bool isValidTriangle(int &a, int &b, int &c)
   {
-    int ans = INT32_MAX, size = nums.size(), sum = 0, left = 0, right = 0;
-    while (right < size)
+    if (a + b > c && a + c > b && b + c > a)
+      return true;
+    return false;
+  }
+  int triangleNumber(vector<int> &nums)
+  {
+    int size = nums.size(), cnt = 0;
+    if (size < 3)
+      return cnt;
+    size -= 2;
+    for (int i = 0; i < size; i++)
     {
-      sum += nums[right];
-      while (sum >= target)
-      {
-        ans = min(right - left + 1, ans);
-        sum -= nums[left];
-        left++;
-      }
-      right++;
+      if (isValidTriangle(nums[i], nums[i + 1], nums[i + 2]))
+        cnt++;
     }
-    return ans == INT32_MAX ? 0 : ans;
+    do
+    {
+      for (auto num : nums)
+        cout << num << " ";
+      cout << endl;
+    } while (next_permutation(nums.begin(), nums.end()));
+
+    return cnt;
   }
 };
 
 int main()
 {
   Solution st;
-
-  vector<int> nums = {1, 1, 1, 1, 1, 1, 1, 1};
-  int res = st.minSubArrayLen(11, nums);
+  vector<int> nums = {2, 2, 3, 4};
+  int res = st.triangleNumber(nums);
   cout << res << endl;
   return 0;
 }
