@@ -41,29 +41,30 @@ public:
   vector<vector<int>> onesMinusZeros(vector<vector<int>> &grid)
   {
     int m = grid.size(), n = grid[0].size();
-    vector<vector<int>> ans(m, vector<int>(n));
+    vector<int> oneRow(m, 0), oneCol(n, 0), zeroRow(m, 0), zeroCol(n, 0);
+    for (int i = 0; i < m; i++)
+    {
+      for (int j = 0; j < n; j++)
+      {
+        if (grid[i][j] == 1)
+        {
+          oneRow[i] += 1;
+          oneCol[j] += 1;
+        }
+        if (grid[i][j] == 0)
+        {
+          zeroRow[i] += 1;
+          zeroCol[j] += 1;
+        }
+      }
+    }
 
     for (int i = 0; i < m; i++)
     {
-      int oneRow = 0, zeroRow = 0;
       for (int j = 0; j < n; j++)
-        if (grid[i][j] == 1)
-          oneRow++;
-        else
-          zeroRow++;
-      for (int j = 0; j < n; j++)
-      {
-        int oneCol = 0, zeroCol = 0;
-        for (int k = 0; k < m; k++)
-          if (grid[k][j] == 1)
-            oneCol++;
-          else
-            zeroCol++;
-
-        ans[i][j] = oneRow + oneCol - zeroRow - zeroCol;
-      }
+        grid[i][j] = oneRow[i] + oneCol[j] - zeroRow[i] - zeroCol[j];
     }
-    return ans;
+    return grid;
   }
 };
 
