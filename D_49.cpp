@@ -30,25 +30,33 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int triangleNumber(vector<int> &nums)
+  vector<int> findClosestElements(vector<int> &arr, int k, int x)
   {
-    int size = nums.size(), ans = 0, l, h;
-    sort(nums.begin(), nums.end());
-    for (int i = size - 1; i >= 2; i--)
+    int size = arr.size();
+    priority_queue<pair<int, int>> res;
+    vector<int> ans;
+    for (int i = 0; i < size; i++)
     {
-      l = 0;
-      h = i - 1;
-      while (l < h)
+      if (res.size() < k)
       {
-        if (nums[l] + nums[h] > nums[i])
+        res.push({abs(arr[i] - x), arr[i]});
+      }
+      else
+      {
+        int dif = abs(arr[i] - x);
+        if (dif < res.top().first || (dif == res.top().first && arr[i] < res.top().second))
         {
-          ans += (h - l);
-          h--;
+          res.pop();
+          res.push({abs(arr[i] - x), arr[i]});
         }
-        else
-          l++;
       }
     }
+    while (!res.empty())
+    {
+      ans.push_back(res.top().second);
+      res.pop();
+    }
+    sort(ans.begin(), ans.end());
     return ans;
   }
 };
@@ -56,8 +64,9 @@ public:
 int main()
 {
   Solution st;
-  vector<int> nums = {2, 2, 3, 4};
-  int res = st.triangleNumber(nums);
-  cout << res << endl;
+  vector<int> nums = {1, 2, 3, 4, 5};
+  vector<int> res = st.findClosestElements(nums, 4, 3);
+  for (auto num : res)
+    cout << num << endl;
   return 0;
 }
