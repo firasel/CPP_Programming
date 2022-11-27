@@ -30,54 +30,34 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int numberOfCuts(int n)
+  int triangleNumber(vector<int> &nums)
   {
-    if (n < 2)
-      return 0;
-    if (n % 2 == 0)
-      return n / 2;
-    return n;
-  }
-  vector<vector<int>> onesMinusZeros(vector<vector<int>> &grid)
-  {
-    int m = grid.size(), n = grid[0].size();
-    vector<int> oneRow(m, 0), oneCol(n, 0), zeroRow(m, 0), zeroCol(n, 0);
-    for (int i = 0; i < m; i++)
+    int size = nums.size(), ans = 0, l, h;
+    sort(nums.begin(), nums.end());
+    for (int i = size - 1; i >= 2; i--)
     {
-      for (int j = 0; j < n; j++)
+      l = 0;
+      h = i - 1;
+      while (l < h)
       {
-        if (grid[i][j] == 1)
+        if (nums[l] + nums[h] > nums[i])
         {
-          oneRow[i] += 1;
-          oneCol[j] += 1;
+          ans += (h - l);
+          h--;
         }
-        if (grid[i][j] == 0)
-        {
-          zeroRow[i] += 1;
-          zeroCol[j] += 1;
-        }
+        else
+          l++;
       }
     }
-
-    for (int i = 0; i < m; i++)
-    {
-      for (int j = 0; j < n; j++)
-        grid[i][j] = oneRow[i] + oneCol[j] - zeroRow[i] - zeroCol[j];
-    }
-    return grid;
+    return ans;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<vector<int>> nums = {{0, 1, 1}, {1, 0, 1}, {0, 0, 1}};
-  vector<vector<int>> res = st.onesMinusZeros(nums);
-  for (auto nums : res)
-  {
-    for (auto num : nums)
-      cout << num << " ";
-    cout << endl;
-  }
+  vector<int> nums = {2, 2, 3, 4};
+  int res = st.triangleNumber(nums);
+  cout << res << endl;
   return 0;
 }
