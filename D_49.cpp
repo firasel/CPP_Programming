@@ -30,25 +30,21 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int chalkReplacer(vector<int> &chalk, int k)
+  int chalkReplacer(vector<int> chalk, int k)
   {
     int size = chalk.size(), i;
     long long sum = 0;
+    sum = accumulate(chalk.begin(), chalk.end(), sum);
+    k %= sum;
     for (i = 0; i < size; i++)
-      sum += chalk[i];
-    while (sum <= k)
-      k -= sum;
-    i = 0;
-    while (k >= 0)
     {
-      if (i == size)
-        i = 0;
       if (chalk[i] <= k)
         k -= chalk[i];
       else
         return i;
-      i++;
     }
+    if (i == size)
+      i = 0;
     return i;
   }
 };
