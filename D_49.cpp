@@ -30,43 +30,34 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  vector<int> findClosestElements(vector<int> &arr, int k, int x)
+  int chalkReplacer(vector<int> &chalk, int k)
   {
-    int size = arr.size();
-    priority_queue<pair<int, int>> res;
-    vector<int> ans;
-    for (int i = 0; i < size; i++)
+    int size = chalk.size(), i;
+    long long sum = 0;
+    for (i = 0; i < size; i++)
+      sum += chalk[i];
+    while (sum <= k)
+      k -= sum;
+    i = 0;
+    while (k >= 0)
     {
-      if (res.size() < k)
-      {
-        res.push({abs(arr[i] - x), arr[i]});
-      }
+      if (i == size)
+        i = 0;
+      if (chalk[i] <= k)
+        k -= chalk[i];
       else
-      {
-        int dif = abs(arr[i] - x);
-        if (dif < res.top().first || (dif == res.top().first && arr[i] < res.top().second))
-        {
-          res.pop();
-          res.push({abs(arr[i] - x), arr[i]});
-        }
-      }
+        return i;
+      i++;
     }
-    while (!res.empty())
-    {
-      ans.push_back(res.top().second);
-      res.pop();
-    }
-    sort(ans.begin(), ans.end());
-    return ans;
+    return i;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {1, 2, 3, 4, 5};
-  vector<int> res = st.findClosestElements(nums, 4, 3);
-  for (auto num : res)
-    cout << num << endl;
+  vector<int> nums = {3, 4, 1, 2};
+  int res = st.chalkReplacer(nums, 25);
+  cout << res << endl;
   return 0;
 }
