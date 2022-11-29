@@ -30,30 +30,30 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int chalkReplacer(vector<int> chalk, int k)
+  int lengthOfLIS(vector<int> &nums)
   {
-    int size = chalk.size(), i;
-    long long sum = 0;
-    sum = accumulate(chalk.begin(), chalk.end(), sum);
-    k %= sum;
-    for (i = 0; i < size; i++)
+    int size = nums.size(), ans = 1;
+    vector<int> track(size, 1);
+    for (int i = 0; i < size; i++)
     {
-      if (chalk[i] <= k)
-        k -= chalk[i];
-      else
-        return i;
+      for (int j = i - 1; j >= 0; j--)
+      {
+        if (nums[j] < nums[i])
+        {
+          track[i] = max(track[i], track[j] + 1);
+          ans = max(ans, track[i]);
+        }
+      }
     }
-    if (i == size)
-      i = 0;
-    return i;
+    return ans;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {3, 4, 1, 2};
-  int res = st.chalkReplacer(nums, 25);
+  vector<int> nums = {10, 9, 2, 5, 3, 7, 101, 18};
+  int res = st.lengthOfLIS(nums);
   cout << res << endl;
   return 0;
 }
