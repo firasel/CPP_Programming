@@ -1,29 +1,37 @@
 #include <iostream>
+#include <vector>
 using namespace std;
-
-int countGoal(string &s)
-{
-  int cnt = 0, size = s.length();
-  for (int i = 0; i < size; i++)
-    if (s[i] == '1')
-      cnt++;
-  return cnt;
-}
 
 int main()
 {
-  int a, b;
-  cin >> a >> b;
-  while (a == b)
+  int k, prev;
+  cin >> k;
+  vector<int> primeNums = {2, 3};
+  prev = primeNums.back();
+  while (k--)
   {
-    string s1, s2;
-    cin >> s1 >> s2;
-    a = countGoal(s1);
-    b = countGoal(s2);
+    int n;
+    cin >> n;
+    while (primeNums.size() < n)
+    {
+      int num = prev + 2, flag = 1;
+      for (int i = 2; i <= num / 2; i++)
+      {
+        if (num % i == 0)
+        {
+          flag = 0;
+          break;
+        }
+      }
+      if (flag)
+      {
+        primeNums.push_back(num);
+        prev = num;
+      }
+      else
+        prev += 2;
+    }
+    cout << primeNums[n - 1] << endl;
   }
-  if (a > b)
-    cout << "Argentina" << endl;
-  else
-    cout << "Brazil" << endl;
   return 0;
 }
