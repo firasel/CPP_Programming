@@ -30,30 +30,29 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int lengthOfLIS(vector<int> &nums)
+  bool isVowel(char &ch)
   {
-    int size = nums.size(), ans = 1;
-    vector<int> track(size, 1);
-    for (int i = 0; i < size; i++)
-    {
-      for (int j = i - 1; j >= 0; j--)
-      {
-        if (nums[j] < nums[i])
-        {
-          track[i] = max(track[i], track[j] + 1);
-          ans = max(ans, track[i]);
-        }
-      }
-    }
-    return ans;
+    if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U')
+      return true;
+    return false;
+  }
+  bool halvesAreAlike(string s)
+  {
+    int size = s.length(), a = 0, b = 0, i;
+    for (i = 0; i < size / 2; i++)
+      if (isVowel(s[i]))
+        a++;
+    for (; i < size; i++)
+      if (isVowel(s[i]))
+        b++;
+    return a == b;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {10, 9, 2, 5, 3, 7, 101, 18};
-  int res = st.lengthOfLIS(nums);
+  bool res = st.halvesAreAlike("book");
   cout << res << endl;
   return 0;
 }

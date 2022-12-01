@@ -1,37 +1,34 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
 int main()
 {
-  int k, prev;
-  cin >> k;
-  vector<int> primeNums = {2, 3};
-  prev = primeNums.back();
-  while (k--)
+  int t, cnt = 1;
+  cin >> t;
+  while (t--)
   {
-    int n;
-    cin >> n;
-    while (primeNums.size() < n)
+    string a;
+    int b, j = 0;
+    cin >> a >> b;
+    long long r = 0;
+    if (a[0] == '-')
+      j = 1;
+    if (b < 0)
+      b = abs(b);
+    while (j < a.size())
     {
-      int num = prev + 2, flag = 1;
-      for (int i = 2; i <= num / 2; i++)
-      {
-        if (num % i == 0)
-        {
-          flag = 0;
-          break;
-        }
-      }
-      if (flag)
-      {
-        primeNums.push_back(num);
-        prev = num;
-      }
-      else
-        prev += 2;
+      cout << "R: " << r;
+      r = r * 10 + (a[j] - '0');
+      cout << " " << r << " ";
+      r %= b;
+      cout << r << endl;
+      j++;
     }
-    cout << primeNums[n - 1] << endl;
+
+    if (r == 0)
+      cout << "Case " << cnt++ << ": divisible" << endl;
+    else
+      cout << "Case " << cnt++ << ": not divisible" << endl;
   }
   return 0;
 }
