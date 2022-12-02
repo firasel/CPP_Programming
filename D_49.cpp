@@ -30,29 +30,39 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  bool isVowel(char &ch)
+  bool closeStrings(string word1, string word2)
   {
-    if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U')
-      return true;
-    return false;
-  }
-  bool halvesAreAlike(string s)
-  {
-    int size = s.length(), a = 0, b = 0, i;
-    for (i = 0; i < size / 2; i++)
-      if (isVowel(s[i]))
-        a++;
-    for (; i < size; i++)
-      if (isVowel(s[i]))
-        b++;
-    return a == b;
+    if (word1.length() != word2.length())
+      return false;
+    unordered_map<char, int> mp1, mp2;
+    vector<int> num1, num2;
+    for (char ch : word1)
+      mp1[ch]++;
+    for (char ch : word2)
+      mp2[ch]++;
+
+    if (mp1.size() != mp2.size())
+      return false;
+
+    for (auto mpEl : mp1)
+    {
+      if (mp2.find(mpEl.first) == mp2.end())
+        return false;
+      num1.push_back(mpEl.second);
+    }
+    for (auto mpEl : mp2)
+      num2.push_back(mpEl.second);
+
+    sort(num1.begin(), num1.end());
+    sort(num2.begin(), num2.end());
+    return num1 == num2;
   }
 };
 
 int main()
 {
   Solution st;
-  bool res = st.halvesAreAlike("book");
+  bool res = st.closeStrings("abc", "abd");
   cout << res << endl;
   return 0;
 }
