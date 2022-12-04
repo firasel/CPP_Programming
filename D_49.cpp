@@ -30,39 +30,45 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  bool closeStrings(string word1, string word2)
+  void removeDupWord(string &str, vector<string> &words)
   {
-    if (word1.length() != word2.length())
-      return false;
-    unordered_map<char, int> mp1, mp2;
-    vector<int> num1, num2;
-    for (char ch : word1)
-      mp1[ch]++;
-    for (char ch : word2)
-      mp2[ch]++;
-
-    if (mp1.size() != mp2.size())
-      return false;
-
-    for (auto mpEl : mp1)
+    string word = "";
+    for (auto x : str)
     {
-      if (mp2.find(mpEl.first) == mp2.end())
-        return false;
-      num1.push_back(mpEl.second);
+      if (x == ' ')
+      {
+        if (word != "")
+          words.push_back(word);
+        word = "";
+      }
+      else
+        word = word + x;
     }
-    for (auto mpEl : mp2)
-      num2.push_back(mpEl.second);
+    if (word != "")
+      words.push_back(word);
+  }
 
-    sort(num1.begin(), num1.end());
-    sort(num2.begin(), num2.end());
-    return num1 == num2;
+  bool isCircularSentence(string sentence)
+  {
+    vector<string> words;
+    removeDupWord(sentence, words);
+    int size = words.size();
+    if (size > 1)
+    {
+      for (int i = 0; i < size - 1; i++)
+      {
+        if (words[i].back() != words[i + 1].front())
+          return false;
+      }
+    }
+    return words[0].front() == words[size - 1].back();
   }
 };
 
 int main()
 {
   Solution st;
-  bool res = st.closeStrings("abc", "abd");
+  bool res = st.isCircularSentence("leetcode exercises sound delightful");
   cout << res << endl;
   return 0;
 }
