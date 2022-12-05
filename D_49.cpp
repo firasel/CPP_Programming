@@ -32,27 +32,12 @@ class Solution
 public:
   vector<int> replaceElements(vector<int> &arr)
   {
-    int size = arr.size(), max;
-    vector<pair<int, int>> hp;
-    for (int i = 0; i < size; i++)
+    int size = arr.size(), maxNum = INT_MIN, temp = arr[size - 1];
+    for (int i = size - 1; i > 0; i--)
     {
-      if (hp.empty())
-        hp.push_back({arr[i], i});
-      else if (hp.back().first > arr[i])
-        hp.push_back({arr[i], i});
-      else
-      {
-        while (!hp.empty() && hp.back().first < arr[i])
-          hp.pop_back();
-        hp.push_back({arr[i], i});
-      }
-    }
-    reverse(hp.begin(), hp.end());
-    for (int i = 0; i < size - 1; i++)
-    {
-      if (hp.back().second <= i)
-        hp.pop_back();
-      arr[i] = hp.back().first;
+      maxNum = max(maxNum, temp);
+      temp = arr[i - 1];
+      arr[i - 1] = maxNum;
     }
     arr[size - 1] = -1;
     return arr;
