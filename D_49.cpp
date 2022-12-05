@@ -30,26 +30,23 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  vector<int> replaceElements(vector<int> &arr)
+  void moveZeroes(vector<int> &nums)
   {
-    int size = arr.size(), maxNum = INT_MIN, temp = arr[size - 1];
-    for (int i = size - 1; i > 0; i--)
-    {
-      maxNum = max(maxNum, temp);
-      temp = arr[i - 1];
-      arr[i - 1] = maxNum;
-    }
-    arr[size - 1] = -1;
-    return arr;
+    int k = 0, size = nums.size();
+    for (int i = 0; i < size; i++)
+      if (nums[i] != 0)
+        nums[k++] = nums[i];
+    while (k < size)
+      nums[k++] = 0;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {17, 18, 5, 4, 6, 1};
-  vector<int> res = st.replaceElements(nums);
-  for (auto num : res)
+  vector<int> nums = {0, 1, 0, 3, 12};
+  st.moveZeroes(nums);
+  for (auto num : nums)
     cout << num << " ";
   cout << endl;
   return 0;
