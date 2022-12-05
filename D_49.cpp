@@ -32,22 +32,10 @@ class Solution
 public:
   vector<int> sortArrayByParity(vector<int> &nums)
   {
-    int i = 0, size = nums.size(), j = size - 1, tmp;
-    while (i < size)
-    {
-      if (nums[i] % 2 != 0)
-      {
-        while (j >= 0 && nums[j] % 2 != 0)
-          j--;
-        if (i >= j)
-          break;
-        tmp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = tmp;
-        j--;
-      }
-      i++;
-    }
+    int size = nums.size();
+    for (int i = 0, j = 0; i < size; i++)
+      if (nums[i] % 2 == 0)
+        swap(nums[j++], nums[i]);
     return nums;
   }
 };
