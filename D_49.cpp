@@ -30,27 +30,42 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  long long dividePlayers(vector<int> &skill)
+  vector<int> replaceElements(vector<int> &arr)
   {
-    int size = skill.size();
-    long long temp = INT_MIN, sum = 0;
-    sort(skill.begin(), skill.end());
-    for (int i = 0; i < size / 2; i++)
+    int size = arr.size(), max;
+    vector<pair<int, int>> hp;
+    for (int i = 0; i < size; i++)
     {
-      if (temp != INT_MIN && temp != skill[i] + skill[size - 1 - i])
-        return -1;
-      temp = skill[i] + skill[size - 1 - i];
-      sum += (skill[i] * skill[size - 1 - i]);
+      if (hp.empty())
+        hp.push_back({arr[i], i});
+      else if (hp.back().first > arr[i])
+        hp.push_back({arr[i], i});
+      else
+      {
+        while (!hp.empty() && hp.back().first < arr[i])
+          hp.pop_back();
+        hp.push_back({arr[i], i});
+      }
     }
-    return sum;
+    reverse(hp.begin(), hp.end());
+    for (int i = 0; i < size - 1; i++)
+    {
+      if (hp.back().second <= i)
+        hp.pop_back();
+      arr[i] = hp.back().first;
+    }
+    arr[size - 1] = -1;
+    return arr;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {1, 1, 2, 3};
-  long long res = st.dividePlayers(nums);
-  cout << res << endl;
+  vector<int> nums = {17, 18, 5, 4, 6, 1};
+  vector<int> res = st.replaceElements(nums);
+  for (auto num : res)
+    cout << num << " ";
+  cout << endl;
   return 0;
 }
