@@ -30,14 +30,25 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  void moveZeroes(vector<int> &nums)
+  vector<int> sortArrayByParity(vector<int> &nums)
   {
-    int k = 0, size = nums.size();
-    for (int i = 0; i < size; i++)
-      if (nums[i] != 0)
-        nums[k++] = nums[i];
-    while (k < size)
-      nums[k++] = 0;
+    int i = 0, size = nums.size(), j = size - 1, tmp;
+    while (i < size)
+    {
+      if (nums[i] % 2 != 0)
+      {
+        while (j >= 0 && nums[j] % 2 != 0)
+          j--;
+        if (i >= j)
+          break;
+        tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+        j--;
+      }
+      i++;
+    }
+    return nums;
   }
 };
 
@@ -45,8 +56,8 @@ int main()
 {
   Solution st;
   vector<int> nums = {0, 1, 0, 3, 12};
-  st.moveZeroes(nums);
-  for (auto num : nums)
+  vector<int> res = st.sortArrayByParity(nums);
+  for (auto num : res)
     cout << num << " ";
   cout << endl;
   return 0;
