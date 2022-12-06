@@ -27,43 +27,24 @@ void printList(ListNode *head)
 class Solution
 {
 public:
-  ListNode *oddEvenList(ListNode *head)
+  int heightChecker(vector<int> &heights)
   {
-    if (!head || !head->next)
-      return head;
-    ListNode *node = head, *last = head, *temp, *end;
-    while (last->next && last->next->next)
-      last = last->next->next;
-
-    end = last;
-    while (node != end)
-    {
-      temp = node->next;
-      node->next = temp->next;
-      temp->next = last->next;
-      last->next = temp;
-      last = last->next;
-      node = node->next;
-    }
-    return head;
+    int cnt = 0, size = heights.size();
+    vector<int> prev(heights.begin(), heights.end());
+    sort(prev.begin(), prev.end());
+    for (int i = 0; i < size; i++)
+      if (heights[i] != prev[i])
+        cnt++;
+    return cnt;
   }
 };
 
 int main()
 {
   Solution st;
-  ListNode *head = new ListNode(1);
-  ListNode *val1 = new ListNode(2);
-  ListNode *val2 = new ListNode(3);
-  ListNode *val3 = new ListNode(4);
-  ListNode *val4 = new ListNode(5);
-  head->next = val1;
-  val1->next = val2;
-  val2->next = val3;
-  val3->next = val4;
+  vector<int> nums = {1, 1, 4, 2, 1, 3};
 
-  ListNode *res = st.oddEvenList(head);
-  printList(res);
-  cout << endl;
+  int res = st.heightChecker(nums);
+  cout << res << endl;
   return 0;
 }
