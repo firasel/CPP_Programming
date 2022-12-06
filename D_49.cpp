@@ -4,49 +4,66 @@
 
 using namespace std;
 
-class TreeNode
+class ListNode
 {
 public:
   int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode(int val)
+  ListNode *next;
+  ListNode(int val)
   {
     this->val = val;
-    left = NULL;
-    right = NULL;
+    next = NULL;
   }
 };
 
-void printTree(TreeNode *root)
+void printList(ListNode *head)
 {
-  if (root == NULL)
+  if (head == NULL)
     return;
-  cout << root->val << " ";
-  printTree(root->left);
-  printTree(root->right);
+  cout << head->val << " ";
+  printList(head->next);
 };
 
 class Solution
 {
 public:
-  vector<int> sortArrayByParity(vector<int> &nums)
+  ListNode *oddEvenList(ListNode *head)
   {
-    int size = nums.size();
-    for (int i = 0, j = 0; i < size; i++)
-      if (nums[i] % 2 == 0)
-        swap(nums[j++], nums[i]);
-    return nums;
+    if (!head || !head->next)
+      return head;
+    ListNode *node = head, *last = head, *temp, *end;
+    while (last->next && last->next->next)
+      last = last->next->next;
+
+    end = last;
+    while (node != end)
+    {
+      temp = node->next;
+      node->next = temp->next;
+      temp->next = last->next;
+      last->next = temp;
+      last = last->next;
+      node = node->next;
+    }
+    return head;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {0, 1, 0, 3, 12};
-  vector<int> res = st.sortArrayByParity(nums);
-  for (auto num : res)
-    cout << num << " ";
+  ListNode *head = new ListNode(1);
+  ListNode *val1 = new ListNode(2);
+  ListNode *val2 = new ListNode(3);
+  ListNode *val3 = new ListNode(4);
+  ListNode *val4 = new ListNode(5);
+  head->next = val1;
+  val1->next = val2;
+  val2->next = val3;
+  val3->next = val4;
+
+  ListNode *res = st.oddEvenList(head);
+  printList(res);
   cout << endl;
   return 0;
 }
