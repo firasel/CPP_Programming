@@ -30,34 +30,31 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int rangeSumBST(TreeNode *root, int low, int high, int sum = 0)
+  int thirdMax(vector<int> &nums)
   {
-    if (!root)
-      return 0;
-    return ((root->val >= low && root->val <= high) ? root->val : 0) + rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high);
+    sort(nums.begin(), nums.end());
+    int i = nums.size() - 1, max1, max2;
+    max1 = nums[i];
+    while (--i >= 0)
+      if (nums[i] != max1)
+      {
+        max2 = nums[i];
+        break;
+      }
+
+    while (--i >= 0)
+      if (nums[i] != max1 && nums[i] != max2)
+        return nums[i];
+
+    return max1;
   }
 };
 
 int main()
 {
   Solution st;
-  TreeNode *root = new TreeNode(10);
-  TreeNode *val1 = new TreeNode(5);
-  TreeNode *val2 = new TreeNode(15);
-  TreeNode *val3 = new TreeNode(3);
-  TreeNode *val4 = new TreeNode(7);
-  TreeNode *val5 = new TreeNode(18);
-
-  root->left = val1;
-  root->right = val2;
-  val1->left = val3;
-  val1->right = val4;
-  val2->right = val5;
-
-  printTree(root);
-  cout << endl;
-
-  int res = st.rangeSumBST(root, 7, 15);
+  vector<int> nums = {2, 2, 1, 3, 4, 5, 6};
+  int res = st.thirdMax(nums);
   cout << res << endl;
   return 0;
 }
