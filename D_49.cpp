@@ -4,47 +4,60 @@
 
 using namespace std;
 
-class ListNode
+class TreeNode
 {
 public:
   int val;
-  ListNode *next;
-  ListNode(int val)
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode(int val)
   {
     this->val = val;
-    next = NULL;
+    left = NULL;
+    right = NULL;
   }
 };
 
-void printList(ListNode *head)
+void printTree(TreeNode *root)
 {
-  if (head == NULL)
+  if (root == NULL)
     return;
-  cout << head->val << " ";
-  printList(head->next);
+  printTree(root->left);
+  cout << root->val << " ";
+  printTree(root->right);
 };
 
 class Solution
 {
 public:
-  int heightChecker(vector<int> &heights)
+  int rangeSumBST(TreeNode *root, int low, int high, int sum = 0)
   {
-    int cnt = 0, size = heights.size();
-    vector<int> prev(heights.begin(), heights.end());
-    sort(prev.begin(), prev.end());
-    for (int i = 0; i < size; i++)
-      if (heights[i] != prev[i])
-        cnt++;
-    return cnt;
+    if (!root)
+      return 0;
+    return ((root->val >= low && root->val <= high) ? root->val : 0) + rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high);
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {1, 1, 4, 2, 1, 3};
+  TreeNode *root = new TreeNode(10);
+  TreeNode *val1 = new TreeNode(5);
+  TreeNode *val2 = new TreeNode(15);
+  TreeNode *val3 = new TreeNode(3);
+  TreeNode *val4 = new TreeNode(7);
+  TreeNode *val5 = new TreeNode(18);
 
-  int res = st.heightChecker(nums);
+  root->left = val1;
+  root->right = val2;
+  val1->left = val3;
+  val1->right = val4;
+  val2->right = val5;
+
+  printTree(root);
+  cout << endl;
+
+  int res = st.rangeSumBST(root, 7, 15);
   cout << res << endl;
   return 0;
 }
