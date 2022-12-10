@@ -30,31 +30,35 @@ void printTree(TreeNode *root)
 class Solution
 {
 public:
-  int thirdMax(vector<int> &nums)
+  int maximumValue(vector<string> &strs)
   {
-    sort(nums.begin(), nums.end());
-    int i = nums.size() - 1, max1, max2;
-    max1 = nums[i];
-    while (--i >= 0)
-      if (nums[i] != max1)
+    int n = strs.size(), len, max = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+      len = 0;
+      for (auto ch : strs[i])
       {
-        max2 = nums[i];
-        break;
+        if (ch >= 'a' && ch <= 'z')
+        {
+          len = strs[i].length();
+          break;
+        }
       }
-
-    while (--i >= 0)
-      if (nums[i] != max1 && nums[i] != max2)
-        return nums[i];
-
-    return max1;
+      if (!len)
+        len = stoi(strs[i]);
+      cout << strs[i] << " " << len << endl;
+      if (max < len)
+        max = len;
+    }
+    return max;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<int> nums = {2, 2, 1, 3, 4, 5, 6};
-  int res = st.thirdMax(nums);
+  vector<string> strs = {"1", "01", "001", "0100"};
+  int res = st.maximumValue(strs);
   cout << res << endl;
   return 0;
 }
