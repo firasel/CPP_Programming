@@ -4,61 +4,45 @@
 
 using namespace std;
 
-class TreeNode
-{
-public:
-  int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode(int val)
-  {
-    this->val = val;
-    left = NULL;
-    right = NULL;
-  }
-};
-
-void printTree(TreeNode *root)
-{
-  if (root == NULL)
-    return;
-  printTree(root->left);
-  cout << root->val << " ";
-  printTree(root->right);
-};
-
 class Solution
 {
 public:
-  int maximumValue(vector<string> &strs)
+  vector<int> findDisappearedNumbers(vector<int> &nums)
   {
-    int n = strs.size(), len, max = INT_MIN;
-    for (int i = 0; i < n; i++)
+    vector<int> ans;
+    if (nums.empty())
+      return ans;
+    int n = nums.size();
+    for (int i = 0; i < n; ++i)
     {
-      len = 0;
-      for (auto ch : strs[i])
+      while (nums[nums[i] - 1] != nums[i])
       {
-        if (ch >= 'a' && ch <= 'z')
-        {
-          len = strs[i].length();
-          break;
-        }
+        swap(nums[nums[i] - 1], nums[i]);
       }
-      if (!len)
-        len = stoi(strs[i]);
-      cout << strs[i] << " " << len << endl;
-      if (max < len)
-        max = len;
     }
-    return max;
+
+    for (int i = 0; i < n; ++i)
+    {
+      cout << nums[i] << " ";
+      if (nums[i] != i + 1)
+      {
+        ans.push_back(i + 1);
+      }
+    }
+    cout << endl;
+
+    return ans;
   }
 };
 
 int main()
 {
   Solution st;
-  vector<string> strs = {"1", "01", "001", "0100"};
-  int res = st.maximumValue(strs);
-  cout << res << endl;
+  vector<int> nums = {4, 3, 2, 7, 8, 2, 3, 1};
+  vector<int> res = st.findDisappearedNumbers(nums);
+  for (auto num : res)
+    cout << num << " ";
+  cout << endl;
+
   return 0;
 }
